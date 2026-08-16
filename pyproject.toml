@@ -5,12 +5,14 @@ description = "Supply-chain blast radius over a HydraDB graph"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "httpx>=0.28.1",
     # Driver 6.x. The 5.x driver refuses to talk to HydraDB at all: it checks
     # the server agent string and raises UnsupportedServerProduct for
     # "SlateDBGraph/0.1.0". Driver 6 dropped that check and still negotiates
     # Bolt 5.1-5.4, which is what HydraDB serves. HydraDB's own
     # scripts/ec2_graphblas_benchmark.sh pins neo4j==6.2.0 for the same reason.
     "neo4j>=6.2,<7",
+    "rapidfuzz>=3.14.5",
     "xxhash>=3.5",
 ]
 

@@ -1,0 +1,890 @@
+{
+  "advisory_id": "GHSA-g7cv-rxg3-hmpx",
+  "note": "versions[] is authoritative; ranges[] over-match and are never expanded. ranges_present records where we saw them.",
+  "packages": [
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.16"
+      ],
+      "name": "@tanstack/arktype-adapter",
+      "ranges_present": true,
+      "versions": [
+        "1.166.12",
+        "1.166.15"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.161.13"
+      ],
+      "name": "@tanstack/eslint-plugin-router",
+      "ranges_present": true,
+      "versions": [
+        "1.161.12",
+        "1.161.9"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "0.0.8"
+      ],
+      "name": "@tanstack/eslint-plugin-start",
+      "ranges_present": true,
+      "versions": [
+        "0.0.4",
+        "0.0.7"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.161.13"
+      ],
+      "name": "@tanstack/history",
+      "ranges_present": true,
+      "versions": [
+        "1.161.12",
+        "1.161.9"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.154.16"
+      ],
+      "name": "@tanstack/nitro-v2-vite-plugin",
+      "ranges_present": true,
+      "versions": [
+        "1.154.12",
+        "1.154.15"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.169.9"
+      ],
+      "name": "@tanstack/react-router",
+      "ranges_present": true,
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.20"
+      ],
+      "name": "@tanstack/react-router-devtools",
+      "ranges_present": true,
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.19"
+      ],
+      "name": "@tanstack/react-router-ssr-query",
+      "ranges_present": true,
+      "versions": [
+        "1.166.15",
+        "1.166.18"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.167.72"
+      ],
+      "name": "@tanstack/react-start",
+      "ranges_present": true,
+      "versions": [
+        "1.167.68",
+        "1.167.71"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.55"
+      ],
+      "name": "@tanstack/react-start-client",
+      "ranges_present": true,
+      "versions": [
+        "1.166.51",
+        "1.166.54"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "0.0.51"
+      ],
+      "name": "@tanstack/react-start-rsc",
+      "ranges_present": true,
+      "versions": [
+        "0.0.47",
+        "0.0.50"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.59"
+      ],
+      "name": "@tanstack/react-start-server",
+      "ranges_present": true,
+      "versions": [
+        "1.166.55",
+        "1.166.58"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.50"
+      ],
+      "name": "@tanstack/router-cli",
+      "ranges_present": true,
+      "versions": [
+        "1.166.46",
+        "1.166.49"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.169.9"
+      ],
+      "name": "@tanstack/router-core",
+      "ranges_present": true,
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.20"
+      ],
+      "name": "@tanstack/router-devtools",
+      "ranges_present": true,
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.167.10"
+      ],
+      "name": "@tanstack/router-devtools-core",
+      "ranges_present": true,
+      "versions": [
+        "1.167.6",
+        "1.167.9"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.49"
+      ],
+      "name": "@tanstack/router-generator",
+      "ranges_present": true,
+      "versions": [
+        "1.166.45",
+        "1.166.48"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.167.42"
+      ],
+      "name": "@tanstack/router-plugin",
+      "ranges_present": true,
+      "versions": [
+        "1.167.38",
+        "1.167.41"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.168.7"
+      ],
+      "name": "@tanstack/router-ssr-query-core",
+      "ranges_present": true,
+      "versions": [
+        "1.168.3",
+        "1.168.6"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.161.15"
+      ],
+      "name": "@tanstack/router-utils",
+      "ranges_present": true,
+      "versions": [
+        "1.161.11",
+        "1.161.14"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.57"
+      ],
+      "name": "@tanstack/router-vite-plugin",
+      "ranges_present": true,
+      "versions": [
+        "1.166.53",
+        "1.166.56"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.169.9"
+      ],
+      "name": "@tanstack/solid-router",
+      "ranges_present": true,
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.20"
+      ],
+      "name": "@tanstack/solid-router-devtools",
+      "ranges_present": true,
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.19"
+      ],
+      "name": "@tanstack/solid-router-ssr-query",
+      "ranges_present": true,
+      "versions": [
+        "1.166.15",
+        "1.166.18"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.167.69"
+      ],
+      "name": "@tanstack/solid-start",
+      "ranges_present": true,
+      "versions": [
+        "1.167.65",
+        "1.167.68"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.54"
+      ],
+      "name": "@tanstack/solid-start-client",
+      "ranges_present": true,
+      "versions": [
+        "1.166.50",
+        "1.166.53"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.58"
+      ],
+      "name": "@tanstack/solid-start-server",
+      "ranges_present": true,
+      "versions": [
+        "1.166.54",
+        "1.166.57"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.168.9"
+      ],
+      "name": "@tanstack/start-client-core",
+      "ranges_present": true,
+      "versions": [
+        "1.168.5",
+        "1.168.8"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.161.13"
+      ],
+      "name": "@tanstack/start-fn-stubs",
+      "ranges_present": true,
+      "versions": [
+        "1.161.12",
+        "1.161.9"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.169.27"
+      ],
+      "name": "@tanstack/start-plugin-core",
+      "ranges_present": true,
+      "versions": [
+        "1.169.23",
+        "1.169.26"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.167.37"
+      ],
+      "name": "@tanstack/start-server-core",
+      "ranges_present": true,
+      "versions": [
+        "1.167.33",
+        "1.167.36"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.48"
+      ],
+      "name": "@tanstack/start-static-server-functions",
+      "ranges_present": true,
+      "versions": [
+        "1.166.44",
+        "1.166.47"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.42"
+      ],
+      "name": "@tanstack/start-storage-context",
+      "ranges_present": true,
+      "versions": [
+        "1.166.38",
+        "1.166.41"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.16"
+      ],
+      "name": "@tanstack/valibot-adapter",
+      "ranges_present": true,
+      "versions": [
+        "1.166.12",
+        "1.166.15"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.161.14"
+      ],
+      "name": "@tanstack/virtual-file-routes",
+      "ranges_present": true,
+      "versions": [
+        "1.161.10",
+        "1.161.13"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.169.9"
+      ],
+      "name": "@tanstack/vue-router",
+      "ranges_present": true,
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.20"
+      ],
+      "name": "@tanstack/vue-router-devtools",
+      "ranges_present": true,
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.19"
+      ],
+      "name": "@tanstack/vue-router-ssr-query",
+      "ranges_present": true,
+      "versions": [
+        "1.166.15",
+        "1.166.18"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.167.65"
+      ],
+      "name": "@tanstack/vue-start",
+      "ranges_present": true,
+      "versions": [
+        "1.167.61",
+        "1.167.64"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.50"
+      ],
+      "name": "@tanstack/vue-start-client",
+      "ranges_present": true,
+      "versions": [
+        "1.166.46",
+        "1.166.49"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.54"
+      ],
+      "name": "@tanstack/vue-start-server",
+      "ranges_present": true,
+      "versions": [
+        "1.166.50",
+        "1.166.53"
+      ]
+    },
+    {
+      "affected_entries": 2,
+      "ecosystem": "npm",
+      "fixed_candidates": [
+        "1.166.16"
+      ],
+      "name": "@tanstack/zod-adapter",
+      "ranges_present": true,
+      "versions": [
+        "1.166.12",
+        "1.166.15"
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "name": "@tanstack/arktype-adapter",
+      "version": "1.166.12"
+    },
+    {
+      "name": "@tanstack/arktype-adapter",
+      "version": "1.166.15"
+    },
+    {
+      "name": "@tanstack/eslint-plugin-router",
+      "version": "1.161.12"
+    },
+    {
+      "name": "@tanstack/eslint-plugin-router",
+      "version": "1.161.9"
+    },
+    {
+      "name": "@tanstack/eslint-plugin-start",
+      "version": "0.0.4"
+    },
+    {
+      "name": "@tanstack/eslint-plugin-start",
+      "version": "0.0.7"
+    },
+    {
+      "name": "@tanstack/history",
+      "version": "1.161.12"
+    },
+    {
+      "name": "@tanstack/history",
+      "version": "1.161.9"
+    },
+    {
+      "name": "@tanstack/nitro-v2-vite-plugin",
+      "version": "1.154.12"
+    },
+    {
+      "name": "@tanstack/nitro-v2-vite-plugin",
+      "version": "1.154.15"
+    },
+    {
+      "name": "@tanstack/react-router",
+      "version": "1.169.5"
+    },
+    {
+      "name": "@tanstack/react-router",
+      "version": "1.169.8"
+    },
+    {
+      "name": "@tanstack/react-router-devtools",
+      "version": "1.166.16"
+    },
+    {
+      "name": "@tanstack/react-router-devtools",
+      "version": "1.166.19"
+    },
+    {
+      "name": "@tanstack/react-router-ssr-query",
+      "version": "1.166.15"
+    },
+    {
+      "name": "@tanstack/react-router-ssr-query",
+      "version": "1.166.18"
+    },
+    {
+      "name": "@tanstack/react-start",
+      "version": "1.167.68"
+    },
+    {
+      "name": "@tanstack/react-start",
+      "version": "1.167.71"
+    },
+    {
+      "name": "@tanstack/react-start-client",
+      "version": "1.166.51"
+    },
+    {
+      "name": "@tanstack/react-start-client",
+      "version": "1.166.54"
+    },
+    {
+      "name": "@tanstack/react-start-rsc",
+      "version": "0.0.47"
+    },
+    {
+      "name": "@tanstack/react-start-rsc",
+      "version": "0.0.50"
+    },
+    {
+      "name": "@tanstack/react-start-server",
+      "version": "1.166.55"
+    },
+    {
+      "name": "@tanstack/react-start-server",
+      "version": "1.166.58"
+    },
+    {
+      "name": "@tanstack/router-cli",
+      "version": "1.166.46"
+    },
+    {
+      "name": "@tanstack/router-cli",
+      "version": "1.166.49"
+    },
+    {
+      "name": "@tanstack/router-core",
+      "version": "1.169.5"
+    },
+    {
+      "name": "@tanstack/router-core",
+      "version": "1.169.8"
+    },
+    {
+      "name": "@tanstack/router-devtools",
+      "version": "1.166.16"
+    },
+    {
+      "name": "@tanstack/router-devtools",
+      "version": "1.166.19"
+    },
+    {
+      "name": "@tanstack/router-devtools-core",
+      "version": "1.167.6"
+    },
+    {
+      "name": "@tanstack/router-devtools-core",
+      "version": "1.167.9"
+    },
+    {
+      "name": "@tanstack/router-generator",
+      "version": "1.166.45"
+    },
+    {
+      "name": "@tanstack/router-generator",
+      "version": "1.166.48"
+    },
+    {
+      "name": "@tanstack/router-plugin",
+      "version": "1.167.38"
+    },
+    {
+      "name": "@tanstack/router-plugin",
+      "version": "1.167.41"
+    },
+    {
+      "name": "@tanstack/router-ssr-query-core",
+      "version": "1.168.3"
+    },
+    {
+      "name": "@tanstack/router-ssr-query-core",
+      "version": "1.168.6"
+    },
+    {
+      "name": "@tanstack/router-utils",
+      "version": "1.161.11"
+    },
+    {
+      "name": "@tanstack/router-utils",
+      "version": "1.161.14"
+    },
+    {
+      "name": "@tanstack/router-vite-plugin",
+      "version": "1.166.53"
+    },
+    {
+      "name": "@tanstack/router-vite-plugin",
+      "version": "1.166.56"
+    },
+    {
+      "name": "@tanstack/solid-router",
+      "version": "1.169.5"
+    },
+    {
+      "name": "@tanstack/solid-router",
+      "version": "1.169.8"
+    },
+    {
+      "name": "@tanstack/solid-router-devtools",
+      "version": "1.166.16"
+    },
+    {
+      "name": "@tanstack/solid-router-devtools",
+      "version": "1.166.19"
+    },
+    {
+      "name": "@tanstack/solid-router-ssr-query",
+      "version": "1.166.15"
+    },
+    {
+      "name": "@tanstack/solid-router-ssr-query",
+      "version": "1.166.18"
+    },
+    {
+      "name": "@tanstack/solid-start",
+      "version": "1.167.65"
+    },
+    {
+      "name": "@tanstack/solid-start",
+      "version": "1.167.68"
+    },
+    {
+      "name": "@tanstack/solid-start-client",
+      "version": "1.166.50"
+    },
+    {
+      "name": "@tanstack/solid-start-client",
+      "version": "1.166.53"
+    },
+    {
+      "name": "@tanstack/solid-start-server",
+      "version": "1.166.54"
+    },
+    {
+      "name": "@tanstack/solid-start-server",
+      "version": "1.166.57"
+    },
+    {
+      "name": "@tanstack/start-client-core",
+      "version": "1.168.5"
+    },
+    {
+      "name": "@tanstack/start-client-core",
+      "version": "1.168.8"
+    },
+    {
+      "name": "@tanstack/start-fn-stubs",
+      "version": "1.161.12"
+    },
+    {
+      "name": "@tanstack/start-fn-stubs",
+      "version": "1.161.9"
+    },
+    {
+      "name": "@tanstack/start-plugin-core",
+      "version": "1.169.23"
+    },
+    {
+      "name": "@tanstack/start-plugin-core",
+      "version": "1.169.26"
+    },
+    {
+      "name": "@tanstack/start-server-core",
+      "version": "1.167.33"
+    },
+    {
+      "name": "@tanstack/start-server-core",
+      "version": "1.167.36"
+    },
+    {
+      "name": "@tanstack/start-static-server-functions",
+      "version": "1.166.44"
+    },
+    {
+      "name": "@tanstack/start-static-server-functions",
+      "version": "1.166.47"
+    },
+    {
+      "name": "@tanstack/start-storage-context",
+      "version": "1.166.38"
+    },
+    {
+      "name": "@tanstack/start-storage-context",
+      "version": "1.166.41"
+    },
+    {
+      "name": "@tanstack/valibot-adapter",
+      "version": "1.166.12"
+    },
+    {
+      "name": "@tanstack/valibot-adapter",
+      "version": "1.166.15"
+    },
+    {
+      "name": "@tanstack/virtual-file-routes",
+      "version": "1.161.10"
+    },
+    {
+      "name": "@tanstack/virtual-file-routes",
+      "version": "1.161.13"
+    },
+    {
+      "name": "@tanstack/vue-router",
+      "version": "1.169.5"
+    },
+    {
+      "name": "@tanstack/vue-router",
+      "version": "1.169.8"
+    },
+    {
+      "name": "@tanstack/vue-router-devtools",
+      "version": "1.166.16"
+    },
+    {
+      "name": "@tanstack/vue-router-devtools",
+      "version": "1.166.19"
+    },
+    {
+      "name": "@tanstack/vue-router-ssr-query",
+      "version": "1.166.15"
+    },
+    {
+      "name": "@tanstack/vue-router-ssr-query",
+      "version": "1.166.18"
+    },
+    {
+      "name": "@tanstack/vue-start",
+      "version": "1.167.61"
+    },
+    {
+      "name": "@tanstack/vue-start",
+      "version": "1.167.64"
+    },
+    {
+      "name": "@tanstack/vue-start-client",
+      "version": "1.166.46"
+    },
+    {
+      "name": "@tanstack/vue-start-client",
+      "version": "1.166.49"
+    },
+    {
+      "name": "@tanstack/vue-start-server",
+      "version": "1.166.50"
+    },
+    {
+      "name": "@tanstack/vue-start-server",
+      "version": "1.166.53"
+    },
+    {
+      "name": "@tanstack/zod-adapter",
+      "version": "1.166.12"
+    },
+    {
+      "name": "@tanstack/zod-adapter",
+      "version": "1.166.15"
+    }
+  ]
+}
