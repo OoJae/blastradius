@@ -79,11 +79,135 @@ bite at our scale.
 healthcheck, because the image is not guaranteed to ship `curl` or `wget`.
 The host-side poll is the authoritative readiness gate.
 
+### 5. Accepted and rejected statement shapes
+
+Measured with `scripts/probe_shapes.py`, `scripts/probe_traversal.py` and
+`scripts/probe_singlehop.py` against the running node. HydraDB has no
+network-reachable `EXPLAIN`, so every shape below was executed for real.
+
+**Batched writes**
+
+| Shape | Verdict |
+|---|---|
+| `MERGE (n {id: row.vertex}) SET n:Label, n.key = row.key` | accepted |
+| Label inside the MERGE pattern: `MERGE (n:Label {id: row.vertex})` | rejected — *UNWIND vertex upsert MERGE pattern matches only id* |
+| `SET n.compromised = true` (literal) | rejected — *UNWIND vertex SET values must read fields from the row map* |
+| `SET n.compromised = row.compromised` (value carried per row) | accepted |
+| Endpoints matched with one comma-separated `MATCH` | accepted |
+| Endpoints matched with two separate `MATCH` clauses | rejected — *UNWIND batches support CREATE or MATCH followed by…* |
+| Unlabelled endpoints | rejected — *endpoints require exactly one label* |
+| Relationship `MERGE` **without** an id | rejected — *UNWIND relationship MERGE requires id: row.\<field\>* |
+| Relationship `MERGE (s)-[r:T {id: row.rel}]->(d) SET r.p = row.p` | accepted |
+
+**Every relationship needs its own deterministic id.** This is not in the
+project plan and it is not optional. `ingest/ids.py` therefore hashes an edge
+natural key (`<TYPE>:<src_key>-><dst_key>`) exactly as it does for nodes, so
+re-running the loader is idempotent rather than duplicating edges.
+
+**Batch-row ceiling, measured exactly**
+
+| Rows per UNWIND | Verdict |
+|---|---|
+| 1000 | accepted |
+| **1024** | accepted |
+| 1025 | rejected |
+| 2000, 5000 | rejected |
+
+The rejection arrives as
+`Neo.TransientError.General.MemoryPoolOutOfMemoryError: client_query_batch_items
+rejected by admission control: actual 1025 exceeds…`. Note it is reported as a
+*transient* error, so a naive retry loop would spin forever on an
+oversized batch; the loader treats it as fatal and splits instead. The project
+plan's assumed 5k–10k row batches were never going to work.
+
+### 6. Variable-length MATCH must be anchored on a fixed **source** id
+
+This is the single most consequential finding of Phase 0, because it
+invalidates the planned blast-radius query.
+
+| Formulation | Verdict |
+|---|---|
+| `MATCH (d:Package)-[:PKG_DEPENDS_ON*1..4]->(c:Package {id: $id})` | **rejected** — *variable-length MATCH requires a fixed source id* |
+| `MATCH (c:Package {id: $id})<-[:PKG_DEPENDS_ON*1..4]-(d:Package)` | **rejected** — same error |
+| `MATCH (c:Package {id: $id})-[:PKG_DEPENDED_BY*1..4]->(d:Package)` | accepted, correct closure |
+| `MATCH (m:Maintainer)-[:MAINTAINS]->(p:Package {id: $id})` (single hop) | accepted |
+| `MATCH (m:Maintainer)-[:MAINTAINS*1..1]->(p:Package {id: $id})` | **rejected** — the restriction is about var-length syntax, not hop count |
+
+A blast radius asks "who depends on me", which is naturally
+destination-anchored, and reversing the arrow in the pattern does not help.
+The fix is a **materialised reverse projection**: alongside
+`PKG_DEPENDS_ON` (dependent → dependency) the loader writes
+`PKG_DEPENDED_BY` (dependency → dependent), so the radius becomes an outgoing
+traversal from a fixed seed. Approved as a v1 schema change on 2026-08-16.
+
+Single-hop patterns are unaffected, so maintainer overlap (Q4), advisory
+lookups (Q3) and typosquats (Q5) keep their planned destination-anchored form.
+
+**Aggregates over a radius:** `count(*)`, `collect(...)` and
+`RETURN DISTINCT d.key, d.id LIMIT n` all work. `count(DISTINCT d.id)` does
+not — *DISTINCT aggregate arguments are not executable* — so distinct counts
+are computed client-side from a DISTINCT projection.
+
+### 7. Path procedures behave as documented, with one hard limit
+
+On the **forward** edge, with no reverse projection needed:
+
+| Call | Verdict |
+|---|---|
+| `algo.SSpaths({sourceNode: $id, relDirection: 'incoming', …})` | accepted |
+| `algo.MSpaths({sourceLabel, sourceProperty, sourceValues: ['pkg:npm/…'], relDirection: 'incoming', …})` | accepted |
+| Same call with `sourceValues: $vals` as a driver parameter | **rejected** — *composite parameter $vals is only supported as an UNWIND input* |
+| `pathCount: 0` (all minimum-weight paths) | accepted — returned both branches of a diamond |
+
+`relDirection: 'incoming'` works, which is what the multi-source query needs.
+Numeric options (`maxLen`, `pathCount`, `resultLimit`) accept driver
+parameters; **the list and label options must be inline literals**, so the API
+needs a small escaping helper to interpolate seed keys into the query text.
+
+### 8. `pathCount` is a shortest-paths budget, not a traversal depth
+
+This one cost real time and changes how the product uses the procedures.
+Measured on the toy graph (`scripts/toy_mspaths.py`), incoming from `p0` with
+`maxLen: 4`, where the true reverse closure is 5 nodes reachable over 8 simple
+paths:
+
+| `pathCount` | paths returned | path lengths | nodes covered |
+|---|---|---|---|
+| 0 | 2 | 1, 1 | p1, p2 |
+| 1 | 1 | 1 | p1 |
+| 3 | 3 | 1, 1, 2 | p1, p2, p3 |
+| 5 | 5 | 1, 1, 2, 2, 3 | p1…p4 |
+| 200 | 8 | 1, 1, 2, 2, 3, 3, 4, 4 | p1…p5 |
+
+`pathCount: 0` does **not** mean unlimited: it keeps only the paths tied at the
+minimum weight, and since an unweighted edge weighs 1, that is the one-hop
+paths. `pathCount: N` keeps the N cheapest paths overall, so a value that is
+too small silently returns a shallow slice of the radius. The value saturates
+once every simple path within `maxLen` has been enumerated.
+
+**Consequence for the product.** The two mechanisms answer different questions
+and both are needed:
+
+* **The closure set** (how many packages are exposed, and which) comes from a
+  variable-length `MATCH` over `PKG_DEPENDED_BY`. It returns distinct nodes,
+  so a diamond is counted once.
+* **The paths** (the chains drawn in the UI, and the one multi-source call
+  seeded with every compromised package) come from `algo.MSpaths`. Path count
+  grows combinatorially with fan-in — p5 above is reachable by two paths
+  through a single diamond — so the UI asks for a bounded sample rather than
+  the full enumeration, and the count shown to the user always comes from the
+  `MATCH` side.
+
+Verified alongside it: the seed label filters only the seed vertices (a Version
+key mixed into Package seeds is ignored rather than erroring), and seeding with
+Version keys over a Package-to-Package edge returns zero paths — so the
+multi-source incident query seeds with the 42 compromised **package** keys, not
+the 84 version keys.
+
 ---
 
 ## Pending
 
-- MSpaths path-procedure semantics on a toy graph (direction, seeding, labels).
 - Write throughput (rows/sec) and traversal latency by depth.
 - Silent-truncation probe against a Python ground-truth oracle.
 - Slice tier recommendation.
