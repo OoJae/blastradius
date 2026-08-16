@@ -143,7 +143,7 @@ class BatchWriter:
         self,
         driver: Driver,
         batch_rows: int = hydra.MAX_BATCH_ROWS,
-        max_attempts: int = 4,
+        max_attempts: int = 8,
     ) -> None:
         self.driver = driver
         self.batch_rows = min(batch_rows, hydra.MAX_BATCH_ROWS)
@@ -179,7 +179,11 @@ class BatchWriter:
                         f"{what}: batch of {len(batch)} rows failed: {str(exc).splitlines()[0]}"
                     ) from exc
                 retries += 1
-                time.sleep(0.25 * attempt)
+                # The local object-store backend cannot do conditional writes,
+                # so a storage flush that coincides with a batch fails it. The
+                # flush is periodic, so backing off further lets the next
+                # attempt land between flushes.
+                time.sleep(min(1.0 * 2 ** (attempt - 1), 20.0))
         return retries
 
     def upsert_nodes(self, label: str, properties: Sequence[str], rows: Iterable[dict]) -> WriteStats:

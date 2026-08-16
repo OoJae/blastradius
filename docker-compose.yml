@@ -1,7 +1,37 @@
-# HydraDB single-node, local object store. See docs/VERIFICATION.md for the
-# facts behind each setting (several are load-bearing, not cosmetic).
+# HydraDB single-node backed by S3-compatible object storage. See
+# docs/VERIFICATION.md for the facts behind each setting (several are
+# load-bearing, not cosmetic).
+#
+# MinIO rather than a plain directory because the LocalFileSystem backend does
+# not implement conditional writes (`put_opts` with `PutMode::Update`). That is
+# fine for a smoke test and fatal for a bulk load: the storage manifest cannot
+# be updated, so the writer lease lapses and batches fail outright. HydraDB is
+# object-store-native, so giving it real object storage is also closer to how
+# it is meant to run.
 services:
+  minio:
+    image: minio/minio:latest
+    container_name: blastradius-minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: blastradius
+      MINIO_ROOT_PASSWORD: blastradius-dev-secret
+    volumes:
+      - ./hydradb-data/minio:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
   hydradb:
+    depends_on:
+      minio:
+        condition: service_healthy
     image: ghcr.io/hydra-db/hydradb:latest
     container_name: blastradius-hydradb
     # The image runs as UID 10001; without this the bind mount is unwritable
@@ -14,8 +44,13 @@ services:
     volumes:
       - ./hydradb-data:/data
     environment:
-      CLOUD_PROVIDER: local
-      LOCAL_PATH: /data/store # must already exist; `just up` creates it
+      CLOUD_PROVIDER: aws # S3 API, pointed at MinIO rather than AWS
+      AWS_BUCKET_NAME: blastradius
+      AWS_ENDPOINT: http://minio:9000
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: blastradius
+      AWS_SECRET_ACCESS_KEY: blastradius-dev-secret
+      AWS_ALLOW_HTTP: "true" # MinIO here is plaintext on the compose network
       GRAPH_NAMESPACE: default
       GRAPH_ID: default
       GRAPH_CELL_ID: cell-0

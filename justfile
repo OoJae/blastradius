@@ -13,12 +13,15 @@ default:
 up:
     #!/usr/bin/env bash
     set -euo pipefail
-    mkdir -p hydradb-data/store hydradb-data/cache
+    mkdir -p hydradb-data/store hydradb-data/cache hydradb-data/minio
     if [ ! -s hydradb-data/auth-token ]; then
         printf '%s\n' '{{token}}' > hydradb-data/auth-token
         echo "wrote hydradb-data/auth-token"
     fi
     docker compose up -d
+    # MinIO needs the bucket to exist before HydraDB writes to it.
+    docker compose exec -T minio mc alias set local http://127.0.0.1:9000 blastradius blastradius-dev-secret >/dev/null 2>&1 || true
+    docker compose exec -T minio mc mb --ignore-existing local/blastradius >/dev/null 2>&1 || true
     # The host-side poll is the authoritative readiness gate: the image may not
     # ship curl/wget, so a container healthcheck cannot be relied on.
     echo -n "waiting for {{ready_url}} "
@@ -39,7 +42,7 @@ down:
 
 # Stop and delete all graph state. Use between the throughput spike and fixtures.
 nuke: down
-    rm -rf hydradb-data/store hydradb-data/cache
+    rm -rf hydradb-data/store hydradb-data/cache hydradb-data/minio
     @echo "graph state wiped"
 
 logs:
