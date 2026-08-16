@@ -141,7 +141,18 @@ def graph_counts(session) -> dict[str, int | None]:
             ).single()
             counts[rel] = record["n"] if record else 0
         except Exception as exc:  # noqa: BLE001 - any server-side refusal
-            if "timeout" in str(exc).lower() or "Terminated" in str(exc):
+            text = str(exc)
+            # Two ways a whole-graph count is refused: it outruns the query
+            # timeout, or it outgrows the 250k intermediate-row budget, which
+            # is not configurable. Both are limits on *counting everything*;
+            # anchored traversals over the same edges are unaffected. Crucially
+            # the cap raises rather than returning a short answer, so a refused
+            # count can never be mistaken for a real one.
+            if (
+                "timeout" in text.lower()
+                or "Terminated" in text
+                or "admission control" in text
+            ):
                 counts[rel] = None
             else:
                 raise
@@ -157,6 +168,13 @@ def build_reverse_index(slice_dir: Path) -> dict[str, list[str]]:
 
 
 def oracle_closure(reverse: dict[str, list[str]], root: str, max_depth: int) -> set[str]:
+    """Every package reachable from `root` by 1..max_depth reverse hops.
+
+    The root counts as reachable if a dependency cycle leads back to it, which
+    npm has plenty of once devDependencies are included -- `typescript` reaches
+    itself in two hops. So a node is recorded the moment it is reached, even if
+    it has been visited before; only traversal is deduplicated.
+    """
     seen = {root}
     frontier = deque([(root, 0)])
     found: set[str] = set()
@@ -165,9 +183,9 @@ def oracle_closure(reverse: dict[str, list[str]], root: str, max_depth: int) -> 
         if depth >= max_depth:
             continue
         for dependent in reverse.get(node, ()):
+            found.add(dependent)
             if dependent not in seen:
                 seen.add(dependent)
-                found.add(dependent)
                 frontier.append((dependent, depth + 1))
     return found
 

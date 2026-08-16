@@ -269,6 +269,106 @@ typeahead against the graph is not viable, so autocomplete needs a different
 mechanism (a precomputed in-process prefix table over the popular-package list
 is the obvious one). Recorded here rather than discovered during the demo.
 
+## Phase 1 corrections (measured on real data)
+
+Phase 0's numbers came from a 100k-node graph on an almost-empty store. At real
+scale several of them do not hold, and two of the differences are structural
+rather than a matter of degree.
+
+### The local object store cannot sustain a bulk load
+
+`CLOUD_PROVIDER=local` -- the backend HydraDB's own README uses for
+development -- does not implement conditional writes:
+
+```
+Operation `put_opts` with mode `PutMode::Update` not yet implemented
+by LocalFileSystem(file:///data/store)
+```
+
+Under sustained writes this is fatal rather than cosmetic. The storage manifest
+cannot be updated, so the writer lease lapses, the node fences itself and exits
+**cleanly (exit code 0, not an OOM kill)** mid-load; separately, batches fail
+with `internal query execution error` when a flush coincides with a write.
+Eight retries backing off to 20s did not clear it -- the limitation is
+persistent, not a transient collision.
+
+Phase 0 never saw this: a 55-edge fixture and a 600k-edge spike do not sustain
+enough write pressure. It takes a multi-million-edge load to surface.
+
+**Fix: MinIO.** HydraDB is object-store-native, so pointing it at S3-compatible
+storage is both the remedy and closer to how it is designed to run.
+`docker-compose.yml` now runs MinIO alongside it. The writer-lease and
+heartbeat ceilings are also raised to their maximums, since fencing exists to
+stop two writers colliding and a single-node dev setup has no second writer.
+
+### Write throughput is ~2.7x lower than the spike suggested
+
+| Phase | Measurement |
+|---|---|
+| Phase 0 spike (100k nodes, local store) | 56,198 nodes/s, **4,771 edges/s** |
+| Phase 1 real load (52k packages, MinIO) | 14,737 nodes/s, **1,755 edges/s** |
+
+The spike measured an empty graph on a local disk. Against a multi-gigabyte
+store with periodic compaction, over an S3 API, edges cost roughly three times
+more. **Edge count, not node count, is what bounds a slice**: every edge is a
+durable object-storage write, and the 3.4M writes for this slice took 32
+minutes.
+
+This is why the loaded slice is ~52k packages rather than the 750k that Phase 0
+arithmetic implied. The incident core is unaffected -- all 42 compromised
+packages, all 84 malicious versions, and the full reverse-dependency halo
+around them are present; what shrinks is the popularity spine, which
+contributes the most edges for the least demonstrative value.
+
+### The 250k intermediate-row cap errors; it does not truncate silently
+
+This was the risk flagged as most dangerous, because a quiet short answer is
+indistinguishable from a correct one. Measured behaviour is the reassuring
+case:
+
+```
+cypher_edge_rows rejected by admission control: actual 250001 exceeds limit 250000
+```
+
+An unanchored `count(*)` over a 1.68M-edge relationship type is **refused**,
+not silently shortened. Anchored traversals over the same edges are unaffected,
+so this is a limit on counting everything rather than on the product's queries.
+`verify_counts` reports such a count as `skipped` and relies on the traversal
+oracle, which compares topology rather than cardinality.
+
+### A package can be in its own blast radius
+
+The first oracle run showed HydraDB returning one node *more* than the Python
+oracle for `typescript` at depth 2. HydraDB was right: with devDependencies
+included, npm has cycles, and `typescript` genuinely reaches itself in two
+reverse hops. The oracle had excluded the root by construction. Corrected --
+a node is recorded when reached, and only traversal is deduplicated.
+
+### Verified results, demo slice
+
+52,042 packages / 1,684,557 edges (both directions written), plus the incident
+overlay.
+
+| Check | Result |
+|---|---|
+| Referential integrity (offline preflight) | every edge endpoint exists |
+| Node and small-edge counts vs source files | exact |
+| Reverse-closure oracle, 12 packages x depths 1-2 | **24/24 exact** |
+| Deep probe, `typescript` depth 3 | 49,371 nodes, oracle agrees, 58.5 s |
+
+Blast radius of `@tanstack/react-router`:
+
+| Depth | Dependents | Time |
+|---|---|---|
+| 1 | 1,034 | 245 ms |
+| 2 | 2,772 | 1,073 ms |
+| 3 | 7,947 | 2,922 ms |
+
+One `algo.MSpaths` call seeded with all 42 compromised packages returns 2,000
+paths across 1,134 distinct packages in 8.4 s -- server-side, replacing 42
+client round trips. Depth 1-2 is interactive; depth 3 and the multi-source call
+want precomputing for a live demo.
+
 ## Slice tier recommendation
 
 Using the measured rates, with a 1.3 overhead factor for wider real rows,
