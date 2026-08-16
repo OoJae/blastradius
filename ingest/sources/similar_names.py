@@ -38,6 +38,12 @@ MAX_DISTANCE = 2
 MAX_NEIGHBOURS = 25
 QUERY_BLOCK = 256
 
+# npm really does contain packages called `-`, `i` and `q`. At two edits almost
+# every very short name resembles every other, so they generate pairs that are
+# arithmetically correct and completely meaningless. Typosquatting a name this
+# short is not a coherent idea either: there is nothing to misread.
+MIN_NAME_LENGTH = 4
+
 
 @dataclass(frozen=True)
 class SimilarPair:
@@ -77,6 +83,20 @@ def similar_pairs(
 ) -> tuple[list[SimilarPair], dict]:
     """Find near-identical names, returning canonical pairs and what was capped."""
     rank = rank or {}
+    queries = [q for q in queries if len(q) >= MIN_NAME_LENGTH]
+    corpus = [c for c in corpus if len(c) >= MIN_NAME_LENGTH]
+    if not queries or not corpus:
+        return [], {
+            "queries": 0,
+            "corpus": len(corpus),
+            "comparisons": 0,
+            "canonical_pairs": 0,
+            "queries_truncated": 0,
+            "neighbours_dropped": 0,
+            "max_neighbours": max_neighbours,
+            "max_distance": max_distance,
+            "min_name_length": MIN_NAME_LENGTH,
+        }
     by_length = length_index(corpus)
     corpus_array = np.array(corpus, dtype=object)
 
@@ -138,6 +158,7 @@ def similar_pairs(
         "neighbours_dropped": int(sum(truncated.values())),
         "max_neighbours": max_neighbours,
         "max_distance": max_distance,
+        "min_name_length": MIN_NAME_LENGTH,
     }
     return pairs, stats
 
