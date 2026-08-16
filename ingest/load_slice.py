@@ -143,7 +143,7 @@ def affects_rows(slice_dir: Path) -> Iterator[dict]:
         }
 
 
-def load(slice_dir: Path, *, verbose: bool = True) -> LoadReport:
+def load(slice_dir: Path, *, verbose: bool = True, only: set[str] | None = None) -> LoadReport:
     report = LoadReport()
     results: list[StageResult] = []
 
@@ -167,6 +167,8 @@ def load(slice_dir: Path, *, verbose: bool = True) -> LoadReport:
         writer = BatchWriter(driver)
 
         for label, props, generator, filename in node_stages:
+            if only and label not in only:
+                continue
             path = slice_dir / filename
             if not path.exists():
                 if verbose:
@@ -181,6 +183,8 @@ def load(slice_dir: Path, *, verbose: bool = True) -> LoadReport:
                 print(f"  {label:16s} {stats.rows:>9,} nodes  {stats.rows/elapsed if elapsed else 0:>8,.0f}/s", flush=True)
 
         for rel_type, src_label, dst_label, props, generator, filename in edge_stages:
+            if only and rel_type not in only:
+                continue
             path = slice_dir / filename
             if not path.exists():
                 if verbose:
@@ -210,11 +214,16 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description="Load a compiled slice into HydraDB")
     parser.add_argument("--dir", required=True)
+    parser.add_argument(
+        "--only",
+        help="comma-separated stage names to run, for resuming after an interruption",
+    )
     args = parser.parse_args()
 
     slice_dir = Path(args.dir)
-    print(f"loading {slice_dir}")
-    report = load(slice_dir)
+    only = {s.strip() for s in args.only.split(",")} if args.only else None
+    print(f"loading {slice_dir}" + (f" (stages: {sorted(only)})" if only else ""))
+    report = load(slice_dir, only=only)
     print(report.summary())
     return 0
 

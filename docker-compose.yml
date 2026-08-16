@@ -32,7 +32,16 @@ services:
       # Blast-radius traversals scan far more edges than the 1M default allows,
       # and a deep radius can outlast the 30s default.
       GRAPH_MAX_QUERY_SCAN_EDGES: "100000000"
-      GRAPH_MAX_QUERY_RUNTIME_MS: "120000"
+      GRAPH_MAX_QUERY_RUNTIME_MS: "600000"
+      # A sustained bulk load saturates the local filesystem with compaction,
+      # which can delay a writer-lease renewal past its deadline. The node then
+      # fences itself and exits cleanly (exit 0) mid-load. Fencing exists to
+      # stop two writers colliding; with a single node there is no second
+      # writer, so these are raised to their maximums rather than left at
+      # defaults tuned for a cluster.
+      GRAPH_WRITER_LEASE_MS: "300000"
+      GRAPH_HEARTBEAT_INTERVAL_MS: "5000"
+      GRAPH_HEARTBEAT_TIMEOUT_MS: "120000"
       # Note: max_query_intermediate_rows (250k frontier) and
       # max_query_index_candidates (250k) are NOT env-overridable. They are a
       # hard ceiling on traversal breadth; the Phase 0 spike probes for them.
