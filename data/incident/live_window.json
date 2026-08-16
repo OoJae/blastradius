@@ -1,0 +1,15 @@
+{
+  "coverage": 1.0,
+  "earliest_version": "@tanstack/arktype-adapter@1.166.12",
+  "latest_version": "@tanstack/router-core@1.169.8",
+  "live_from": 1778527239,
+  "live_from_iso": "2026-05-11T19:20:39Z",
+  "live_until": 1778527579,
+  "live_until_iso": "2026-05-11T19:26:19Z",
+  "method": "npm_registry_time",
+  "missing": [],
+  "note": "Derived from npm registry publish timestamps for the malicious versions, not from the advisory prose. Both are reported in the eval so the difference is visible.",
+  "pairs_dated": 84,
+  "pairs_total": 84,
+  "span_seconds": 340
+}
