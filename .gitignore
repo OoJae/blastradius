@@ -1,0 +1,34 @@
+# Private planning documents (not part of the public submission)
+_private/
+
+# HydraDB source, cloned for reference only (AGPL-3.0 — never vendored into this repo)
+vendor-readonly/
+
+# Local HydraDB state: object store, cache, auth token
+hydradb-data/
+
+# Downloaded/derived data (fixtures under data/fixtures/ are checked in)
+data/cache/
+data/raw/
+data/slice/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node / web
+node_modules/
+dist/
+.vite/
+
+# Environment
+.env
+.env.local
+
+# OS / editor
+.DS_Store
+*.swp
