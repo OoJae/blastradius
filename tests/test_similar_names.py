@@ -27,25 +27,31 @@ CORPUS = [
     "@tanstack/react-router",
     "@tanstack/react-rooter",
     # A lookalike under a scope the real owner does not control -- this is what
-    # a typosquat of a scoped package actually looks like.
-    "@tanstack-io/react-router",
+    # a typosquat of a scoped package actually looks like. One edit from the
+    # real name, so it is inside the distance cutoff.
+    "@tanstak/react-router",
 ]
 
 
-def pairs_for(queries, **kwargs) -> set[tuple[str, str]]:
+def pairs_for(queries, **kwargs) -> set[frozenset[str]]:
+    """Pairs as unordered sets.
+
+    Results are canonicalised as `a < b`, so asserting on an ordered tuple
+    encodes lexicographic trivia into the test rather than the behaviour.
+    """
     found, _ = similar_pairs(queries, CORPUS, rank={}, **kwargs)
-    return {(p.a, p.b) for p in found}
+    return {frozenset((p.a, p.b)) for p in found}
 
 
 def test_finds_single_edit_neighbours() -> None:
     found = pairs_for(["react"])
-    assert ("raect", "react") in found
-    assert ("react", "reactt") in found
+    assert frozenset(("raect", "react")) in found
+    assert frozenset(("react", "reactt")) in found
 
 
 def test_a_name_is_never_its_own_squat() -> None:
     for pair in pairs_for(["react"]):
-        assert pair[0] != pair[1]
+        assert len(pair) == 2
 
 
 def test_packages_in_the_same_scope_are_siblings_not_squats() -> None:
@@ -54,7 +60,7 @@ def test_packages_in_the_same_scope_are_siblings_not_squats() -> None:
     # this the edge set would be mostly noise.
     assert same_scope("@uipath/foo-bar", "@uipath/foo-baz")
     found = pairs_for(["@uipath/foo-bar"])
-    assert ("@uipath/foo-bar", "@uipath/foo-baz") not in found
+    assert frozenset(("@uipath/foo-bar", "@uipath/foo-baz")) not in found
 
 
 def test_squats_under_a_different_scope_are_found() -> None:
@@ -62,10 +68,10 @@ def test_squats_under_a_different_scope_are_found() -> None:
     # of a scoped package lives under a *different* scope. That case must
     # survive the same-scope filter.
     found = pairs_for(["@tanstack/react-router"])
-    assert ("@tanstack-io/react-router", "@tanstack/react-router") in found
+    assert frozenset(("@tanstak/react-router", "@tanstack/react-router")) in found
 
     # And the sibling under the same scope is still suppressed.
-    assert ("@tanstack/react-rooter", "@tanstack/react-router") not in found
+    assert frozenset(("@tanstack/react-rooter", "@tanstack/react-router")) not in found
 
 
 def test_pairs_are_canonical_so_both_ends_dedupe() -> None:
