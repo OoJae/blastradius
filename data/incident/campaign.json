@@ -1,0 +1,2973 @@
+{
+  "counts": {
+    "malicious_pairs": 407,
+    "npm": 170,
+    "other_ecosystems": 2,
+    "records": 172,
+    "without_alias": 15
+  },
+  "marker_domain": "git-tanstack.com",
+  "marker_sha256": "5e1924464368f0c5816ee84e000cc47017f44045140feafbbc9e685d847ed5a5",
+  "members": [
+    {
+      "aliases": [],
+      "ecosystem": "PyPI",
+      "name": "guardrails-ai",
+      "osv_id": "MAL-2026-3607",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/pypi/guardrails-ai/MAL-2026-3607.json",
+      "versions": [
+        "0.10.1"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "PyPI",
+      "name": "mistralai",
+      "osv_id": "MAL-2026-3608",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/pypi/mistralai/MAL-2026-3608.json",
+      "versions": [
+        "2.4.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-cqpw-mfqj-f2j7"
+      ],
+      "ecosystem": "npm",
+      "name": "@beproduct/nestjs-auth",
+      "osv_id": "MAL-2026-3433",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@beproduct/nestjs-auth/MAL-2026-3433.json",
+      "versions": [
+        "0.1.10",
+        "0.1.11",
+        "0.1.12",
+        "0.1.13",
+        "0.1.14",
+        "0.1.15",
+        "0.1.16",
+        "0.1.17",
+        "0.1.18",
+        "0.1.19",
+        "0.1.2",
+        "0.1.3",
+        "0.1.4",
+        "0.1.5",
+        "0.1.6",
+        "0.1.7",
+        "0.1.8",
+        "0.1.9"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@dirigible-ai/sdk",
+      "osv_id": "MAL-2026-3593",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@dirigible-ai/sdk/MAL-2026-3593.json",
+      "versions": [
+        "0.6.2",
+        "0.6.3"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@draftauth/client",
+      "osv_id": "MAL-2026-3594",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@draftauth/client/MAL-2026-3594.json",
+      "versions": [
+        "0.2.1",
+        "0.2.2"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@draftauth/core",
+      "osv_id": "MAL-2026-3595",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@draftauth/core/MAL-2026-3595.json",
+      "versions": [
+        "0.13.1",
+        "0.13.2"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@draftlab/auth",
+      "osv_id": "MAL-2026-3596",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@draftlab/auth/MAL-2026-3596.json",
+      "versions": [
+        "0.24.1",
+        "0.24.2"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@draftlab/auth-router",
+      "osv_id": "MAL-2026-3597",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@draftlab/auth-router/MAL-2026-3597.json",
+      "versions": [
+        "0.5.1",
+        "0.5.2"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@draftlab/db",
+      "osv_id": "MAL-2026-3598",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@draftlab/db/MAL-2026-3598.json",
+      "versions": [
+        "0.16.1",
+        "0.16.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-x77w-4f56-pcvp"
+      ],
+      "ecosystem": "npm",
+      "name": "@mesadev/rest",
+      "osv_id": "MAL-2026-3510",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@mesadev/rest/MAL-2026-3510.json",
+      "versions": [
+        "0.28.3"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@mesadev/saguaro",
+      "osv_id": "MAL-2026-3599",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@mesadev/saguaro/MAL-2026-3599.json",
+      "versions": [
+        "0.4.22"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@mesadev/sdk",
+      "osv_id": "MAL-2026-3600",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@mesadev/sdk/MAL-2026-3600.json",
+      "versions": [
+        "0.28.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-3q49-cfcf-g5fm"
+      ],
+      "ecosystem": "npm",
+      "name": "@mistralai/mistralai",
+      "osv_id": "MAL-2026-3432",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@mistralai/mistralai/MAL-2026-3432.json",
+      "versions": [
+        "2.2.2",
+        "2.2.3",
+        "2.2.4"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-2rm2-c4pc-xxr9"
+      ],
+      "ecosystem": "npm",
+      "name": "@mistralai/mistralai-azure",
+      "osv_id": "MAL-2026-3511",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@mistralai/mistralai-azure/MAL-2026-3511.json",
+      "versions": [
+        "1.7.1",
+        "1.7.2",
+        "1.7.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rccm-wwph-vgxc"
+      ],
+      "ecosystem": "npm",
+      "name": "@mistralai/mistralai-gcp",
+      "osv_id": "MAL-2026-3512",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@mistralai/mistralai-gcp/MAL-2026-3512.json",
+      "versions": [
+        "1.7.1",
+        "1.7.2",
+        "1.7.3"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@ml-toolkit-ts/preprocessing",
+      "osv_id": "MAL-2026-3601",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@ml-toolkit-ts/preprocessing/MAL-2026-3601.json",
+      "versions": [
+        "1.0.2",
+        "1.0.3"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@ml-toolkit-ts/xgboost",
+      "osv_id": "MAL-2026-3602",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@ml-toolkit-ts/xgboost/MAL-2026-3602.json",
+      "versions": [
+        "1.0.3",
+        "1.0.4"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-298w-vvm4-ww55"
+      ],
+      "ecosystem": "npm",
+      "name": "@opensearch-project/opensearch",
+      "osv_id": "MAL-2026-3434",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@opensearch-project/opensearch/MAL-2026-3434.json",
+      "versions": [
+        "3.5.3",
+        "3.6.2",
+        "3.7.0",
+        "3.8.0"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4q5g-g93p-w23v"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/airport-data",
+      "osv_id": "MAL-2026-3435",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/airport-data/MAL-2026-3435.json",
+      "versions": [
+        "0.7.4",
+        "0.7.5",
+        "0.7.6",
+        "0.7.7",
+        "0.7.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-r594-chgw-g4p9"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/airports",
+      "osv_id": "MAL-2026-3436",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/airports/MAL-2026-3436.json",
+      "versions": [
+        "0.6.2",
+        "0.6.3",
+        "0.6.4",
+        "0.6.5",
+        "0.6.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-9g47-9g93-8mx7"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/airspace",
+      "osv_id": "MAL-2026-3437",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/airspace/MAL-2026-3437.json",
+      "versions": [
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-j5w5-5fj6-mwvv"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/airspace-data",
+      "osv_id": "MAL-2026-3438",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/airspace-data/MAL-2026-3438.json",
+      "versions": [
+        "0.5.3",
+        "0.5.4",
+        "0.5.5",
+        "0.5.6",
+        "0.5.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qwgj-2vrg-5q3h"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/airway-data",
+      "osv_id": "MAL-2026-3439",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/airway-data/MAL-2026-3439.json",
+      "versions": [
+        "0.5.4",
+        "0.5.5",
+        "0.5.6",
+        "0.5.7",
+        "0.5.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-3c23-5qp4-r5mv"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/airways",
+      "osv_id": "MAL-2026-3440",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/airways/MAL-2026-3440.json",
+      "versions": [
+        "0.4.2",
+        "0.4.3",
+        "0.4.4",
+        "0.4.5",
+        "0.4.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-w75r-vq2j-vpmf"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/fix-data",
+      "osv_id": "MAL-2026-3441",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/fix-data/MAL-2026-3441.json",
+      "versions": [
+        "0.6.4",
+        "0.6.5",
+        "0.6.6",
+        "0.6.7",
+        "0.6.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rjx4-mpv7-fwq9"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/fixes",
+      "osv_id": "MAL-2026-3442",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/fixes/MAL-2026-3442.json",
+      "versions": [
+        "0.3.2",
+        "0.3.3",
+        "0.3.4",
+        "0.3.5",
+        "0.3.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-g2v5-h9gp-qwjx"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/flight-math",
+      "osv_id": "MAL-2026-3443",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/flight-math/MAL-2026-3443.json",
+      "versions": [
+        "0.5.4",
+        "0.5.5",
+        "0.5.6",
+        "0.5.7",
+        "0.5.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-2mgf-6xw7-hjgh"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/flightplan",
+      "osv_id": "MAL-2026-3444",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/flightplan/MAL-2026-3444.json",
+      "versions": [
+        "0.5.2",
+        "0.5.3",
+        "0.5.4",
+        "0.5.5",
+        "0.5.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-vr5r-pmj9-g7m9"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/geo",
+      "osv_id": "MAL-2026-3445",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/geo/MAL-2026-3445.json",
+      "versions": [
+        "0.4.4",
+        "0.4.5",
+        "0.4.6",
+        "0.4.7",
+        "0.4.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-mpc4-8622-ww9c"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/icao-registry",
+      "osv_id": "MAL-2026-3446",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/icao-registry/MAL-2026-3446.json",
+      "versions": [
+        "0.5.2",
+        "0.5.3",
+        "0.5.4",
+        "0.5.5",
+        "0.5.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-r72q-f5pp-8556"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/icao-registry-data",
+      "osv_id": "MAL-2026-3447",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/icao-registry-data/MAL-2026-3447.json",
+      "versions": [
+        "0.8.4",
+        "0.8.5",
+        "0.8.6",
+        "0.8.7",
+        "0.8.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-vcpv-j6jh-qcc2"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/mcp",
+      "osv_id": "MAL-2026-3448",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/mcp/MAL-2026-3448.json",
+      "versions": [
+        "0.9.1",
+        "0.9.2",
+        "0.9.3",
+        "0.9.4",
+        "0.9.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rrwc-wg79-pr28"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/navaid-data",
+      "osv_id": "MAL-2026-3449",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/navaid-data/MAL-2026-3449.json",
+      "versions": [
+        "0.6.4",
+        "0.6.5",
+        "0.6.6",
+        "0.6.7",
+        "0.6.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-635g-g6vm-h5m3"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/navaids",
+      "osv_id": "MAL-2026-3450",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/navaids/MAL-2026-3450.json",
+      "versions": [
+        "0.4.2",
+        "0.4.3",
+        "0.4.4",
+        "0.4.5",
+        "0.4.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4qm3-vxjm-3wfp"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/notams",
+      "osv_id": "MAL-2026-3451",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/notams/MAL-2026-3451.json",
+      "versions": [
+        "0.3.10",
+        "0.3.6",
+        "0.3.7",
+        "0.3.8",
+        "0.3.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-fjg7-hqrf-v48w"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/procedure-data",
+      "osv_id": "MAL-2026-3452",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/procedure-data/MAL-2026-3452.json",
+      "versions": [
+        "0.7.3",
+        "0.7.4",
+        "0.7.5",
+        "0.7.6",
+        "0.7.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-gv3v-f444-2w4h"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/procedures",
+      "osv_id": "MAL-2026-3453",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/procedures/MAL-2026-3453.json",
+      "versions": [
+        "0.5.2",
+        "0.5.3",
+        "0.5.4",
+        "0.5.5",
+        "0.5.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-mf83-f42r-h5hm"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/types",
+      "osv_id": "MAL-2026-3454",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/types/MAL-2026-3454.json",
+      "versions": [
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-v9qg-v8xv-qjpc"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/units",
+      "osv_id": "MAL-2026-3455",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/units/MAL-2026-3455.json",
+      "versions": [
+        "0.4.3",
+        "0.4.4",
+        "0.4.5",
+        "0.4.6",
+        "0.4.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-p6w9-58xc-257f"
+      ],
+      "ecosystem": "npm",
+      "name": "@squawk/weather",
+      "osv_id": "MAL-2026-3456",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@squawk/weather/MAL-2026-3456.json",
+      "versions": [
+        "0.5.10",
+        "0.5.6",
+        "0.5.7",
+        "0.5.8",
+        "0.5.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-5fx3-327x-w6m7"
+      ],
+      "ecosystem": "npm",
+      "name": "@supersurkhet/cli",
+      "osv_id": "MAL-2026-3457",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@supersurkhet/cli/MAL-2026-3457.json",
+      "versions": [
+        "0.0.2",
+        "0.0.3",
+        "0.0.4",
+        "0.0.5",
+        "0.0.6",
+        "0.0.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-j2fh-hxx6-vqqr"
+      ],
+      "ecosystem": "npm",
+      "name": "@supersurkhet/sdk",
+      "osv_id": "MAL-2026-3513",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@supersurkhet/sdk/MAL-2026-3513.json",
+      "versions": [
+        "0.0.2",
+        "0.0.3",
+        "0.0.4",
+        "0.0.5",
+        "0.0.6",
+        "0.0.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-fc57-xv4v-8cp7"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/components",
+      "osv_id": "MAL-2026-3514",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/components/MAL-2026-3514.json",
+      "versions": [
+        "1.0.1",
+        "1.0.2",
+        "1.0.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-f833-2cj4-2837"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/connector-medusa",
+      "osv_id": "MAL-2026-3515",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/connector-medusa/MAL-2026-3515.json",
+      "versions": [
+        "1.0.1",
+        "1.0.2",
+        "1.0.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-7g64-m42w-5h7v"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/connector-shopify",
+      "osv_id": "MAL-2026-3516",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/connector-shopify/MAL-2026-3516.json",
+      "versions": [
+        "1.0.1",
+        "1.0.2",
+        "1.0.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-gp5v-3cpv-vqh6"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/connector-vendure",
+      "osv_id": "MAL-2026-3458",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/connector-vendure/MAL-2026-3458.json",
+      "versions": [
+        "1.0.1",
+        "1.0.2",
+        "1.0.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-7rg9-88vq-q7jq"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/connector-woocommerce",
+      "osv_id": "MAL-2026-3517",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/connector-woocommerce/MAL-2026-3517.json",
+      "versions": [
+        "1.0.1",
+        "1.0.2",
+        "1.0.3"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "@tallyui/core",
+      "osv_id": "MAL-2026-3603",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/core/MAL-2026-3603.json",
+      "versions": [
+        "0.2.1",
+        "0.2.2",
+        "0.2.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-743p-x755-4v2j"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/database",
+      "osv_id": "MAL-2026-3518",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/database/MAL-2026-3518.json",
+      "versions": [
+        "1.0.1",
+        "1.0.2",
+        "1.0.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-9phw-7rx9-6ccq"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/pos",
+      "osv_id": "MAL-2026-3459",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/pos/MAL-2026-3459.json",
+      "versions": [
+        "0.1.1",
+        "0.1.2",
+        "0.1.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-9w67-pvq7-x7hj"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/storage-sqlite",
+      "osv_id": "MAL-2026-3604",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/storage-sqlite/MAL-2026-3604.json",
+      "versions": [
+        "0.2.1",
+        "0.2.2",
+        "0.2.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-h4m9-55ph-8qgv"
+      ],
+      "ecosystem": "npm",
+      "name": "@tallyui/theme",
+      "osv_id": "MAL-2026-3519",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tallyui/theme/MAL-2026-3519.json",
+      "versions": [
+        "0.2.1",
+        "0.2.2",
+        "0.2.3"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-5v49-5jh3-j7wg"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/arktype-adapter",
+      "osv_id": "MAL-2026-3460",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/arktype-adapter/MAL-2026-3460.json",
+      "versions": [
+        "1.166.12",
+        "1.166.15"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4q7x-8jvq-jpfv"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/eslint-plugin-router",
+      "osv_id": "MAL-2026-3461",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/eslint-plugin-router/MAL-2026-3461.json",
+      "versions": [
+        "1.161.12",
+        "1.161.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-8hwj-wqhq-3xw2"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/eslint-plugin-start",
+      "osv_id": "MAL-2026-3462",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/eslint-plugin-start/MAL-2026-3462.json",
+      "versions": [
+        "0.0.4",
+        "0.0.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rmmr-r34h-pfm5"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/history",
+      "osv_id": "MAL-2026-3463",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/history/MAL-2026-3463.json",
+      "versions": [
+        "1.161.12",
+        "1.161.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qj9f-x9rw-w5v3"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/nitro-v2-vite-plugin",
+      "osv_id": "MAL-2026-3464",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/nitro-v2-vite-plugin/MAL-2026-3464.json",
+      "versions": [
+        "1.154.12",
+        "1.154.15"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-5q7g-gw3w-r3rh"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/react-router",
+      "osv_id": "MAL-2026-3465",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/react-router/MAL-2026-3465.json",
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qqw3-95q8-m7g4"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/react-router-devtools",
+      "osv_id": "MAL-2026-3466",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/react-router-devtools/MAL-2026-3466.json",
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-q9q3-jp8x-cq8h"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/react-router-ssr-query",
+      "osv_id": "MAL-2026-3467",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/react-router-ssr-query/MAL-2026-3467.json",
+      "versions": [
+        "1.166.15",
+        "1.166.18"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-7cm2-482j-9rxq"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/react-start",
+      "osv_id": "MAL-2026-3468",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/react-start/MAL-2026-3468.json",
+      "versions": [
+        "1.167.68",
+        "1.167.71"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-8j42-6cpx-3c7g"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/react-start-client",
+      "osv_id": "MAL-2026-3469",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/react-start-client/MAL-2026-3469.json",
+      "versions": [
+        "1.166.51",
+        "1.166.54"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-hv5h-gqr4-76v3"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/react-start-rsc",
+      "osv_id": "MAL-2026-3470",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/react-start-rsc/MAL-2026-3470.json",
+      "versions": [
+        "0.0.47",
+        "0.0.50"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-xf53-jqmx-h45h"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/react-start-server",
+      "osv_id": "MAL-2026-3471",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/react-start-server/MAL-2026-3471.json",
+      "versions": [
+        "1.166.55",
+        "1.166.58"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-7xj7-65hc-69fc"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-cli",
+      "osv_id": "MAL-2026-3472",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-cli/MAL-2026-3472.json",
+      "versions": [
+        "1.166.46",
+        "1.166.49"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-r8f9-7pfq-w872"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-core",
+      "osv_id": "MAL-2026-3473",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-core/MAL-2026-3473.json",
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-fc8c-vpgv-4wqg"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-devtools",
+      "osv_id": "MAL-2026-3474",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-devtools/MAL-2026-3474.json",
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-8jwm-h66c-fj6r"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-devtools-core",
+      "osv_id": "MAL-2026-3475",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-devtools-core/MAL-2026-3475.json",
+      "versions": [
+        "1.167.6",
+        "1.167.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4fcj-3grh-9fhv"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-generator",
+      "osv_id": "MAL-2026-3476",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-generator/MAL-2026-3476.json",
+      "versions": [
+        "1.166.45",
+        "1.166.48"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-wp6c-87p2-r5xw"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-plugin",
+      "osv_id": "MAL-2026-3477",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-plugin/MAL-2026-3477.json",
+      "versions": [
+        "1.167.38",
+        "1.167.41"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-943h-v9jx-69h5"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-ssr-query-core",
+      "osv_id": "MAL-2026-3478",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-ssr-query-core/MAL-2026-3478.json",
+      "versions": [
+        "1.168.3",
+        "1.168.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-3rg6-f8mh-5pvp"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-utils",
+      "osv_id": "MAL-2026-3479",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-utils/MAL-2026-3479.json",
+      "versions": [
+        "1.161.11",
+        "1.161.14"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-p6hw-732x-2qw7"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/router-vite-plugin",
+      "osv_id": "MAL-2026-3480",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/router-vite-plugin/MAL-2026-3480.json",
+      "versions": [
+        "1.166.53",
+        "1.166.56"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-34qr-xpfg-5g3g"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/solid-router",
+      "osv_id": "MAL-2026-3481",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/solid-router/MAL-2026-3481.json",
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-gvq3-5frr-qqmp"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/solid-router-devtools",
+      "osv_id": "MAL-2026-3482",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/solid-router-devtools/MAL-2026-3482.json",
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qjr3-33qv-w5rq"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/solid-router-ssr-query",
+      "osv_id": "MAL-2026-3483",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/solid-router-ssr-query/MAL-2026-3483.json",
+      "versions": [
+        "1.166.15",
+        "1.166.18"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-8hxh-jf75-8g4x"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/solid-start",
+      "osv_id": "MAL-2026-3484",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/solid-start/MAL-2026-3484.json",
+      "versions": [
+        "1.167.65",
+        "1.167.68"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-jh9w-85vm-vgm4"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/solid-start-client",
+      "osv_id": "MAL-2026-3485",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/solid-start-client/MAL-2026-3485.json",
+      "versions": [
+        "1.166.50",
+        "1.166.53"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-2gqf-jmq8-m7qw"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/solid-start-server",
+      "osv_id": "MAL-2026-3486",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/solid-start-server/MAL-2026-3486.json",
+      "versions": [
+        "1.166.54",
+        "1.166.57"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-68cm-p79h-wv3p"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/start-client-core",
+      "osv_id": "MAL-2026-3487",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/start-client-core/MAL-2026-3487.json",
+      "versions": [
+        "1.168.5",
+        "1.168.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-phm9-h72q-2rv5"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/start-fn-stubs",
+      "osv_id": "MAL-2026-3488",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/start-fn-stubs/MAL-2026-3488.json",
+      "versions": [
+        "1.161.12",
+        "1.161.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-q8qg-3r28-j492"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/start-plugin-core",
+      "osv_id": "MAL-2026-3489",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/start-plugin-core/MAL-2026-3489.json",
+      "versions": [
+        "1.169.23",
+        "1.169.26"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-gg66-jfg8-rcgq"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/start-server-core",
+      "osv_id": "MAL-2026-3490",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/start-server-core/MAL-2026-3490.json",
+      "versions": [
+        "1.167.33",
+        "1.167.36"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-r9g7-9xhm-p5qp"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/start-static-server-functions",
+      "osv_id": "MAL-2026-3491",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/start-static-server-functions/MAL-2026-3491.json",
+      "versions": [
+        "1.166.44",
+        "1.166.47"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-66j2-5c8h-j3f7"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/start-storage-context",
+      "osv_id": "MAL-2026-3492",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/start-storage-context/MAL-2026-3492.json",
+      "versions": [
+        "1.166.38",
+        "1.166.41"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-wvhh-9pj7-jw99"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/valibot-adapter",
+      "osv_id": "MAL-2026-3493",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/valibot-adapter/MAL-2026-3493.json",
+      "versions": [
+        "1.166.12",
+        "1.166.15"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-w9mx-wqhv-4cvw"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/virtual-file-routes",
+      "osv_id": "MAL-2026-3494",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/virtual-file-routes/MAL-2026-3494.json",
+      "versions": [
+        "1.161.10",
+        "1.161.13"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-p6r2-524x-2vh3"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/vue-router",
+      "osv_id": "MAL-2026-3495",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/vue-router/MAL-2026-3495.json",
+      "versions": [
+        "1.169.5",
+        "1.169.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-h7cj-xw74-w7h7"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/vue-router-devtools",
+      "osv_id": "MAL-2026-3496",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/vue-router-devtools/MAL-2026-3496.json",
+      "versions": [
+        "1.166.16",
+        "1.166.19"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-8rxr-9xrf-66wv"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/vue-router-ssr-query",
+      "osv_id": "MAL-2026-3497",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/vue-router-ssr-query/MAL-2026-3497.json",
+      "versions": [
+        "1.166.15",
+        "1.166.18"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-q3gx-rxh4-gv34"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/vue-start",
+      "osv_id": "MAL-2026-3498",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/vue-start/MAL-2026-3498.json",
+      "versions": [
+        "1.167.61",
+        "1.167.64"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-p5mj-5p7c-22jr"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/vue-start-client",
+      "osv_id": "MAL-2026-3499",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/vue-start-client/MAL-2026-3499.json",
+      "versions": [
+        "1.166.46",
+        "1.166.49"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-fq44-7p43-9w49"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/vue-start-server",
+      "osv_id": "MAL-2026-3500",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/vue-start-server/MAL-2026-3500.json",
+      "versions": [
+        "1.166.50",
+        "1.166.53"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-xj4p-7xwr-q9jj"
+      ],
+      "ecosystem": "npm",
+      "name": "@tanstack/zod-adapter",
+      "osv_id": "MAL-2026-3501",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tanstack/zod-adapter/MAL-2026-3501.json",
+      "versions": [
+        "1.166.12",
+        "1.166.15"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-j3c5-6pm5-jq3f"
+      ],
+      "ecosystem": "npm",
+      "name": "@taskflow-corp/cli",
+      "osv_id": "MAL-2026-3520",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@taskflow-corp/cli/MAL-2026-3520.json",
+      "versions": [
+        "0.1.24",
+        "0.1.25",
+        "0.1.26",
+        "0.1.27",
+        "0.1.28",
+        "0.1.29"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-c22w-7c9m-fvxg"
+      ],
+      "ecosystem": "npm",
+      "name": "@tolka/cli",
+      "osv_id": "MAL-2026-3521",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@tolka/cli/MAL-2026-3521.json",
+      "versions": [
+        "1.0.2",
+        "1.0.3",
+        "1.0.4",
+        "1.0.5",
+        "1.0.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-3x69-xfjm-x94w"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/access-policy-sdk",
+      "osv_id": "MAL-2026-3522",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/access-policy-sdk/MAL-2026-3522.json",
+      "versions": [
+        "0.3.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-8cx9-3j2f-qgqv"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/access-policy-tool",
+      "osv_id": "MAL-2026-3523",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/access-policy-tool/MAL-2026-3523.json",
+      "versions": [
+        "0.3.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-mfv5-8q6g-j242"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/admin-tool",
+      "osv_id": "MAL-2026-3524",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/admin-tool/MAL-2026-3524.json",
+      "versions": [
+        "0.1.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-g4jv-2xqr-ffr9"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/agent-sdk",
+      "osv_id": "MAL-2026-3525",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/agent-sdk/MAL-2026-3525.json",
+      "versions": [
+        "1.0.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-m2qh-7jff-73g8"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/agent-tool",
+      "osv_id": "MAL-2026-3526",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/agent-tool/MAL-2026-3526.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-9hfm-w6gw-qc7c"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/agent.sdk",
+      "osv_id": "MAL-2026-3527",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/agent.sdk/MAL-2026-3527.json",
+      "versions": [
+        "0.0.18"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qwfj-397c-fjm3"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/aops-policy-tool",
+      "osv_id": "MAL-2026-3528",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/aops-policy-tool/MAL-2026-3528.json",
+      "versions": [
+        "0.3.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-96r2-76fx-7r8x"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/ap-chat",
+      "osv_id": "MAL-2026-3529",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/ap-chat/MAL-2026-3529.json",
+      "versions": [
+        "1.5.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rh47-m8gr-5v5q"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/api-workflow-tool",
+      "osv_id": "MAL-2026-3530",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/api-workflow-tool/MAL-2026-3530.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-j36c-8r88-423c"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/apollo-core",
+      "osv_id": "MAL-2026-3531",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/apollo-core/MAL-2026-3531.json",
+      "versions": [
+        "5.9.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4r46-rx98-x3g7"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/apollo-react",
+      "osv_id": "MAL-2026-3532",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/apollo-react/MAL-2026-3532.json",
+      "versions": [
+        "4.24.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-pg6f-gcgf-hrx9"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/apollo-wind",
+      "osv_id": "MAL-2026-3533",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/apollo-wind/MAL-2026-3533.json",
+      "versions": [
+        "2.16.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-pj44-6m9m-jxwh"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/auth",
+      "osv_id": "MAL-2026-3534",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/auth/MAL-2026-3534.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qw86-wh9r-mpgf"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/case-tool",
+      "osv_id": "MAL-2026-3535",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/case-tool/MAL-2026-3535.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-r62p-98fh-6qv4"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/cli",
+      "osv_id": "MAL-2026-3536",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/cli/MAL-2026-3536.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-vhx5-vm7v-x3qf"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/codedagent-tool",
+      "osv_id": "MAL-2026-3537",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/codedagent-tool/MAL-2026-3537.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-x32r-fm9q-m5q4"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/codedagents-tool",
+      "osv_id": "MAL-2026-3538",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/codedagents-tool/MAL-2026-3538.json",
+      "versions": [
+        "0.1.12"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-q883-mhm4-f834"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/codedapp-tool",
+      "osv_id": "MAL-2026-3539",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/codedapp-tool/MAL-2026-3539.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-783q-c3wx-hqmr"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/common",
+      "osv_id": "MAL-2026-3540",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/common/MAL-2026-3540.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4c96-f3f6-hw7h"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/context-grounding-tool",
+      "osv_id": "MAL-2026-3541",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/context-grounding-tool/MAL-2026-3541.json",
+      "versions": [
+        "0.1.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-5855-rwmr-f2qw"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/data-fabric-tool",
+      "osv_id": "MAL-2026-3542",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/data-fabric-tool/MAL-2026-3542.json",
+      "versions": [
+        "1.0.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-f4rv-vxjp-3cgh"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/docsai-tool",
+      "osv_id": "MAL-2026-3543",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/docsai-tool/MAL-2026-3543.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-pcc3-h294-wpgm"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/filesystem",
+      "osv_id": "MAL-2026-3544",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/filesystem/MAL-2026-3544.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-vx3p-wg44-w4vr"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/flow-tool",
+      "osv_id": "MAL-2026-3545",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/flow-tool/MAL-2026-3545.json",
+      "versions": [
+        "1.0.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-297w-c359-73wq"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/functions-tool",
+      "osv_id": "MAL-2026-3546",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/functions-tool/MAL-2026-3546.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-54w3-rr2p-q43m"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/gov-tool",
+      "osv_id": "MAL-2026-3547",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/gov-tool/MAL-2026-3547.json",
+      "versions": [
+        "0.3.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-pj78-w622-mj3q"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/identity-tool",
+      "osv_id": "MAL-2026-3548",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/identity-tool/MAL-2026-3548.json",
+      "versions": [
+        "0.1.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qqjm-wxv4-2754"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/insights-sdk",
+      "osv_id": "MAL-2026-3549",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/insights-sdk/MAL-2026-3549.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4fcv-75gv-fmq6"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/insights-tool",
+      "osv_id": "MAL-2026-3550",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/insights-tool/MAL-2026-3550.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-x399-mvwr-hhxf"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/integrationservice-sdk",
+      "osv_id": "MAL-2026-3551",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/integrationservice-sdk/MAL-2026-3551.json",
+      "versions": [
+        "1.0.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-865m-4j25-mvcf"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/integrationservice-tool",
+      "osv_id": "MAL-2026-3552",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/integrationservice-tool/MAL-2026-3552.json",
+      "versions": [
+        "1.0.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qxg5-3xx4-vmc2"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/llmgw-tool",
+      "osv_id": "MAL-2026-3553",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/llmgw-tool/MAL-2026-3553.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-h6vp-2654-rw48"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/maestro-sdk",
+      "osv_id": "MAL-2026-3554",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/maestro-sdk/MAL-2026-3554.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-fr9p-h4v3-xx4c"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/maestro-tool",
+      "osv_id": "MAL-2026-3555",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/maestro-tool/MAL-2026-3555.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-pxj3-vc34-jc7w"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/orchestrator-tool",
+      "osv_id": "MAL-2026-3556",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/orchestrator-tool/MAL-2026-3556.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-4rxh-6hgh-qm7w"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-apiworkflow",
+      "osv_id": "MAL-2026-3557",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-apiworkflow/MAL-2026-3557.json",
+      "versions": [
+        "0.0.19"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-3688-2wf8-g67g"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-bpmn",
+      "osv_id": "MAL-2026-3558",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-bpmn/MAL-2026-3558.json",
+      "versions": [
+        "0.0.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-5c2g-qxm6-3x6x"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-case",
+      "osv_id": "MAL-2026-3559",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-case/MAL-2026-3559.json",
+      "versions": [
+        "0.0.9"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-g24w-7vm3-g9fq"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-connector",
+      "osv_id": "MAL-2026-3560",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-connector/MAL-2026-3560.json",
+      "versions": [
+        "0.0.19"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-xj87-mq94-9mhc"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-flow",
+      "osv_id": "MAL-2026-3561",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-flow/MAL-2026-3561.json",
+      "versions": [
+        "0.0.19"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-p7v2-mh8g-c4xw"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-functions",
+      "osv_id": "MAL-2026-3562",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-functions/MAL-2026-3562.json",
+      "versions": [
+        "0.1.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-gg48-r7c2-vgvx"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-webapp",
+      "osv_id": "MAL-2026-3563",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-webapp/MAL-2026-3563.json",
+      "versions": [
+        "1.0.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-jc43-rw5c-6gh3"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-workflowcompiler",
+      "osv_id": "MAL-2026-3564",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-workflowcompiler/MAL-2026-3564.json",
+      "versions": [
+        "0.0.16"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-887x-q7fp-r4jc"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/packager-tool-workflowcompiler-browser",
+      "osv_id": "MAL-2026-3565",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/packager-tool-workflowcompiler-browser/MAL-2026-3565.json",
+      "versions": [
+        "0.0.34"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rw85-q9p7-6qc5"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/platform-tool",
+      "osv_id": "MAL-2026-3566",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/platform-tool/MAL-2026-3566.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-wgg7-jx79-9gm7"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/project-packager",
+      "osv_id": "MAL-2026-3567",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/project-packager/MAL-2026-3567.json",
+      "versions": [
+        "1.1.16"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rjjc-4j74-hxff"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/resource-tool",
+      "osv_id": "MAL-2026-3568",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/resource-tool/MAL-2026-3568.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-pgjp-cqh9-r24w"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/resourcecatalog-tool",
+      "osv_id": "MAL-2026-3569",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/resourcecatalog-tool/MAL-2026-3569.json",
+      "versions": [
+        "0.1.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-p33p-663f-fpxf"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/resources-tool",
+      "osv_id": "MAL-2026-3570",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/resources-tool/MAL-2026-3570.json",
+      "versions": [
+        "0.1.11"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-cx9h-9vrc-7393"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/robot",
+      "osv_id": "MAL-2026-3571",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/robot/MAL-2026-3571.json",
+      "versions": [
+        "1.3.4"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-g69j-r43j-r44p"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/rpa-legacy-tool",
+      "osv_id": "MAL-2026-3572",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/rpa-legacy-tool/MAL-2026-3572.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-8jqg-95h3-6m8j"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/rpa-tool",
+      "osv_id": "MAL-2026-3573",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/rpa-tool/MAL-2026-3573.json",
+      "versions": [
+        "0.9.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-rqp5-9q9r-fp5h"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/solution-packager",
+      "osv_id": "MAL-2026-3574",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/solution-packager/MAL-2026-3574.json",
+      "versions": [
+        "0.0.35"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-7733-35c8-5p4f"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/solution-tool",
+      "osv_id": "MAL-2026-3575",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/solution-tool/MAL-2026-3575.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-v6fp-2vv4-5v87"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/solutionpackager-sdk",
+      "osv_id": "MAL-2026-3576",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/solutionpackager-sdk/MAL-2026-3576.json",
+      "versions": [
+        "1.0.11"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-39jx-hvgv-rrx7"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/solutionpackager-tool-core",
+      "osv_id": "MAL-2026-3577",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/solutionpackager-tool-core/MAL-2026-3577.json",
+      "versions": [
+        "0.0.34"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-qhq7-xgvv-c3xf"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/tasks-tool",
+      "osv_id": "MAL-2026-3578",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/tasks-tool/MAL-2026-3578.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-99pr-79hv-pf5c"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/telemetry",
+      "osv_id": "MAL-2026-3579",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/telemetry/MAL-2026-3579.json",
+      "versions": [
+        "0.0.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-55p8-r93f-539h"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/test-manager-tool",
+      "osv_id": "MAL-2026-3580",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/test-manager-tool/MAL-2026-3580.json",
+      "versions": [
+        "1.0.2"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-mp74-5gjx-v4mh"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/tool-workflowcompiler",
+      "osv_id": "MAL-2026-3581",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/tool-workflowcompiler/MAL-2026-3581.json",
+      "versions": [
+        "0.0.12"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-c7c5-8687-mmjw"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/traces-tool",
+      "osv_id": "MAL-2026-3582",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/traces-tool/MAL-2026-3582.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-mv6w-f7c2-7g9v"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/ui-widgets-multi-file-upload",
+      "osv_id": "MAL-2026-3583",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/ui-widgets-multi-file-upload/MAL-2026-3583.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-vmj3-j2j8-j8vg"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/uipath-python-bridge",
+      "osv_id": "MAL-2026-3584",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/uipath-python-bridge/MAL-2026-3584.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-6hg5-98mg-m25x"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/vertical-solutions-tool",
+      "osv_id": "MAL-2026-3585",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/vertical-solutions-tool/MAL-2026-3585.json",
+      "versions": [
+        "1.0.1"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-wm4w-2r2c-gq5f"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/vss",
+      "osv_id": "MAL-2026-3586",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/vss/MAL-2026-3586.json",
+      "versions": [
+        "0.1.6"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-27w6-4p99-7x6q"
+      ],
+      "ecosystem": "npm",
+      "name": "@uipath/widget.sdk",
+      "osv_id": "MAL-2026-3587",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/@uipath/widget.sdk/MAL-2026-3587.json",
+      "versions": [
+        "1.2.3"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "agentwork-cli",
+      "osv_id": "MAL-2026-3605",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/agentwork-cli/MAL-2026-3605.json",
+      "versions": [
+        "0.1.4",
+        "0.1.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-gx6p-62rj-cg4m"
+      ],
+      "ecosystem": "npm",
+      "name": "cmux-agent-mcp",
+      "osv_id": "MAL-2026-3588",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/cmux-agent-mcp/MAL-2026-3588.json",
+      "versions": [
+        "0.1.3",
+        "0.1.4",
+        "0.1.5",
+        "0.1.6",
+        "0.1.7",
+        "0.1.8"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-9ffp-9935-xjqq"
+      ],
+      "ecosystem": "npm",
+      "name": "cross-stitch",
+      "osv_id": "MAL-2026-3502",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/cross-stitch/MAL-2026-3502.json",
+      "versions": [
+        "1.1.3",
+        "1.1.4",
+        "1.1.5",
+        "1.1.6",
+        "1.1.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-h5h4-xpf8-g55c"
+      ],
+      "ecosystem": "npm",
+      "name": "git-branch-selector",
+      "osv_id": "MAL-2026-3503",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/git-branch-selector/MAL-2026-3503.json",
+      "versions": [
+        "1.3.3",
+        "1.3.4",
+        "1.3.5",
+        "1.3.6",
+        "1.3.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-w8x9-9886-9m73"
+      ],
+      "ecosystem": "npm",
+      "name": "git-git-git",
+      "osv_id": "MAL-2026-3504",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/git-git-git/MAL-2026-3504.json",
+      "versions": [
+        "1.0.10",
+        "1.0.11",
+        "1.0.12",
+        "1.0.8",
+        "1.0.9"
+      ]
+    },
+    {
+      "aliases": [],
+      "ecosystem": "npm",
+      "name": "ml-toolkit-ts",
+      "osv_id": "MAL-2026-3606",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/ml-toolkit-ts/MAL-2026-3606.json",
+      "versions": [
+        "1.0.4",
+        "1.0.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-fhg4-3pg2-pvgx"
+      ],
+      "ecosystem": "npm",
+      "name": "nextmove-mcp",
+      "osv_id": "MAL-2026-3589",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/nextmove-mcp/MAL-2026-3589.json",
+      "versions": [
+        "0.1.3",
+        "0.1.4",
+        "0.1.5",
+        "0.1.6",
+        "0.1.7"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-w3x2-675q-gpfq"
+      ],
+      "ecosystem": "npm",
+      "name": "safe-action",
+      "osv_id": "MAL-2026-3590",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/safe-action/MAL-2026-3590.json",
+      "versions": [
+        "0.8.3",
+        "0.8.4"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-w2mh-w7hh-f235"
+      ],
+      "ecosystem": "npm",
+      "name": "ts-dna",
+      "osv_id": "MAL-2026-3505",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/ts-dna/MAL-2026-3505.json",
+      "versions": [
+        "3.0.1",
+        "3.0.2",
+        "3.0.3",
+        "3.0.4",
+        "3.0.5"
+      ]
+    },
+    {
+      "aliases": [
+        "GHSA-x868-v497-jfjj"
+      ],
+      "ecosystem": "npm",
+      "name": "wot-api",
+      "osv_id": "MAL-2026-3591",
+      "reasons": [
+        "origin_sha256",
+        "ioc_domain"
+      ],
+      "repo_path": "osv/malicious/npm/wot-api/MAL-2026-3591.json",
+      "versions": [
+        "0.8.1",
+        "0.8.2",
+        "0.8.3",
+        "0.8.4",
+        "0.8.5"
+      ]
+    }
+  ],
+  "note": "Enumerated by scanning every OSV record in the pinned commit for the campaign's shared origin hash. There is no shared alias: each record aliases its own per-package GHSA, and none alias the umbrella.",
+  "source": "ossf/malicious-packages@e431115585f141cb1681f1a0e45181cb9155240d",
+  "umbrella_advisory": "GHSA-g7cv-rxg3-hmpx"
+}

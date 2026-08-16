@@ -22,9 +22,11 @@ OSV rather than assumed:
 from __future__ import annotations
 
 import json
+import subprocess
+import tarfile
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Iterator
 
 import httpx
 
@@ -239,11 +241,129 @@ def build_advisory_artifacts(*, out_dir: Path = INCIDENT_DIR) -> Advisory:
     return advisory
 
 
+def pin_repo_commit() -> str:
+    """The malicious-packages commit the roster is built from.
+
+    Pinned so the enumeration is reproducible: a stranger re-running this gets
+    the same 172 records, not whatever upstream looks like that day.
+    """
+    result = subprocess.run(
+        ["gh", "api", f"repos/{REPO}/commits/main", "--jq", ".sha"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return result.stdout.strip()
+
+
+def fetch_repo_tarball(commit: str, *, cache_dir: Path = CACHE_DIR) -> Path:
+    """Download the repo at a pinned commit, cached by sha.
+
+    Fetched with `gh api` rather than piping curl: piping the tarball through a
+    shell corrupts the gzip stream (the leading bytes arrive UTF-8 mangled), so
+    it must land in a file or come through a library.
+    """
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    path = cache_dir / f"malicious-packages-{commit[:12]}.tar.gz"
+    if path.exists() and path.stat().st_size > 1_000_000:
+        return path
+
+    with path.open("wb") as handle:
+        subprocess.run(
+            ["gh", "api", f"repos/{REPO}/tarball/{commit}"],
+            stdout=handle,
+            check=True,
+        )
+    return path
+
+
+def iter_campaign_records(tarball: Path) -> Iterator[tuple[str, dict[str, Any]]]:
+    """Stream the tarball, yielding (path, document) for campaign members only.
+
+    Streamed rather than extracted: the archive holds ~235,000 records and we
+    want 172 of them.
+    """
+    with tarfile.open(tarball, mode="r|gz") as archive:
+        for member in archive:
+            if not member.isfile() or not member.name.endswith(".json"):
+                continue
+            if "/osv/malicious/" not in member.name:
+                continue
+            handle = archive.extractfile(member)
+            if handle is None:
+                continue
+            try:
+                document = json.loads(handle.read())
+            except (json.JSONDecodeError, UnicodeDecodeError):
+                continue
+            member_of, reasons = is_campaign_member(document)
+            if member_of:
+                yield member.name, document
+
+
+def build_campaign_artifact(*, out_dir: Path = INCIDENT_DIR) -> dict[str, Any]:
+    """Enumerate the campaign and write data/incident/campaign.json."""
+    commit = pin_repo_commit()
+    tarball = fetch_repo_tarball(commit)
+
+    members: list[dict[str, Any]] = []
+    for repo_path, document in iter_campaign_records(tarball):
+        affected = group_affected(document)
+        if not affected:
+            continue
+        first = affected[0]
+        _, reasons = is_campaign_member(document)
+        members.append(
+            {
+                "name": first.name,
+                # OSV spells it "PyPI"; the repo path is lowercase. Normalise
+                # on the OSV form and keep the path for provenance.
+                "ecosystem": first.ecosystem,
+                "osv_id": document.get("id", ""),
+                # 15 of 172 records have no alias at all, and `aliases` is null
+                # rather than an empty list, so this cannot be indexed blindly.
+                # None of them alias the umbrella advisory: the aliases are
+                # per-package GHSAs, so joining on the umbrella matches nothing.
+                "aliases": list(document.get("aliases") or ()),
+                "versions": list(first.versions),
+                "reasons": reasons,
+                "repo_path": repo_path.split("/", 1)[-1],
+            }
+        )
+
+    members.sort(key=lambda row: (row["ecosystem"], row["name"]))
+    npm = [m for m in members if m["ecosystem"].lower() == "npm"]
+    other = [m for m in members if m["ecosystem"].lower() != "npm"]
+    pairs = sum(len(m["versions"]) for m in members)
+
+    payload = {
+        "source": f"{REPO}@{commit}",
+        "umbrella_advisory": UMBRELLA_ID,
+        "marker_sha256": CAMPAIGN_ORIGIN_SHA256,
+        "marker_domain": CAMPAIGN_IOC_DOMAIN,
+        "note": (
+            "Enumerated by scanning every OSV record in the pinned commit for the "
+            "campaign's shared origin hash. There is no shared alias: each record "
+            "aliases its own per-package GHSA, and none alias the umbrella."
+        ),
+        "counts": {
+            "records": len(members),
+            "npm": len(npm),
+            "other_ecosystems": len(other),
+            "malicious_pairs": pairs,
+            "without_alias": sum(1 for m in members if not m["aliases"]),
+        },
+        "members": members,
+    }
+    write_json(out_dir / "campaign.json", payload)
+    return payload
+
+
 def main(argv: Iterable[str] | None = None) -> int:
     import argparse
 
     parser = argparse.ArgumentParser(description="Build incident ground truth")
-    parser.add_argument("command", choices=["advisory"])
+    parser.add_argument("command", choices=["advisory", "campaign"])
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     if args.command == "advisory":
@@ -254,6 +374,13 @@ def main(argv: Iterable[str] | None = None) -> int:
         print(f"versions  {len(pairs)}")
         ranged = sum(1 for p in advisory.affected if p.ranges_present)
         print(f"packages with ranges we deliberately did not expand: {ranged}")
+
+    if args.command == "campaign":
+        payload = build_campaign_artifact()
+        counts = payload["counts"]
+        print(f"source    {payload['source']}")
+        for key, value in counts.items():
+            print(f"{key:18s} {value:,}")
     return 0
 
 
