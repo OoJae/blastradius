@@ -64,15 +64,58 @@ Notes that cost time to discover:
   `DependencyGraphEdges` (direct edges) and build the closure ourselves inside
   HydraDB — that is the product.
 
+## Measuring a query's cost without paying for it
+
+Set an absurdly low cap. The query is refused, nothing is billed, and the error
+states the exact requirement:
+
+```
+$ bq query --maximum_bytes_billed=1000000 'SELECT …'
+Query exceeded limit for bytes billed: 1000000. 797794070528 or higher required.
+```
+
+That number is the true cost, cluster pruning included — which `--dry_run`
+does not model. Every figure in the table below was obtained this way, for
+free.
+
+## What the extraction actually costs
+
+One partition (`2026-08-10`), npm only, minimum columns:
+
+| Extract | Cost | Needed? |
+|---|---|---|
+| `DependencyGraphEdges`: Name, Version, `To`.Name | 937 GB | version-level precision |
+| `DependencyGraphEdges`: Name, `To`.Name | **743 GB** | package-level edges — the traversal workhorse |
+| `PackageVersions`: Name, Version | **3.6 GB** | every version node |
+| `Dependents`: Name, Dependent.Name | 417 GB | **no** — see below |
+
+**We do not need the `Dependents` table at all**, which is the single biggest
+saving available. It is the reverse of the edges we already extract, and the
+loader materialises `PKG_DEPENDED_BY` from the forward edges anyway. Buying
+417 GB of the same information twice would be a waste of most of a month's
+free tier.
+
+Filtering the bulk extract to just our slice does not help. Cost scales with
+the number of distinct names, not down to them: one package bills 506 MB, ten
+bill 2,066 MB. Ten thousand would cost more than reading all of npm, because
+scattered lookups defeat clustering.
+
 ## Extraction plan
 
-A full npm edge extract for one partition is roughly 0.9 TB, which fits inside
-one month's free tier but leaves no room to iterate. So:
+Against a 1 TiB monthly free tier, per billing account:
 
-1. Develop and validate every query with a single-package `Name` filter, where
-   each run bills a few hundred megabytes.
-2. Run the bulk extract **once**, writing to a destination table rather than
-   streaming results, then export that table to GCS and download it.
-3. If a second bulk run is needed it costs about $6, which is worth paying
-   rather than contorting the query — the expensive mistake is the unfiltered
-   query, not the repeat.
+1. **Package-level edges, 2 columns — 743 GB.** The one large query. Write it
+   to a destination table, then export and download; do not iterate on it.
+2. **Versions — 3.6 GB.** Cheap enough to re-run freely.
+3. **Version-level detail for the incident packages only** — a filtered query
+   per package at roughly 500 MB, a few hundred megabytes in total for the ~42
+   compromised packages.
+
+That is about **750 GB, or 73% of the monthly allowance**, leaving ~270 GB of
+headroom for mistakes. Taking the 937 GB version-level extract instead would
+reach 92% and leave almost none.
+
+Develop every query with a single-package `Name` filter first, where a run
+bills a few hundred megabytes. If a second bulk run turns out to be necessary,
+it costs about $5 — worth paying rather than contorting the query. The
+expensive mistake is the unfiltered query, not the repeat.
