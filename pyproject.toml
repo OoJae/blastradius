@@ -12,6 +12,7 @@ dependencies = [
     # Bolt 5.1-5.4, which is what HydraDB serves. HydraDB's own
     # scripts/ec2_graphblas_benchmark.sh pins neo4j==6.2.0 for the same reason.
     "neo4j>=6.2,<7",
+    "numpy>=2.5.2",
     "rapidfuzz>=3.14.5",
     "xxhash>=3.5",
 ]
