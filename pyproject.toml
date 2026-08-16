@@ -1,0 +1,36 @@
+[project]
+name = "blastradius"
+version = "0.1.0"
+description = "Supply-chain blast radius over a HydraDB graph"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    # Driver 6.x. The 5.x driver refuses to talk to HydraDB at all: it checks
+    # the server agent string and raises UnsupportedServerProduct for
+    # "SlateDBGraph/0.1.0". Driver 6 dropped that check and still negotiates
+    # Bolt 5.1-5.4, which is what HydraDB serves. HydraDB's own
+    # scripts/ec2_graphblas_benchmark.sh pins neo4j==6.2.0 for the same reason.
+    "neo4j>=6.2,<7",
+    "xxhash>=3.5",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# api/ and eval/ are added here as those packages land (Phases 2-3).
+packages = ["ingest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: requires a running HydraDB node (excluded from the default run)",
+]
+# Plain `pytest` never needs a database; use `just test-live` for the rest.
+addopts = "-m 'not live' -q"

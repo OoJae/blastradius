@@ -1,0 +1,39 @@
+# HydraDB single-node, local object store. See docs/VERIFICATION.md for the
+# facts behind each setting (several are load-bearing, not cosmetic).
+services:
+  hydradb:
+    image: ghcr.io/hydra-db/hydradb:latest
+    container_name: blastradius-hydradb
+    # The image runs as UID 10001; without this the bind mount is unwritable
+    # and the first storage operation fails. `just up` exports these.
+    user: "${HYDRA_UID:-501}:${HYDRA_GID:-20}"
+    ports:
+      - "7687:7687" # Bolt (Neo4j drivers, 5.1-5.4)
+      - "8443:8443" # HTTP JSON/NDJSON query API (plaintext in this config)
+      - "9090:9090" # admin: /readyz and /metrics
+    volumes:
+      - ./hydradb-data:/data
+    environment:
+      CLOUD_PROVIDER: local
+      LOCAL_PATH: /data/store # must already exist; `just up` creates it
+      GRAPH_NAMESPACE: default
+      GRAPH_ID: default
+      GRAPH_CELL_ID: cell-0
+      GRAPH_CELLS: cell-0
+      GRAPH_NODE_ID: node-0
+      GRAPH_BOLT_NODE_ADDRESSES: node-0=127.0.0.1:7687
+      GRAPH_ADVERTISED_BOLT_ADDR: 127.0.0.1:7687
+      GRAPH_DATA_CACHE_DIR: /data/cache
+      GRAPH_AUTH_TOKEN_FILE: /data/auth-token
+      GRAPH_ALLOW_PLAINTEXT: "true" # local development only
+      # Mandatory: without it the node serves /readyz and then aborts with a
+      # stack overflow on the first query.
+      RUST_MIN_STACK: "33554432"
+      # Blast-radius traversals scan far more edges than the 1M default allows,
+      # and a deep radius can outlast the 30s default.
+      GRAPH_MAX_QUERY_SCAN_EDGES: "100000000"
+      GRAPH_MAX_QUERY_RUNTIME_MS: "120000"
+      # Note: max_query_intermediate_rows (250k frontier) and
+      # max_query_index_candidates (250k) are NOT env-overridable. They are a
+      # hard ceiling on traversal breadth; the Phase 0 spike probes for them.
+    restart: unless-stopped
