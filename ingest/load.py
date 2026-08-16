@@ -82,7 +82,7 @@ def epoch(iso_timestamp: str) -> int:
     return int(parsed.timestamp())
 
 
-def chunk(rows: Sequence[dict], max_rows: int = hydra.MAX_BATCH_ROWS) -> Iterable[list[dict]]:
+def chunk(rows: Iterable[dict], max_rows: int = hydra.MAX_BATCH_ROWS) -> Iterable[list[dict]]:
     """Split rows into batches within HydraDB's row and byte limits."""
     max_rows = min(max_rows, hydra.MAX_BATCH_ROWS)
     batch: list[dict] = []
@@ -149,7 +149,7 @@ class BatchWriter:
         self.batch_rows = min(batch_rows, hydra.MAX_BATCH_ROWS)
         self.max_attempts = max_attempts
 
-    def run_batches(self, statement: str, rows: Sequence[dict], what: str) -> WriteStats:
+    def run_batches(self, statement: str, rows: Iterable[dict], what: str) -> WriteStats:
         stats = WriteStats()
         started = time.perf_counter()
         with hydra.session(self.driver) as session:
@@ -182,9 +182,10 @@ class BatchWriter:
                 time.sleep(0.25 * attempt)
         return retries
 
-    def upsert_nodes(self, label: str, properties: Sequence[str], rows: Sequence[dict]) -> WriteStats:
-        if not rows:
-            return WriteStats()
+    def upsert_nodes(self, label: str, properties: Sequence[str], rows: Iterable[dict]) -> WriteStats:
+        # No truthiness check: rows may be a generator, which is always truthy
+        # and would be consumed by the test. An empty iterable simply yields
+        # WriteStats(rows=0).
         return self.run_batches(node_statement(label, properties), rows, f"{label} nodes")
 
     def upsert_edges(
@@ -193,10 +194,8 @@ class BatchWriter:
         src_label: str,
         dst_label: str,
         properties: Sequence[str],
-        rows: Sequence[dict],
+        rows: Iterable[dict],
     ) -> WriteStats:
-        if not rows:
-            return WriteStats()
         statement = edge_statement(rel_type, src_label, dst_label, properties)
         return self.run_batches(statement, rows, f"{rel_type} edges")
 
