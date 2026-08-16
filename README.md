@@ -12,8 +12,10 @@ demonstrated against the real Mini Shai-Hulud / TanStack compromise of
 **May 11, 2026** — 84 malicious artifacts across 42 packages, published in a
 six-minute window (19:20–19:26 UTC, CVE-2026-45321 / GHSA-g7cv-rxg3-hmpx).
 
-> **Status: Phase 0 (verification).** This README is filled in as features land.
-> Sections below are placeholders until the work they describe exists.
+> **Status: Phase 0 complete (verification).** This README is filled in as
+> features land. Sections below are placeholders until the work they describe
+> exists. Measured facts so far — including the constraints that shaped the
+> schema — are in [docs/VERIFICATION.md](docs/VERIFICATION.md).
 
 ---
 
@@ -25,13 +27,15 @@ _TODO (Phase 3): the incident, in three sentences._
 
 _TODO (Phase 3): deployed link + quickstart._
 
-Quickstart (local, once Phase 0 lands):
+Quickstart (local). Requires Docker, [`just`](https://github.com/casey/just)
+and [`uv`](https://docs.astral.sh/uv/):
 
 ```bash
 just up            # start HydraDB (Docker) and wait for readiness
 just smoke         # HTTP + Bolt round-trip against the running node
 just ingest-demo   # load the checked-in fixture graph
 just test          # unit tests (no database required)
+just test-live     # check HydraDB's answers against the fixture's known answers
 ```
 
 ## Real ingestion and retrieval workflows

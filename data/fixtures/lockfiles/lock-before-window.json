@@ -1,0 +1,28 @@
+{
+  "name": "svc-beta",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "svc-beta",
+      "version": "1.0.0",
+      "dependencies": {
+        "flux-router": "^2.3.0"
+      }
+    },
+    "node_modules/flux-core": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/flux-core/-/flux-core-1.0.0.tgz",
+      "integrity": "sha512-fixture000000000000000000000000000000000000000000000000000000000000000000000000000000AA=="
+    },
+    "node_modules/flux-router": {
+      "version": "2.3.0",
+      "resolved": "https://registry.npmjs.org/flux-router/-/flux-router-2.3.0.tgz",
+      "integrity": "sha512-fixture000000000000000000000000000000000000000000000000000000000000000000000000000000BB==",
+      "dependencies": {
+        "flux-core": "^1.0.0"
+      }
+    }
+  }
+}

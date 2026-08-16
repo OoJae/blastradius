@@ -237,6 +237,41 @@ def _node_rows(registry: IdRegistry, nodes: list[dict]) -> tuple[list[dict], lis
     return rows, properties
 
 
+def _edge_directions(edge_group: dict) -> list[tuple[str, bool]]:
+    """Which relationship types to write for one declared edge group.
+
+    A group may declare `reverse_type`, which materialises the same edges
+    pointing the other way. HydraDB only traverses variable-length patterns
+    outward from a fixed source, so a reverse-dependency closure needs the
+    reversed projection to exist as its own relationship type.
+    """
+    directions = [(edge_group["type"], False)]
+    if edge_group.get("reverse_type"):
+        directions.append((edge_group["reverse_type"], True))
+    return directions
+
+
+def _edge_rows(rel_type: str, edges: list[dict], *, flip: bool) -> list[dict]:
+    rows = []
+    for edge in edges:
+        src_key, dst_key = edge["src"], edge["dst"]
+        if flip:
+            src_key, dst_key = dst_key, src_key
+        row: dict[str, Any] = {
+            "src": hash_key(src_key),
+            "dst": hash_key(dst_key),
+            "rel": rel_id(rel_type, src_key, dst_key),
+        }
+        for name, value in edge.get("props", {}).items():
+            row[name] = (
+                epoch(value)
+                if name.endswith(("_from", "_until", "_at")) and isinstance(value, str)
+                else value
+            )
+        rows.append(row)
+    return rows
+
+
 def load_fixture(path: Path = FIXTURE_PATH) -> LoadReport:
     """Load the checked-in fixture graph. Idempotent: MERGE all the way down."""
     document = json.loads(path.read_text())
@@ -254,32 +289,15 @@ def load_fixture(path: Path = FIXTURE_PATH) -> LoadReport:
             log.info("%-12s %4d nodes", label, stats.rows)
 
         for edge_group in document["edges"]:
-            rel_type = edge_group["type"]
-            rows = []
-            for edge in edge_group["rows"]:
-                src_key, dst_key = edge["src"], edge["dst"]
-                row = {
-                    "src": hash_key(src_key),
-                    "dst": hash_key(dst_key),
-                    "rel": rel_id(rel_type, src_key, dst_key),
-                }
-                for name, value in edge.get("props", {}).items():
-                    row[name] = (
-                        epoch(value)
-                        if name.endswith(("_from", "_until", "_at")) and isinstance(value, str)
-                        else value
-                    )
-                rows.append(row)
-            properties = [p for p in rows[0] if p not in ("src", "dst", "rel")] if rows else []
-            stats = writer.upsert_edges(
-                rel_type,
-                edge_group["src_label"],
-                edge_group["dst_label"],
-                properties,
-                rows,
-            )
-            report.edges.merge(stats)
-            log.info("%-16s %4d edges", rel_type, stats.rows)
+            for rel_type, flip in _edge_directions(edge_group):
+                rows = _edge_rows(rel_type, edge_group["rows"], flip=flip)
+                properties = [p for p in rows[0] if p not in ("src", "dst", "rel")] if rows else []
+                src_label, dst_label = edge_group["src_label"], edge_group["dst_label"]
+                if flip:
+                    src_label, dst_label = dst_label, src_label
+                stats = writer.upsert_edges(rel_type, src_label, dst_label, properties, rows)
+                report.edges.merge(stats)
+                log.info("%-16s %4d edges", rel_type, stats.rows)
 
     return report
 

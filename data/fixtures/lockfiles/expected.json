@@ -1,0 +1,44 @@
+{
+  "description": "Expected verdicts for the three synthetic lockfiles. A package-lock.json carries no timestamp, so the install time is supplied separately (in the product, from the file's mtime or from the user); the tests pass it explicitly.",
+  "live_window": {"from": "2026-05-11T19:20:00Z", "until": "2026-05-11T19:26:00Z"},
+  "lockfiles": [
+    {
+      "file": "lock-inside-window.json",
+      "service": "svc-alpha",
+      "installed_at": "2026-05-11T19:23:00Z",
+      "verdict": "EXPOSED",
+      "why": "resolved flux-core@1.0.1, a compromised version, and installed inside the live window",
+      "entries": {
+        "flux-core@1.0.1": "EXPOSED",
+        "flux-router@2.3.0": "AT_RISK"
+      }
+    },
+    {
+      "file": "lock-before-window.json",
+      "service": "svc-beta",
+      "installed_at": "2026-05-10T08:00:00Z",
+      "verdict": "CLEAN",
+      "why": "resolved flux-core@1.0.0, which was never compromised; install predates the window",
+      "entries": {
+        "flux-core@1.0.0": "CLEAN",
+        "flux-router@2.3.0": "AT_RISK"
+      }
+    },
+    {
+      "file": "lock-after-fix.json",
+      "service": "svc-gamma",
+      "installed_at": "2026-05-12T08:00:00Z",
+      "verdict": "CLEAN",
+      "why": "resolved flux-core@1.0.2, the fixed version published after the window closed",
+      "entries": {
+        "flux-core@1.0.2": "CLEAN",
+        "flux-router@2.3.0": "AT_RISK"
+      }
+    }
+  ],
+  "verdict_meanings": {
+    "EXPOSED": "a resolved version is itself a compromised artifact",
+    "AT_RISK": "the resolved version is clean, but the package transitively depends on a compromised package",
+    "CLEAN": "neither the version nor its dependency closure touches a compromised artifact"
+  }
+}

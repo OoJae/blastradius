@@ -1,0 +1,67 @@
+{
+  "nodes": 100000,
+  "edges": 599400,
+  "nodes_per_second": 56198.34757195153,
+  "edges_per_second": 4770.816365494629,
+  "node_seconds": 1.779411749997962,
+  "edge_seconds": 125.63887479199911,
+  "closure": [
+    {
+      "depth": 1,
+      "cold_ms": 5.356249999749707,
+      "warm_ms": 3.9406249998137355,
+      "returned": 89,
+      "oracle": 89
+    },
+    {
+      "depth": 2,
+      "cold_ms": 79.18104199779918,
+      "warm_ms": 46.671291998791276,
+      "returned": 1172,
+      "oracle": 1172
+    },
+    {
+      "depth": 3,
+      "cold_ms": 479.3728339973313,
+      "warm_ms": 427.22908399809967,
+      "returned": 6903,
+      "oracle": 6903
+    },
+    {
+      "depth": 4,
+      "cold_ms": 2008.78029100204,
+      "warm_ms": 1665.5854580021696,
+      "returned": 25403,
+      "oracle": 25403
+    },
+    {
+      "depth": 5,
+      "cold_ms": 5162.242416001391,
+      "warm_ms": 5056.981874997291,
+      "returned": 55403,
+      "oracle": 55403
+    },
+    {
+      "depth": 6,
+      "cold_ms": 10413.161083000887,
+      "warm_ms": 10953.687291003007,
+      "returned": 90403,
+      "oracle": 90403
+    }
+  ],
+  "procedures": [
+    {
+      "label": "SSpaths incoming, pathCount 200",
+      "paths": 200,
+      "cold_ms": 816.3687079977535,
+      "warm_ms": 9.08641700152657
+    },
+    {
+      "label": "MSpaths 10 seeds incoming, pathCount 200",
+      "paths": 1000,
+      "cold_ms": 1199.1247090008983,
+      "warm_ms": 33.2804589997977
+    }
+  ],
+  "store_size": "1.6G\thydradb-data/store"
+}

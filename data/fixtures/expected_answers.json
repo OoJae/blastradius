@@ -1,0 +1,84 @@
+{
+  "description": "Hand-computed answers for data/fixtures/graph.json. Derived by reading the edge list, not by running the product against itself. data/fixtures/README.md shows the working.",
+  "blast_radius": {
+    "pkg:npm/flux-core": {
+      "1": ["pkg:npm/flux-query", "pkg:npm/flux-router", "pkg:npm/test-harness"],
+      "2": ["pkg:npm/app-kit", "pkg:npm/data-grid", "pkg:npm/flux-query", "pkg:npm/flux-router", "pkg:npm/test-harness"],
+      "3": ["pkg:npm/app-kit", "pkg:npm/dashboard", "pkg:npm/data-grid", "pkg:npm/flux-query", "pkg:npm/flux-router", "pkg:npm/test-harness"],
+      "4": ["pkg:npm/app-kit", "pkg:npm/dashboard", "pkg:npm/data-grid", "pkg:npm/flux-query", "pkg:npm/flux-router", "pkg:npm/test-harness"]
+    },
+    "pkg:npm/left-pack": {
+      "1": ["pkg:npm/data-grid"],
+      "2": ["pkg:npm/data-grid"],
+      "3": ["pkg:npm/data-grid"]
+    },
+    "pkg:npm/orm-lite": {
+      "1": ["pkg:npm/standalone"],
+      "3": ["pkg:npm/standalone"]
+    }
+  },
+  "min_depth": {
+    "pkg:npm/flux-core": {
+      "pkg:npm/flux-router": 1,
+      "pkg:npm/flux-query": 1,
+      "pkg:npm/test-harness": 1,
+      "pkg:npm/app-kit": 2,
+      "pkg:npm/data-grid": 2,
+      "pkg:npm/dashboard": 3
+    }
+  },
+  "never_in_radius": {
+    "pkg:npm/flux-core": ["pkg:npm/orm-lite", "pkg:npm/standalone", "pkg:npm/flux-coree", "pkg:npm/left-pack"]
+  },
+  "multi_source_blast_radius": {
+    "seeds": ["pkg:npm/flux-core", "pkg:npm/left-pack"],
+    "1": ["pkg:npm/data-grid", "pkg:npm/flux-query", "pkg:npm/flux-router", "pkg:npm/test-harness"],
+    "2": ["pkg:npm/app-kit", "pkg:npm/data-grid", "pkg:npm/flux-query", "pkg:npm/flux-router", "pkg:npm/test-harness"],
+    "3": ["pkg:npm/app-kit", "pkg:npm/dashboard", "pkg:npm/data-grid", "pkg:npm/flux-query", "pkg:npm/flux-router", "pkg:npm/test-harness"]
+  },
+  "version_seeded_returns_nothing": ["ver:npm/flux-core@1.0.1", "ver:npm/left-pack@4.4.4"],
+  "maintainer_overlap": {
+    "pkg:npm/flux-core": {
+      "maintainers": ["mnt:npm/alice"],
+      "sibling_packages": ["pkg:npm/flux-router", "pkg:npm/orm-lite"]
+    },
+    "pkg:npm/left-pack": {
+      "maintainers": ["mnt:npm/bob"],
+      "sibling_packages": ["pkg:npm/data-grid"]
+    }
+  },
+  "typosquats": {
+    "pkg:npm/flux-core": [{"key": "pkg:npm/flux-coree", "distance": 1}],
+    "pkg:npm/app-kit": []
+  },
+  "autocomplete": {
+    "flux-": ["pkg:npm/flux-core", "pkg:npm/flux-coree", "pkg:npm/flux-query", "pkg:npm/flux-router"]
+  },
+  "compromised": {
+    "versions": ["ver:npm/flux-core@1.0.1", "ver:npm/left-pack@4.4.4"],
+    "packages": ["pkg:npm/flux-core", "pkg:npm/left-pack"],
+    "live_from": "2026-05-11T19:20:00Z",
+    "live_until": "2026-05-11T19:26:00Z"
+  },
+  "advisory_direct_hits": {
+    "ver:npm/flux-core@1.0.1": "adv:GHSA-TEST-0001",
+    "ver:npm/left-pack@4.4.4": "adv:GHSA-TEST-0001",
+    "ver:npm/flux-core@1.0.0": null,
+    "ver:npm/flux-core@1.0.2": null
+  },
+  "counts": {
+    "Package": 11,
+    "Version": 13,
+    "Maintainer": 2,
+    "Advisory": 1,
+    "Service": 3,
+    "VERSION_OF": 13,
+    "DEPENDS_ON": 9,
+    "PKG_DEPENDS_ON": 9,
+    "PKG_DEPENDED_BY": 9,
+    "MAINTAINS": 5,
+    "AFFECTS": 2,
+    "SIMILAR_NAME": 2,
+    "RESOLVES": 6
+  }
+}

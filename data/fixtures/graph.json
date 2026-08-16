@@ -1,0 +1,147 @@
+{
+  "description": "Known-answer fixture: a miniature supply-chain incident. Every count in expected_answers.json is hand-computed from the edges below. Timestamps are ISO strings and are converted to epoch integers by the loader, so the live window cannot drift from the times written here.",
+  "live_window": {
+    "from": "2026-05-11T19:20:00Z",
+    "until": "2026-05-11T19:26:00Z"
+  },
+  "nodes": {
+    "Package": [
+      {"key": "pkg:npm/flux-core", "props": {"name": "flux-core", "weekly_downloads": 9000000, "is_popular": true}},
+      {"key": "pkg:npm/flux-router", "props": {"name": "flux-router", "weekly_downloads": 4000000, "is_popular": true}},
+      {"key": "pkg:npm/flux-query", "props": {"name": "flux-query", "weekly_downloads": 3000000, "is_popular": true}},
+      {"key": "pkg:npm/app-kit", "props": {"name": "app-kit", "weekly_downloads": 250000, "is_popular": true}},
+      {"key": "pkg:npm/dashboard", "props": {"name": "dashboard", "weekly_downloads": 12000, "is_popular": false}},
+      {"key": "pkg:npm/test-harness", "props": {"name": "test-harness", "weekly_downloads": 80000, "is_popular": false}},
+      {"key": "pkg:npm/left-pack", "props": {"name": "left-pack", "weekly_downloads": 6000000, "is_popular": true}},
+      {"key": "pkg:npm/data-grid", "props": {"name": "data-grid", "weekly_downloads": 45000, "is_popular": false}},
+      {"key": "pkg:npm/flux-coree", "props": {"name": "flux-coree", "weekly_downloads": 30, "is_popular": false}},
+      {"key": "pkg:npm/orm-lite", "props": {"name": "orm-lite", "weekly_downloads": 700000, "is_popular": true}},
+      {"key": "pkg:npm/standalone", "props": {"name": "standalone", "weekly_downloads": 5000, "is_popular": false}}
+    ],
+    "Version": [
+      {"key": "ver:npm/flux-core@1.0.0", "props": {"name": "flux-core", "version": "1.0.0", "published_at": "2026-05-01T10:00:00Z", "compromised": false}},
+      {"key": "ver:npm/flux-core@1.0.1", "props": {"name": "flux-core", "version": "1.0.1", "published_at": "2026-05-11T19:21:30Z", "compromised": true}},
+      {"key": "ver:npm/flux-core@1.0.2", "props": {"name": "flux-core", "version": "1.0.2", "published_at": "2026-05-11T20:00:00Z", "compromised": false}},
+      {"key": "ver:npm/flux-router@2.3.0", "props": {"name": "flux-router", "version": "2.3.0", "published_at": "2026-04-20T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/flux-query@0.9.0", "props": {"name": "flux-query", "version": "0.9.0", "published_at": "2026-04-22T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/app-kit@3.1.0", "props": {"name": "app-kit", "version": "3.1.0", "published_at": "2026-04-25T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/dashboard@1.2.0", "props": {"name": "dashboard", "version": "1.2.0", "published_at": "2026-04-28T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/test-harness@0.1.0", "props": {"name": "test-harness", "version": "0.1.0", "published_at": "2026-03-15T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/left-pack@4.4.4", "props": {"name": "left-pack", "version": "4.4.4", "published_at": "2026-05-11T19:22:00Z", "compromised": true}},
+      {"key": "ver:npm/data-grid@5.0.0", "props": {"name": "data-grid", "version": "5.0.0", "published_at": "2026-04-30T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/orm-lite@2.0.0", "props": {"name": "orm-lite", "version": "2.0.0", "published_at": "2026-02-01T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/flux-coree@1.0.0", "props": {"name": "flux-coree", "version": "1.0.0", "published_at": "2026-05-09T09:00:00Z", "compromised": false}},
+      {"key": "ver:npm/standalone@1.0.0", "props": {"name": "standalone", "version": "1.0.0", "published_at": "2026-01-10T09:00:00Z", "compromised": false}}
+    ],
+    "Maintainer": [
+      {"key": "mnt:npm/alice", "props": {"username": "alice"}},
+      {"key": "mnt:npm/bob", "props": {"username": "bob"}}
+    ],
+    "Advisory": [
+      {"key": "adv:GHSA-TEST-0001", "props": {"cve": "CVE-2026-0001", "severity": 9.8, "summary": "Malicious versions published from compromised maintainer tokens", "published_at": "2026-05-11T21:00:00Z"}}
+    ],
+    "Service": [
+      {"key": "lock:aaaa1111", "props": {"label": "svc-alpha", "uploaded_at": "2026-05-11T19:23:00Z"}},
+      {"key": "lock:bbbb2222", "props": {"label": "svc-beta", "uploaded_at": "2026-05-10T08:00:00Z"}},
+      {"key": "lock:cccc3333", "props": {"label": "svc-gamma", "uploaded_at": "2026-05-12T08:00:00Z"}}
+    ]
+  },
+  "edges": [
+    {
+      "type": "VERSION_OF",
+      "src_label": "Version",
+      "dst_label": "Package",
+      "rows": [
+        {"src": "ver:npm/flux-core@1.0.0", "dst": "pkg:npm/flux-core"},
+        {"src": "ver:npm/flux-core@1.0.1", "dst": "pkg:npm/flux-core"},
+        {"src": "ver:npm/flux-core@1.0.2", "dst": "pkg:npm/flux-core"},
+        {"src": "ver:npm/flux-router@2.3.0", "dst": "pkg:npm/flux-router"},
+        {"src": "ver:npm/flux-query@0.9.0", "dst": "pkg:npm/flux-query"},
+        {"src": "ver:npm/app-kit@3.1.0", "dst": "pkg:npm/app-kit"},
+        {"src": "ver:npm/dashboard@1.2.0", "dst": "pkg:npm/dashboard"},
+        {"src": "ver:npm/test-harness@0.1.0", "dst": "pkg:npm/test-harness"},
+        {"src": "ver:npm/left-pack@4.4.4", "dst": "pkg:npm/left-pack"},
+        {"src": "ver:npm/data-grid@5.0.0", "dst": "pkg:npm/data-grid"},
+        {"src": "ver:npm/orm-lite@2.0.0", "dst": "pkg:npm/orm-lite"},
+        {"src": "ver:npm/flux-coree@1.0.0", "dst": "pkg:npm/flux-coree"},
+        {"src": "ver:npm/standalone@1.0.0", "dst": "pkg:npm/standalone"}
+      ]
+    },
+    {
+      "type": "DEPENDS_ON",
+      "src_label": "Version",
+      "dst_label": "Package",
+      "rows": [
+        {"src": "ver:npm/flux-router@2.3.0", "dst": "pkg:npm/flux-core", "props": {"requirement": "^1.0.0", "kind": "prod"}},
+        {"src": "ver:npm/flux-query@0.9.0", "dst": "pkg:npm/flux-core", "props": {"requirement": "^1.0.0", "kind": "prod"}},
+        {"src": "ver:npm/test-harness@0.1.0", "dst": "pkg:npm/flux-core", "props": {"requirement": "^1.0.0", "kind": "dev"}},
+        {"src": "ver:npm/app-kit@3.1.0", "dst": "pkg:npm/flux-router", "props": {"requirement": "^2.0.0", "kind": "prod"}},
+        {"src": "ver:npm/app-kit@3.1.0", "dst": "pkg:npm/flux-query", "props": {"requirement": "^0.9.0", "kind": "prod"}},
+        {"src": "ver:npm/dashboard@1.2.0", "dst": "pkg:npm/app-kit", "props": {"requirement": "^3.0.0", "kind": "prod"}},
+        {"src": "ver:npm/data-grid@5.0.0", "dst": "pkg:npm/left-pack", "props": {"requirement": "^4.0.0", "kind": "prod"}},
+        {"src": "ver:npm/data-grid@5.0.0", "dst": "pkg:npm/flux-query", "props": {"requirement": "^0.9.0", "kind": "prod"}},
+        {"src": "ver:npm/standalone@1.0.0", "dst": "pkg:npm/orm-lite", "props": {"requirement": "^2.0.0", "kind": "prod"}}
+      ]
+    },
+    {
+      "type": "PKG_DEPENDS_ON",
+      "reverse_type": "PKG_DEPENDED_BY",
+      "src_label": "Package",
+      "dst_label": "Package",
+      "rows": [
+        {"src": "pkg:npm/flux-router", "dst": "pkg:npm/flux-core", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/flux-query", "dst": "pkg:npm/flux-core", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/test-harness", "dst": "pkg:npm/flux-core", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/app-kit", "dst": "pkg:npm/flux-router", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/app-kit", "dst": "pkg:npm/flux-query", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/dashboard", "dst": "pkg:npm/app-kit", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/data-grid", "dst": "pkg:npm/left-pack", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/data-grid", "dst": "pkg:npm/flux-query", "props": {"via_versions": 1}},
+        {"src": "pkg:npm/standalone", "dst": "pkg:npm/orm-lite", "props": {"via_versions": 1}}
+      ]
+    },
+    {
+      "type": "MAINTAINS",
+      "src_label": "Maintainer",
+      "dst_label": "Package",
+      "rows": [
+        {"src": "mnt:npm/alice", "dst": "pkg:npm/flux-core"},
+        {"src": "mnt:npm/alice", "dst": "pkg:npm/flux-router"},
+        {"src": "mnt:npm/alice", "dst": "pkg:npm/orm-lite"},
+        {"src": "mnt:npm/bob", "dst": "pkg:npm/left-pack"},
+        {"src": "mnt:npm/bob", "dst": "pkg:npm/data-grid"}
+      ]
+    },
+    {
+      "type": "AFFECTS",
+      "src_label": "Advisory",
+      "dst_label": "Version",
+      "rows": [
+        {"src": "adv:GHSA-TEST-0001", "dst": "ver:npm/flux-core@1.0.1", "props": {"live_from": "2026-05-11T19:20:00Z", "live_until": "2026-05-11T19:26:00Z"}},
+        {"src": "adv:GHSA-TEST-0001", "dst": "ver:npm/left-pack@4.4.4", "props": {"live_from": "2026-05-11T19:20:00Z", "live_until": "2026-05-11T19:26:00Z"}}
+      ]
+    },
+    {
+      "type": "SIMILAR_NAME",
+      "src_label": "Package",
+      "dst_label": "Package",
+      "rows": [
+        {"src": "pkg:npm/flux-core", "dst": "pkg:npm/flux-coree", "props": {"distance": 1}},
+        {"src": "pkg:npm/flux-coree", "dst": "pkg:npm/flux-core", "props": {"distance": 1}}
+      ]
+    },
+    {
+      "type": "RESOLVES",
+      "src_label": "Service",
+      "dst_label": "Version",
+      "rows": [
+        {"src": "lock:aaaa1111", "dst": "ver:npm/flux-core@1.0.1"},
+        {"src": "lock:aaaa1111", "dst": "ver:npm/flux-router@2.3.0"},
+        {"src": "lock:bbbb2222", "dst": "ver:npm/flux-core@1.0.0"},
+        {"src": "lock:bbbb2222", "dst": "ver:npm/flux-router@2.3.0"},
+        {"src": "lock:cccc3333", "dst": "ver:npm/flux-core@1.0.2"},
+        {"src": "lock:cccc3333", "dst": "ver:npm/flux-router@2.3.0"}
+      ]
+    }
+  ]
+}

@@ -206,8 +206,96 @@ the 84 version keys.
 
 ---
 
-## Pending
+## Measurements
 
-- Write throughput (rows/sec) and traversal latency by depth.
-- Silent-truncation probe against a Python ground-truth oracle.
-- Slice tier recommendation.
+`scripts/spike_load.py`, run against an empty store with nothing else touching
+the node. 100,000 packages in a 7-layer DAG, each node depending on three in
+the layer below (one pick biased toward the layer's first ten, so hubs and
+diamonds exist), written in both directions: **599,400 edges**.
+
+### Write throughput
+
+| Phase | Rows | Wall | Rate | Retries |
+|---|---|---|---|---|
+| Nodes | 100,000 | 1.8 s | **56,198 nodes/s** | 0 |
+| Edges (both directions) | 599,400 | 125.6 s | **4,771 edges/s** | 0 |
+
+Edges cost roughly twelve times more than nodes per row, which is expected: an
+edge batch matches both endpoints by id before merging. Batches were the
+maximum 1024 rows and nothing was rejected. Object store on disk afterwards:
+**1.6 GB** for 699,400 rows, about 2.3 KB per row.
+
+### Traversal latency, and the truncation check
+
+Each depth was run once cold, then five times to take a warm median. The
+`returned` column is what HydraDB gave back; `oracle` is the same closure
+computed independently in Python from the generated edge list.
+
+| Depth | Cold | Warm (p50) | Returned | Oracle | Verdict |
+|---|---|---|---|---|---|
+| 1 | 5 ms | 4 ms | 89 | 89 | exact |
+| 2 | 79 ms | 47 ms | 1,172 | 1,172 | exact |
+| 3 | 479 ms | 427 ms | 6,903 | 6,903 | exact |
+| 4 | 2,009 ms | 1,666 ms | 25,403 | 25,403 | exact |
+| 5 | 5,162 ms | 5,057 ms | 55,403 | 55,403 | exact |
+| 6 | 10,413 ms | 10,954 ms | 90,403 | 90,403 | exact |
+
+**No silent truncation at any depth.** The depth-6 radius covers 90,403 nodes —
+90% of the graph — and still matched the oracle exactly, so neither the 250k
+intermediate-rows frontier cap nor the scan-edge budget bit at this scale. That
+is a real answer to the risk the plan flagged, not an assumption.
+
+Latency, however, tracks the size of the result: a radius returning 90k nodes
+takes about eleven seconds. Depths 1–3 are comfortably interactive; depth 4 is
+usable; depths 5–6 are not, for a hub this large.
+
+### Path procedures
+
+| Call | Result | Cold | Warm |
+|---|---|---|---|
+| `algo.SSpaths`, incoming, `pathCount: 200` | 200 paths | 816 ms | **9 ms** |
+| `algo.MSpaths`, 10 seeds, incoming, `pathCount: 200` | 1,000 paths | 1,199 ms | **33 ms** |
+
+The multi-source call resolves ten seeds server-side in 33 ms warm. This is the
+query the incident view is built on, and it is fast because a bounded
+`pathCount` caps the work regardless of how large the radius is.
+
+### One thing that is too slow
+
+Prefix search — `WHERE p.key STARTS WITH …` with `LIMIT 10` — took **1,831 ms
+warm** over 100k nodes. It appears to scan rather than use an index, and there
+is no index DDL in this Cypher subset. At the scale we plan to load, live
+typeahead against the graph is not viable, so autocomplete needs a different
+mechanism (a precomputed in-process prefix table over the popular-package list
+is the obvious one). Recorded here rather than discovered during the demo.
+
+## Slice tier recommendation
+
+Using the measured rates, with a 1.3 overhead factor for wider real rows,
+retries and the projection pass:
+
+    projected_load = (nodes / 56,198 + edges / 4,771) × 1.3
+
+| Tier | Nodes | Edges written (incl. reverse projection) | Projected load |
+|---|---|---|---|
+| T1 | 2.5 M | ~20 M | ~1 h 32 m |
+| T2 | 750 k | ~5 M | ~23 m |
+| T3 | 250 k | ~1.7 M | ~8 m |
+
+**Load throughput is not the binding constraint — every tier fits inside an
+evening.** Two other things are:
+
+1. **Result-size latency.** A radius of 90k nodes costs ~11 s. Popular npm
+   packages have far more dependents than that, so on a T1 slice a deep radius
+   on a hub package would be slower than a demo can absorb.
+2. **The frontier cap we have not yet hit.** 250k intermediate rows is not
+   configurable. We verified it does not bite at 90k results; we have no
+   evidence about 500k, and the failure mode is a *quiet* short answer.
+
+**Recommendation: T2** (~750k nodes), with a default demo depth of 3 and the
+depth control offering 1–6. That keeps radius sizes inside the range where
+truncation has actually been disproved, keeps the headline queries under half a
+second, and still loads in under half an hour — leaving Phase 1's real
+bottleneck, data acquisition, the time it needs. If acquisition finishes early,
+growing toward T1 is a re-run of the loader plus a re-run of the oracle check,
+not a redesign.
