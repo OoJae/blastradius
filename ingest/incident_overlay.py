@@ -84,7 +84,20 @@ def build(slice_dir: Path, *, maintainer_extra: int = 3000, verbose: bool = True
     rows.sort(key=lambda t: (-t[0], t[1]))
     popular = [name for _, name in rows[:maintainer_extra]]
 
-    crawl = sorted(set(incident_names) | set(popular))
+    # The campaign victims need maintainer data too, or the evaluation's
+    # maintainer channel cannot even be asked about them -- a package with no
+    # MAINTAINS edge is unfindable for a reason that has nothing to do with
+    # traversal, and reporting that as a miss would be misleading.
+    victims: list[str] = []
+    campaign_path = INCIDENT / "campaign.json"
+    if campaign_path.exists():
+        victims = [
+            m["name"]
+            for m in json.loads(campaign_path.read_text())["members"]
+            if m["ecosystem"] == "npm"
+        ]
+
+    crawl = sorted(set(incident_names) | set(popular) | set(victims))
     if verbose:
         print(f"  crawling {len(crawl):,} packages for maintainers...", flush=True)
     digests = fetch_digests_sync(crawl, concurrency=8, progress_every=500)
@@ -127,6 +140,27 @@ def build(slice_dir: Path, *, maintainer_extra: int = 3000, verbose: bool = True
         ),
     }
 
+    unreachable = sorted(
+        name for name, digest in digests.items() if digest.branch in ("notfound", "tombstoned")
+    )
+    (slice_dir / "registry_unreachable.json").write_text(
+        json.dumps(
+            {
+                "note": (
+                    "Packages the registry does not serve, so no MAINTAINS edge can "
+                    "exist for them. Recorded before the evaluation runs so a miss "
+                    "here is explained rather than discovered."
+                ),
+                "count": len(unreachable),
+                "packages": unreachable,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    counts["registry_unreachable"] = len(unreachable)
+    counts["victims_crawled"] = len(victims)
     counts["incident_packages_in_slice"] = sum(1 for n in incident_names if n in in_slice)
     counts["incident_packages_total"] = len(incident_names)
     counts["maintainer_coverage_packages"] = len(

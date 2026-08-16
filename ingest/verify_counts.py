@@ -107,6 +107,7 @@ def source_counts(slice_dir: Path) -> dict[str, int]:
         "VERSION_OF": count_rows(slice_dir / "version_of.csv.gz"),
         "MAINTAINS": count_rows(slice_dir / "maintains.csv.gz"),
         "AFFECTS": count_rows(slice_dir / "affects.csv.gz"),
+        "SIMILAR_NAME": count_rows(slice_dir / "similar_name.csv.gz"),
     }
 
 
@@ -117,6 +118,7 @@ EDGE_TYPES = {
     "VERSION_OF": ("Version", "Package"),
     "MAINTAINS": ("Maintainer", "Package"),
     "AFFECTS": ("Advisory", "Version"),
+    "SIMILAR_NAME": ("Package", "Package"),
 }
 
 

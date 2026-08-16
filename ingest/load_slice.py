@@ -118,6 +118,17 @@ def pkg_edge_rows(slice_dir: Path, rel_type: str, *, flip: bool) -> Iterator[dic
         }
 
 
+def similar_name_rows(slice_dir: Path) -> Iterator[dict]:
+    for row in read_csv(slice_dir / "similar_name.csv.gz"):
+        src, dst = pkg_key(row["src"]), pkg_key(row["dst"])
+        yield {
+            "src": hash_key(src),
+            "dst": hash_key(dst),
+            "rel": rel_id("SIMILAR_NAME", src, dst),
+            "distance": int(row["distance"]),
+        }
+
+
 def version_of_rows(slice_dir: Path) -> Iterator[dict]:
     for row in read_csv(slice_dir / "version_of.csv.gz"):
         src, dst = ver_key(row["name"], row["version"]), pkg_key(row["name"])
@@ -161,6 +172,7 @@ def load(slice_dir: Path, *, verbose: bool = True, only: set[str] | None = None)
         ("VERSION_OF", "Version", "Package", [], version_of_rows, "version_of.csv.gz"),
         ("MAINTAINS", "Maintainer", "Package", [], maintains_rows, "maintains.csv.gz"),
         ("AFFECTS", "Advisory", "Version", ["live_from", "live_until"], affects_rows, "affects.csv.gz"),
+        ("SIMILAR_NAME", "Package", "Package", ["distance"], similar_name_rows, "similar_name.csv.gz"),
     ]
 
     with hydra.connect() as driver:
