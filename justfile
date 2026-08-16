@@ -76,12 +76,13 @@ test-live:
 ingest:
     @echo "not implemented until Phase 1"
 
+# Evaluate against the real incident and render docs/EVAL_REPORT.md.
 eval:
-    @echo "not implemented until Phase 2"
+    uv run python -m eval.run --dir "$(cat data/slice/CURRENT 2>/dev/null || echo data/slice/demo-20260810)"
 
 dev:
     @echo "not implemented until Phase 3"
 
-# HydraDB has no network-reachable EXPLAIN, so this must execute each query.
+# HydraDB has no network-reachable EXPLAIN, so this executes each query.
 parse-check:
-    @echo "not implemented until Phase 2"
+    uv run python scripts/parse_check.py

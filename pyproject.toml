@@ -5,6 +5,7 @@ description = "Supply-chain blast radius over a HydraDB graph"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "fastapi>=0.141.1",
     "httpx>=0.28.1",
     # Driver 6.x. The 5.x driver refuses to talk to HydraDB at all: it checks
     # the server agent string and raises UnsupportedServerProduct for
@@ -14,6 +15,7 @@ dependencies = [
     "neo4j>=6.2,<7",
     "numpy>=2.5.2",
     "rapidfuzz>=3.14.5",
+    "uvicorn[standard]>=0.52.3",
     "xxhash>=3.5",
 ]
 

@@ -369,6 +369,25 @@ paths across 1,134 distinct packages in 8.4 s -- server-side, replacing 42
 client round trips. Depth 1-2 is interactive; depth 3 and the multi-source call
 want precomputing for a live demo.
 
+### Two Cypher-text quirks, both found by executing the query files
+
+There is no network-reachable EXPLAIN, so `just parse-check` executes every
+query file at every value its whitelist permits, against a sentinel id that
+exists in no graph. It caught two things a reader would not guess:
+
+1. **Comments are `//`, not `--`.** SQL-style comments fail every statement with
+   `Invalid input '-': expected ';', a statement option, a query hint, a clause
+   or a schema command`.
+2. **A path procedure cannot have a leading comment.** HydraDB dispatches
+   `algo.SSpaths` / `algo.MSpaths` only when the *trimmed* statement begins with
+   `CALL`, so any preceding comment produces `query transport cannot authorize
+   an unsupported Cypher clause` — a message that points nowhere near the real
+   cause. Verified by sending the identical query with and without its comment
+   block: rejected, then accepted.
+
+So the query files keep their explanatory comments for anyone reading the repo,
+and `render()` strips them before the statement is sent.
+
 ## Slice tier recommendation
 
 Using the measured rates, with a 1.3 overhead factor for wider real rows,
