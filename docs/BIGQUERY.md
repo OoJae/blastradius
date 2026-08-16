@@ -8,6 +8,28 @@ not the list, which is the wrong shape for a blast radius.
 The dataset is enormous and the naive query is genuinely expensive, so the
 patterns below were measured before writing any extraction code.
 
+## Which project this bills to
+
+Extraction bills to **`blastradius-2026`**, and every command must say so
+explicitly:
+
+```bash
+bq --project_id=blastradius-2026 query --use_legacy_sql=false '...'
+```
+
+The machine this was developed on also hosts an unrelated project, so the
+active `gcloud` configuration deliberately does **not** point at
+`blastradius-2026`. A bare `bq query` bills whatever the active configuration
+is — which is exactly the mistake this note exists to prevent. `GCP_PROJECT` in
+`.env.example` carries the value; nothing should read the ambient default.
+
+To work interactively in the BlastRadius context instead:
+
+```bash
+gcloud config configurations activate blastradius   # switch to it
+gcloud config configurations activate default       # switch back
+```
+
 ## Cost guardrails
 
 BigQuery's free tier is 1 TiB of query data per month; beyond that it is about
