@@ -52,6 +52,13 @@ class SliceBudget:
 
     @classmethod
     def for_tier(cls, tier: str) -> "SliceBudget":
+        if tier == "demo":
+            # Sized by what loads reliably, not by what fits in memory. Every
+            # edge is a durable write to object storage, so edge count -- not
+            # package count -- is the binding constraint. The popularity spine
+            # is the expensive part: those packages are the most depended upon,
+            # so each one drags in a large share of the induced subgraph.
+            return cls(tier="demo", halo_max=30_000, spine_n=12_000, forward_max=10_000)
         if tier == "T3":
             return cls(tier="T3", halo_max=120_000, spine_n=60_000, forward_max=20_000)
         if tier == "T1":
@@ -261,8 +268,40 @@ def reverse_halo(
     return halo, depth_reached, truncated
 
 
+CACHE = ROOT / "data" / "cache" / "graph"
+
+
+def load_graph_cached(kinds_mask: int, *, verbose: bool = True) -> PackageGraph:
+    """Load the CSR graph, reusing a cached build when one matches.
+
+    Building it means parsing ~102M CSV rows out of 2.2 GB of gzip twice, which
+    takes over half an hour. The result is deterministic for a given kinds
+    mask, so it is worth keeping: tuning slice budgets otherwise pays that cost
+    on every attempt.
+    """
+    import pickle
+
+    CACHE.mkdir(parents=True, exist_ok=True)
+    path = CACHE / f"graph-kinds{kinds_mask}.pickle"
+
+    if path.exists():
+        if verbose:
+            print(f"  reusing cached graph ({path.stat().st_size / 1e9:.1f} GB)", flush=True)
+        with path.open("rb") as handle:
+            return pickle.load(handle)
+
+    graph = PackageGraph.load(RAW / "packages", RAW / "pkg_edges", kinds_mask=kinds_mask)
+    tmp = path.with_suffix(".tmp")
+    with tmp.open("wb") as handle:
+        pickle.dump(graph, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    tmp.replace(path)
+    if verbose:
+        print(f"  cached graph -> {path.name}", flush=True)
+    return graph
+
+
 def build(budget: SliceBudget, *, verbose: bool = True) -> Path:
-    graph = PackageGraph.load(RAW / "packages", RAW / "pkg_edges", kinds_mask=budget.kinds_mask)
+    graph = load_graph_cached(budget.kinds_mask, verbose=verbose)
 
     seeds, missing_seeds = load_seeds(graph)
     if verbose:
@@ -338,7 +377,7 @@ def main() -> int:
     import argparse
 
     parser = argparse.ArgumentParser(description="Build a loadable slice")
-    parser.add_argument("--tier", default="T2", choices=["T1", "T2", "T3"])
+    parser.add_argument("--tier", default="T2", choices=["T1", "T2", "T3", "demo"])
     args = parser.parse_args()
 
     budget = SliceBudget.for_tier(args.tier)
