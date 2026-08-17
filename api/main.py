@@ -292,15 +292,30 @@ async def check_lockfile(
     # Only entries the advisory actually names are worth a per-version query;
     # everything else is answered from records already in memory.
     verdicts = []
+    in_window: dict[tuple[str, str], bool] = {}
     for entry in parsed.entries:
         hit = None
         if d.artifact(entry.name, entry.version) is not None:
+            version_id = hash_key(ver_key(entry.name, entry.version))
             rows = await client.run_spec(
-                "q3_advisory_hit",
-                trace=trace,
-                version_id=hash_key(ver_key(entry.name, entry.version)),
+                "q3_advisory_hit", trace=trace, version_id=version_id
             )
             hit = rows[0] if rows else None
+
+            if hit is not None and installed_at is not None:
+                # Ask HydraDB whether the install fell inside the window, as an
+                # integer predicate on the AFFECTS edge. The same comparison
+                # could be done here in Python -- and is, to derive
+                # before/inside/after -- but "was this live when you installed
+                # it" is a question about an edge property, so the graph should
+                # be the one answering it.
+                confirmed = await client.run_spec(
+                    "q3_advisory_hit_in_window",
+                    trace=trace,
+                    version_id=version_id,
+                    installed_at=installed_at,
+                )
+                in_window[(entry.name, entry.version)] = bool(confirmed)
         verdicts.append(
             lockfile_mod.decide_entry(
                 entry,
@@ -341,6 +356,10 @@ async def check_lockfile(
                     "reason": v.reason,
                     "occurrences": v.occurrences,
                     "window": v.window,
+                    # Whether HydraDB itself confirmed the install fell inside
+                    # the window, via the predicate on the AFFECTS edge. None
+                    # when no install time was supplied to compare against.
+                    "in_window_per_graph": in_window.get((v.name, v.version)),
                     "advisory": v.advisory,
                     "signals": v.signals,
                 }
