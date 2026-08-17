@@ -1,0 +1,13 @@
+{
+  "advisories": 1,
+  "affects": 84,
+  "incident_packages_in_slice": 42,
+  "incident_packages_total": 42,
+  "maintainer_coverage_packages": 3148,
+  "maintainers": 2707,
+  "maintains": 9846,
+  "registry_unreachable": 9,
+  "version_of": 16802,
+  "versions": 16802,
+  "victims_crawled": 170
+}

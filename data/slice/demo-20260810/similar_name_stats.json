@@ -1,0 +1,12 @@
+{
+  "canonical_pairs": 2270,
+  "comparisons": 105213559,
+  "corpus": 51868,
+  "edges_written": 4540,
+  "max_distance": 2,
+  "max_neighbours": 25,
+  "min_name_length": 4,
+  "neighbours_dropped": 29,
+  "queries": 2097,
+  "queries_truncated": 5
+}

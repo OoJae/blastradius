@@ -1,0 +1,37 @@
+{
+  "budget": {
+    "forward_max": 10000,
+    "halo_max": 30000,
+    "halo_max_depth": 6,
+    "kinds_mask": 15,
+    "spine_n": 12000,
+    "tier": "demo"
+  },
+  "forward_hop": 10000,
+  "graph_stats": {
+    "edges_kept": 46047217,
+    "edges_skipped_kind": 0,
+    "edges_skipped_unknown_endpoint": 56044557,
+    "roster_bundled_paths_skipped": 6849820
+  },
+  "halo_depth_reached": 3,
+  "halo_size": 30000,
+  "halo_truncated": true,
+  "packages": 52161,
+  "pkg_depends_on": 1314935,
+  "seeds_missing": [
+    "@dirigible-ai/sdk",
+    "@draftauth/client",
+    "@draftauth/core",
+    "@draftlab/auth-router",
+    "@ml-toolkit-ts/preprocessing",
+    "@ml-toolkit-ts/xgboost",
+    "agentwork-cli",
+    "ml-toolkit-ts",
+    "ts-dna"
+  ],
+  "seeds_present": 161,
+  "snapshot": "2026-08-10",
+  "spine": 12000,
+  "tier": "demo"
+}

@@ -10,7 +10,16 @@ hydradb-data/
 # Downloaded/derived data (fixtures under data/fixtures/ are checked in)
 data/cache/
 data/raw/
-data/slice/
+# Exclude the *contents*, not the directory: git cannot re-include anything
+# under an excluded directory, so `data/slice/` followed by a negation silently
+# does nothing.
+data/slice/*
+# ...except the compiled demo slice. It is 9.1 MB of gzipped CSV and it is the
+# deployable artifact: the image ships it and builds the graph on first boot,
+# rather than moving the 1.7 GB object store it becomes. Committing it also
+# makes the deployment reproducible by anyone with the repo.
+!data/slice/demo-20260810/
+!data/slice/demo-20260810/**
 
 # Python
 .venv/
