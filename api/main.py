@@ -38,6 +38,10 @@ state: dict[str, Any] = {}
 
 SLICE_DIR = Path(__file__).resolve().parent.parent / "data" / "slice"
 
+# A package with dependents in any real slice, used only to tell a loaded graph
+# from one whose load was interrupted after the nodes.
+PROBE_PACKAGE = "@tanstack/react-router"
+
 
 async def load_if_empty(client: HydraClient) -> bool:
     """Build the graph on first boot, if this deployment has an empty one.
@@ -50,8 +54,32 @@ async def load_if_empty(client: HydraClient) -> bool:
     Every write is an idempotent MERGE, so a restart part-way through resumes
     rather than duplicating or corrupting.
     """
-    rows = await client.run_spec("q8_label_count", trace=Trace(), interpolate={"label": "Package"})
-    if rows and rows[0]["n"] > 0:
+    trace = Trace()
+    rows = await client.run_spec("q8_label_count", trace=trace, interpolate={"label": "Package"})
+    packages = rows[0]["n"] if rows else 0
+
+    # Nodes alone do not mean the graph is loaded. Nodes are written first and
+    # the edges take far longer, so an interrupted load leaves a graph that
+    # looks populated and answers every blast radius with zero. Probe an
+    # anchored traversal as well -- if a package has no dependents at all, the
+    # edges never landed and the load has to run again. MERGE makes that safe.
+    edges_present = False
+    if packages:
+        probe = await client.run_spec(
+            "q1_radius_nodes",
+            trace=trace,
+            interpolate={"depth": 1},
+            seed_id=hash_key(pkg_key(PROBE_PACKAGE)),
+        )
+        edges_present = bool(probe)
+        if not edges_present:
+            print(
+                f"{packages:,} packages but no dependents for {PROBE_PACKAGE} "
+                "-- a previous load was interrupted; loading again",
+                flush=True,
+            )
+
+    if packages and edges_present:
         return False
 
     candidates = sorted(p for p in SLICE_DIR.glob("*") if p.is_dir())
