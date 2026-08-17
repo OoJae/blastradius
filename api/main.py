@@ -19,12 +19,14 @@ from fastapi import FastAPI, Query, Request
 from fastapi.responses import JSONResponse
 
 from api import lockfile as lockfile_mod
+from api import timeline
 from api.closure import ClosureCache
 from api.digest import INCIDENT_ADVISORY, GraphDigest
 from api.hydra import HydraClient, NotComputed
 from api.queries import ALLOWED_DEPTHS, seed_values
 from api.trace import Trace
 from ingest.ids import adv_key, hash_key, pkg_key, ver_key
+from ingest.sources.live_window import iso
 
 DEFAULT_DEPTH = 3
 state: dict[str, Any] = {}
@@ -386,6 +388,37 @@ async def incident(live: bool = Query(False)) -> dict[str, Any]:
         }
     else:
         payload["exposed"] = {"warming": state["closures"].warming}
+
+    # How the attack actually unfolded. The waves need no traversals; the
+    # exposure curve folds over per-seed closures the boot warm already
+    # computed, so it costs nothing beyond what has been queried.
+    artifacts = list(d.artifacts.values())
+    waves = timeline.group_waves(artifacts)
+    payload["waves"] = [
+        {
+            "wave": w.index,
+            "from": w.started,
+            "from_iso": iso(w.started),
+            "to": w.ended,
+            "seconds": w.seconds,
+            "versions": w.versions,
+            "packages": w.packages,
+        }
+        for w in waves
+    ]
+
+    cached_closures = {
+        seed: closure.names
+        for (seed, depth), closure in state["closures"]._radius.items()
+        if depth == DEFAULT_DEPTH
+    }
+    if cached_closures:
+        curve = timeline.exposure_curve(artifacts, cached_closures)
+        payload["exposure_curve"] = curve
+        payload["saturation"] = timeline.saturation(curve)
+    else:
+        payload["exposure_curve"] = None
+        payload["saturation"] = {"warming": state["closures"].warming}
 
     if live:
         # One server-side call resolving every compromised package at once.
