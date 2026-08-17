@@ -35,6 +35,8 @@ RUN uv sync --frozen --no-dev
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1
 
-# Railway supplies $PORT. Bind to :: so the service is reachable over both
-# stacks -- private networking resolves to IPv6 in older environments.
-CMD ["sh", "-c", "uvicorn api.main:app --host :: --port ${PORT:-8000}"]
+# Railway supplies $PORT. Bind 0.0.0.0, not :: -- binding to :: in this image
+# refuses even 127.0.0.1 inside the container, so the platform healthcheck
+# would never pass. (Private networking between services is a client-side
+# concern and unaffected by what we bind.)
+CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

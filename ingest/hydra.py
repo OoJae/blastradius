@@ -18,6 +18,14 @@ MAX_BATCH_BYTES = 900_000
 
 
 def bolt_uri() -> str:
+    """The Bolt endpoint.
+
+    Locally this is the routed `neo4j://` scheme. Across containers it must be
+    the direct `bolt://` scheme instead: routing discovery returns the server's
+    advertised address, which HydraDB reports as 127.0.0.1, so a client in a
+    different container would be sent back to itself and fail with
+    "No read service currently available".
+    """
     return os.environ.get("HYDRA_BOLT_URI", "neo4j://127.0.0.1:7687")
 
 
