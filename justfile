@@ -80,8 +80,9 @@ ingest:
 eval:
     uv run python -m eval.run --dir "$(cat data/slice/CURRENT 2>/dev/null || echo data/slice/demo-20260810)"
 
+# Run the API against whatever graph is currently loaded.
 dev:
-    @echo "not implemented until Phase 3"
+    uv run uvicorn api.main:app --reload --port 8000
 
 # HydraDB has no network-reachable EXPLAIN, so this executes each query.
 parse-check:

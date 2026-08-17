@@ -1,0 +1,25 @@
+{
+  "name": "svc-beta",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "svc-beta",
+      "version": "1.0.0",
+      "dependencies": {
+        "@tanstack/react-router": "^1.169.0"
+      }
+    },
+    "node_modules/@tanstack/react-router": {
+      "version": "1.169.2",
+      "resolved": "https://registry.npmjs.org/@tanstack/react-router/-/react-router-1.169.2.tgz"
+    },
+    "node_modules/@tanstack/history": {
+      "version": "1.169.2"
+    },
+    "node_modules/react": {
+      "version": "19.1.0"
+    }
+  }
+}
