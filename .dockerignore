@@ -1,0 +1,26 @@
+# The object store and cache are rebuilt on the target, not shipped: the slice
+# source is 9.1 MB, the store it becomes is 1.7 GB.
+hydradb-data/
+data/cache/
+data/raw/
+data/eval/
+vendor-readonly/
+_private/
+
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+web/node_modules/
+web/dist/
+
+.git/
+.github/
+docs/
+scripts/
+tests/
+*.md
+!README.md

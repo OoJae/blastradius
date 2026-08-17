@@ -13,10 +13,13 @@ from __future__ import annotations
 import asyncio
 import time
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Query, Request
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from starlette.concurrency import run_in_threadpool
 
 from api import lockfile as lockfile_mod
 from api import timeline
@@ -26,16 +29,55 @@ from api.hydra import HydraClient, NotComputed
 from api.queries import ALLOWED_DEPTHS, seed_values
 from api.trace import Trace
 from ingest.ids import adv_key, hash_key, pkg_key, ver_key
+from ingest.load_slice import load as load_slice
 from ingest.sources.live_window import iso
 
 DEFAULT_DEPTH = 3
 state: dict[str, Any] = {}
 
 
+SLICE_DIR = Path(__file__).resolve().parent.parent / "data" / "slice"
+
+
+async def load_if_empty(client: HydraClient) -> bool:
+    """Build the graph on first boot, if this deployment has an empty one.
+
+    A fresh deployment ships the slice as 9.1 MB of CSV rather than 1.7 GB of
+    object store, so the graph has to be built once on the target. It cannot be
+    a build step -- Railway's private network only exists at runtime, so the
+    database is unreachable while the image is being built.
+
+    Every write is an idempotent MERGE, so a restart part-way through resumes
+    rather than duplicating or corrupting.
+    """
+    rows = await client.run_spec("q8_label_count", trace=Trace(), interpolate={"label": "Package"})
+    if rows and rows[0]["n"] > 0:
+        return False
+
+    candidates = sorted(p for p in SLICE_DIR.glob("*") if p.is_dir())
+    if not candidates:
+        print("graph is empty and no slice is bundled; serving an empty graph", flush=True)
+        return False
+
+    slice_dir = candidates[-1]
+    print(f"graph is empty -- loading {slice_dir.name} (this takes ~25 minutes)", flush=True)
+    state["loading"] = slice_dir.name
+    try:
+        await run_in_threadpool(load_slice, slice_dir)
+        print(f"loaded {slice_dir.name}", flush=True)
+    finally:
+        state.pop("loading", None)
+    return True
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     client = HydraClient.open()
     state["client"] = client
+
+    if await load_if_empty(client):
+        pass  # the digest below now sees a populated graph
+
     print("building the graph digest...", flush=True)
     started = time.perf_counter()
     digest = await GraphDigest.build(client)
@@ -125,6 +167,7 @@ async def stats() -> dict[str, Any]:
                 ),
             },
             "warming": state["closures"].warming,
+            "loading": state.get("loading"),
             "built_at": d.built_at,
             "boot_queries": [step.as_step() for step in d.boot],
         },
