@@ -1,15 +1,32 @@
-# web/
+# React + TypeScript + Vite
 
-The BlastRadius interface: a Vite + React + Tailwind app that builds into
-`web/dist`, which the FastAPI service mounts at `/`. One origin in development
-and in production, so the API needs no CORS handling.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-```bash
-just web-install   # once
-just web-dev       # :5173, proxying /api to the API on :8000
-just web-build     # -> web/dist, then `just dev` serves it
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the Oxlint configuration
+
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
 
-`web/dist` is gitignored and rebuilt by the Docker image's Node stage. Until
-this directory has a `package.json`, that stage produces an empty `dist` and
-the API serves its JSON endpoints alone.
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

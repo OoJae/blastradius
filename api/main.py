@@ -70,31 +70,47 @@ async def load_if_empty(client: HydraClient) -> bool:
     return True
 
 
+async def prepare(client: HydraClient) -> None:
+    """Load if needed, then build the digest, then warm the incident closures.
+
+    This runs as a background task rather than blocking startup. A fresh
+    deployment spends ~25 minutes building its graph, and a platform
+    healthcheck will not wait that long -- so the server accepts connections
+    immediately and reports its own progress through /api/health and
+    /api/stats, which is also more useful to a human than a dead port.
+    """
+    try:
+        await load_if_empty(client)
+
+        print("building the graph digest...", flush=True)
+        started = time.perf_counter()
+        digest = await GraphDigest.build(client)
+        state["digest"] = digest
+        print(
+            f"digest ready in {time.perf_counter() - started:.1f}s: "
+            f"{len(digest.names):,} packages, advisory {digest.advisory_key or 'none'}",
+            flush=True,
+        )
+
+        if digest.incident_packages:
+            await state["closures"].warm(digest.incident_packages, DEFAULT_DEPTH)
+    except Exception as exc:  # noqa: BLE001 - surfaced through /api/health
+        state["startup_error"] = str(exc).splitlines()[0][:300]
+        print(f"startup failed: {state['startup_error']}", flush=True)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     client = HydraClient.open()
     state["client"] = client
-
-    if await load_if_empty(client):
-        pass  # the digest below now sees a populated graph
-
-    print("building the graph digest...", flush=True)
-    started = time.perf_counter()
-    digest = await GraphDigest.build(client)
-    state["digest"] = digest
     state["closures"] = ClosureCache(client)
-    print(
-        f"digest ready in {time.perf_counter() - started:.1f}s: "
-        f"{len(digest.names):,} packages, advisory {digest.advisory_key or 'none'}",
-        flush=True,
-    )
-    if digest.incident_packages:
-        state["warm"] = asyncio.create_task(
-            state["closures"].warm(digest.incident_packages, DEFAULT_DEPTH)
-        )
+    state["prepare"] = asyncio.create_task(prepare(client))
     try:
         yield
     finally:
+        task = state.get("prepare")
+        if task is not None:
+            task.cancel()
         client.close()
 
 
@@ -125,12 +141,32 @@ def digest() -> GraphDigest:
 
 @app.get("/api/health")
 async def health() -> dict[str, Any]:
+    """Always answers, so a platform healthcheck passes while the graph builds."""
     ready = "digest" in state
-    return {"status": "ok" if ready else "starting", "ready": ready}
+    body: dict[str, Any] = {"status": "ok" if ready else "starting", "ready": ready}
+    if not ready:
+        # Say which slow thing is happening rather than leaving a caller to guess.
+        if state.get("startup_error"):
+            body["status"] = "error"
+            body["error"] = state["startup_error"]
+        elif state.get("loading"):
+            body["stage"] = "loading the graph"
+            body["slice"] = state["loading"]
+            body["note"] = "a fresh deployment builds its graph once, in about 25 minutes"
+        else:
+            body["stage"] = "building the autocomplete index from HydraDB"
+    return body
 
 
 @app.get("/api/stats")
 async def stats() -> dict[str, Any]:
+    if "digest" not in state:
+        return {
+            "status": "starting",
+            "result": None,
+            "loading": state.get("loading"),
+            "error": state.get("startup_error"),
+        }
     d = digest()
     graph: dict[str, Any] = {}
     for label, value in d.counts.items():
