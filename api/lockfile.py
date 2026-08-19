@@ -220,15 +220,15 @@ def decide_entry(
             "the blast radius could not be computed, so safety cannot be proved",
             entry.occurrences, signals=signals,
         )
-    if not version_in_graph:
-        return EntryVerdict(
-            entry.name, entry.version, "UNKNOWN",
-            "no version-level record is held for this package", entry.occurrences, signals=signals,
-        )
-
+    # Deliberately NOT gated on holding a Version node for this artifact. The
+    # advisory's manifest is complete -- every artifact it names is loaded --
+    # so "is this one of them" is answerable for any entry, whether or not we
+    # happen to store that particular version. Requiring a version record here
+    # made every realistic lockfile unprovable, which conflated "we hold no
+    # record of this version" with "we cannot answer the question".
     return EntryVerdict(
         entry.name, entry.version, "CLEAN",
-        "in the graph, no advisory names it, and it is outside the blast radius",
+        "not named by this advisory, and outside its blast radius",
         entry.occurrences, signals=signals,
     )
 

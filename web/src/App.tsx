@@ -6,6 +6,7 @@ import { InspectorDrawer } from './components/inspector/InspectorDrawer'
 import { SearchBox } from './components/hero/SearchBox'
 import { RingDiagram } from './components/radius/RingDiagram'
 import { NotComputed } from './components/state/NotComputed'
+import { LockfilePanel } from './components/lockfile/LockfilePanel'
 import { Skeleton } from './components/state/Skeleton'
 import type { Failure } from './lib/api'
 
@@ -24,6 +25,7 @@ function Shell() {
   const [radius, setRadius] = useState<Radius | null>(null)
   const [failure, setFailure] = useState<Failure | null>(null)
   const [busy, setBusy] = useState(false)
+  const [tab, setTab] = useState<'radius' | 'lockfile'>('radius')
 
   // Wait for the service to finish reading the graph before asking it anything.
   useEffect(() => {
@@ -84,7 +86,22 @@ function Shell() {
     <div className="min-h-screen pb-12">
       <header className="sticky top-0 z-20 border-b border-ink-600 bg-ink-900/95 px-6 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-[1400px] items-center justify-between">
-          <span className="font-mono text-sm tracking-wide text-ember">BLASTRADIUS</span>
+          <div className="flex items-baseline gap-6">
+            <span className="font-mono text-sm tracking-wide text-ember">BLASTRADIUS</span>
+            <nav className="flex gap-1 text-xs">
+              {(['radius', 'lockfile'] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  className={`rounded px-2 py-1 ${
+                    tab === t ? 'bg-ink-700 text-chalk' : 'text-chalk-dim hover:text-chalk'
+                  }`}
+                >
+                  {t === 'radius' ? 'blast radius' : 'my lockfile'}
+                </button>
+              ))}
+            </nav>
+          </div>
           <button
             onClick={() => setOpen(true)}
             className="rounded border border-ink-600 px-3 py-1 font-mono text-[11px] text-chalk-dim hover:border-ember hover:text-ember"
@@ -98,6 +115,7 @@ function Shell() {
       </header>
 
       <main className="mx-auto max-w-[1400px] px-6">
+        {tab === 'radius' && (
         <section className="pt-12">
           <h1 className="max-w-4xl text-[44px] font-semibold leading-[1.1] tracking-tight">
             <span className="font-mono text-ember">{SEED}</span> was compromised on 11 May 2026.
@@ -129,7 +147,22 @@ function Shell() {
             </dl>
           )}
         </section>
+        )}
 
+        {tab === 'lockfile' && (
+          <section className="mt-12">
+            <h2 className="text-2xl font-semibold">Were you exposed?</h2>
+            <p className="mt-2 max-w-2xl text-sm text-chalk-dim">
+              Drop the lockfile your CI resolved. Each artifact is checked against the advisory,
+              and anything it names is checked against the window it was live in.
+            </p>
+            <div className="mt-8">
+              <LockfilePanel stats={stats} />
+            </div>
+          </section>
+        )}
+
+        {tab === 'radius' && (
         <section className="mt-14 grid gap-8 lg:grid-cols-[380px_1fr]">
           <div className="rounded border border-ink-600 bg-ink-800 p-4">
             {rings.length === 0 && busy && <Skeleton className="h-[340px] w-full" />}
@@ -174,6 +207,7 @@ function Shell() {
             )}
           </div>
         </section>
+        )}
       </main>
 
       <InspectorDrawer stats={stats} />

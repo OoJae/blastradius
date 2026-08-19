@@ -157,9 +157,19 @@ def test_a_package_outside_the_slice_is_unknown_not_clean() -> None:
     assert result.verdict == "UNKNOWN"
 
 
-def test_a_missing_version_record_is_unknown_not_clean() -> None:
-    # The common case on a real lockfile: we hold the package but not its
-    # versions, so we cannot prove this artifact is fine.
+def test_a_missing_version_record_still_permits_a_scoped_clean() -> None:
+    # This originally returned UNKNOWN, on the reasoning that without a version
+    # record we could not prove the artifact was fine. That conflated two
+    # different unknowns. The advisory's manifest is complete -- every artifact
+    # it names is loaded -- so whether this entry is one of them is answerable
+    # whether or not we store this particular version.
+    #
+    # It matters because on real data almost nothing has a version record: only
+    # the packages the advisory names do. Under the old rule every realistic
+    # lockfile came back entirely unprovable, which is not caution, it is a
+    # useless answer.
+    #
+    # CLEAN here is scoped to this advisory, and the reason string says so.
     result = decide_entry(
         LockEntry("orm-lite", "2.0.0", ("node_modules/orm-lite",)),
         advisory_hit=None,
@@ -168,8 +178,24 @@ def test_a_missing_version_record_is_unknown_not_clean() -> None:
         exposed_names=EXPOSED_NAMES,
         exposed_complete=True,
     )
+    assert result.verdict == "CLEAN"
+    assert "this advisory" in result.reason
+    # The signal is still reported, so the limit remains visible per entry.
+    assert result.signals["version_in_graph"] is False
+
+
+def test_an_incomplete_closure_still_blocks_clean() -> None:
+    # The guard that genuinely matters: if the blast radius did not compute,
+    # nothing can be called clean, because AT_RISK cannot be ruled out.
+    result = decide_entry(
+        LockEntry("orm-lite", "2.0.0", ("node_modules/orm-lite",)),
+        advisory_hit=None,
+        package_in_graph=True,
+        version_in_graph=True,
+        exposed_names=EXPOSED_NAMES,
+        exposed_complete=False,
+    )
     assert result.verdict == "UNKNOWN"
-    assert "no version-level record" in result.reason
 
 
 @pytest.mark.parametrize(
