@@ -43,6 +43,14 @@ bursts.
 
 ## A functional product
 
+**Live: https://api-production-ea37c.up.railway.app**
+
+The hosted instance runs a reduced slice — 19,161 packages rather than 52,161 —
+because its object store has to fit a 5 GB volume. The incident core is
+identical, so every capability works; the blast radius of
+`@tanstack/react-router` is **2,918 packages** there against **5,782** locally.
+Both numbers are real traversals over their own graph.
+
 Search a compromised package and the blast radius paints in stages — depth 1 at
 about 170 ms, then 2, then 3 — so the screen is alive while the deeper traversal
 runs. Drop in a `package-lock.json` and every resolved artifact gets a verdict,
