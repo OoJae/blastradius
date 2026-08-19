@@ -20,6 +20,10 @@ data/slice/*
 # makes the deployment reproducible by anyone with the repo.
 !data/slice/demo-20260810/
 !data/slice/demo-20260810/**
+# The hosted slice is smaller, to fit the 5 GB object-store volume the hosting
+# plan allows; BLASTRADIUS_SLICE picks which one a deployment builds.
+!data/slice/hosted-20260810/
+!data/slice/hosted-20260810/**
 
 # Python
 .venv/

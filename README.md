@@ -21,22 +21,52 @@ six-minute window (19:20–19:26 UTC, CVE-2026-45321 / GHSA-g7cv-rxg3-hmpx).
 
 ## The 6-minute problem
 
-_TODO (Phase 3): the incident, in three sentences._
+On 11 May 2026 an attacker published 84 malicious versions across 42
+`@tanstack/*` packages. `@tanstack/react-router` alone has about 19 million
+weekly downloads. If your CI ran `npm install` that evening, the question you
+needed answered in minutes was: *which of my services just installed one?*
+
+That question is a transitive reverse-dependency closure over millions of
+versioned nodes. A vector index cannot express it. In SQL it is a recursive CTE
+over tens of millions of rows. It is a graph traversal, so this is built on a
+graph.
+
+**One correction to our own framing.** The brief for this project — and the
+advisory's own prose — describe a six-minute window, and we set out to animate
+a blast radius growing across it. The registry timestamps say something more
+interesting. The attack was **two automated bursts of 42 versions, four seconds
+each, five and a half minutes apart**; every affected package had a malicious
+version live within the first four seconds, so the blast radius was complete
+almost immediately and flat for the remaining 336 seconds. A gradual bloom would
+have been a better animation and a worse fact, so the product shows the two
+bursts.
 
 ## A functional product
 
-_TODO (Phase 3): deployed link + quickstart._
+Search a compromised package and the blast radius paints in stages — depth 1 at
+about 170 ms, then 2, then 3 — so the screen is alive while the deeper traversal
+runs. Drop in a `package-lock.json` and every resolved artifact gets a verdict,
+including whether it was installed *while the malicious version was live*. An
+inspector drawer shows the exact Cypher behind every number, its milliseconds,
+and whether it was live or cached.
 
-Quickstart (local). Requires Docker, [`just`](https://github.com/casey/just)
-and [`uv`](https://docs.astral.sh/uv/):
+Quickstart (local). Requires Docker, [`just`](https://github.com/casey/just),
+[`uv`](https://docs.astral.sh/uv/) and Node:
 
 ```bash
-just up            # start HydraDB (Docker) and wait for readiness
-just smoke         # HTTP + Bolt round-trip against the running node
-just ingest-demo   # load the checked-in fixture graph
-just test          # unit tests (no database required)
+just up            # start HydraDB + MinIO and wait for readiness
+just ingest-demo   # load the checked-in fixture graph (30 nodes, known answers)
+just test          # 170 unit tests, no database required
 just test-live     # check HydraDB's answers against the fixture's known answers
+just parse-check   # execute every .cypher file: the only way to parse-check here
+
+just web-install   # one-time UI dependencies
+just web-build     # build the interface into web/dist
+just dev           # serve API + interface on http://127.0.0.1:8000
 ```
+
+To run the real incident rather than the fixtures, build a slice from the
+committed extract and load it — see *Real ingestion and retrieval workflows*.
 
 ## Real ingestion and retrieval workflows
 
@@ -44,7 +74,24 @@ _TODO (Phase 1): pipeline diagram, node/edge counts, loader design._
 
 ## A clear use case
 
-_TODO (Phase 3): incident-response walkthrough._
+An advisory lands naming 42 compromised packages. You have minutes.
+
+1. **What is the blast radius?** Searching `@tanstack/react-router` returns
+   **5,782 packages** within three hops that would have pulled in a malicious
+   version — 1,034 of them directly. Every number is a live traversal, and the
+   statement that produced it is one click away.
+2. **When was it dangerous?** The live window is not read from the advisory's
+   prose; it is derived from the registry's own publish timestamps for all 84
+   malicious versions: **19:20:39 → 19:26:19 UTC**. That is 19 seconds later at
+   the close than the advisory text says, so an install in that gap is exposed
+   under the data and clean under the prose.
+3. **Was I hit?** Drop your lockfile. Every resolved artifact is checked against
+   the advisory, and for anything matching, HydraDB evaluates the window as an
+   integer predicate on the `AFFECTS` edge — the graph answers "were you
+   installing while it was live", not the application.
+4. **Where else should I look?** Shared maintainers and near-identical names are
+   both one hop away — different questions from the blast radius, and the
+   product keeps them apart rather than conflating them.
 
 ## A thoughtful technical implementation
 
