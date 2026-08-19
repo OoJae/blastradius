@@ -68,7 +68,13 @@ export async function call<T>(path: string, init?: RequestInit): Promise<Result<
 
   const hydra: Hydra | null = body.hydra ? { ...EMPTY_HYDRA, ...body.hydra } : null
 
-  if (body.status === 'ok') return { ok: true, data: body.result as T, hydra }
+  // Most endpoints wrap their answer in `result`, but /api/health reports at
+  // the top level. Falling back to the whole body covers both -- without this,
+  // health parsed as undefined and the boot screen never cleared.
+  if (body.status === 'ok') {
+    const data = (body.result !== undefined ? body.result : body) as T
+    return { ok: true, data, hydra }
+  }
 
   // `not_computed` carries the classified reason; the rest are 404/422 shapes
   // that still deserve the same envelope so callers never special-case them.
