@@ -117,7 +117,7 @@ async def load_if_empty(client: HydraClient) -> bool:
     if decision == "serve-fixture":
         print(
             "fixture graph detected -- serving it as loaded "
-            "(run `just ingest` to load the real slice instead)",
+            "(run `just ingest` to build the real slice instead)",
             flush=True,
         )
         return False

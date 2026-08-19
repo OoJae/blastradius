@@ -27,6 +27,7 @@ function Shell() {
   const [failure, setFailure] = useState<Failure | null>(null)
   const [busy, setBusy] = useState(false)
   const [tab, setTab] = useState<'radius' | 'lockfile' | 'nextwave'>('radius')
+  const [incidentPackages, setIncidentPackages] = useState<string[]>([])
 
   // Wait for the service to finish reading the graph before asking it anything.
   useEffect(() => {
@@ -67,6 +68,13 @@ function Shell() {
 
   useEffect(() => { if (!booting) search(SEED) }, [booting, search])
 
+  // The advisory's roster, so the page can tell "this package is compromised"
+  // from "this package merely has dependents".
+  useEffect(() => {
+    if (booting) return
+    api.incident().then((r) => { if (r.ok) setIncidentPackages(r.data.packages ?? []) })
+  }, [booting])
+
   if (booting) {
     return (
       <main className="flex min-h-screen items-center justify-center px-6">
@@ -82,6 +90,8 @@ function Shell() {
   }
 
   const deepest = rings.at(-1)
+  // Whether the searched package is one the advisory names, per /api/incident.
+  const compromised = incidentPackages.includes(pkg)
 
   return (
     <div className="min-h-screen pb-12">
@@ -110,7 +120,7 @@ function Shell() {
             {latest
               ? `${latest.hydra.queries} queries · ${latest.hydra.live} live · ${ms(latest.hydra.ms)}`
               : 'inspector'}
-            {' '}⌥
+            {' '}\
           </button>
         </div>
       </header>
@@ -118,12 +128,18 @@ function Shell() {
       <main className="mx-auto max-w-[1400px] px-6">
         {tab === 'radius' && (
         <section className="pt-12">
-          <h1 className="max-w-4xl text-[44px] font-semibold leading-[1.1] tracking-tight">
-            <span className="font-mono text-ember">{SEED}</span> was compromised on 11 May 2026.
+          {/* The heading follows the search, and only says "compromised" when
+              the advisory actually names the package. Asserting that lodash's
+              dependents installed a malicious version would be false, and this
+              product does not get to be loose about that. */}
+          <h1 className="max-w-4xl break-words text-[clamp(1.75rem,4.5vw,44px)] font-semibold leading-[1.1] tracking-tight">
+            <span className="font-mono text-ember">{pkg}</span>{' '}
+            {compromised ? 'was compromised on 11 May 2026.' : '— who depends on it?'}
           </h1>
           <p className="mt-3 max-w-2xl text-chalk-dim">
-            Who would have installed it? That is a transitive reverse-dependency closure, and this
-            answers it from a graph.
+            {compromised
+              ? 'Who would have installed it? That is a transitive reverse-dependency closure, and this answers it from a graph.'
+              : 'This package is not named by the advisory in this graph. The closure below is its reverse-dependency radius — who would be reached if it ever were compromised.'}
           </p>
 
           <div className="mt-8 max-w-3xl"><SearchBox value={pkg} onSearch={search} /></div>
@@ -192,7 +208,9 @@ function Shell() {
                   {compact(deepest.total)}
                 </p>
                 <p className="mt-2 text-chalk-dim">
-                  packages would have installed a malicious version, within {deepest.depth} hops
+                  {compromised
+                    ? `packages would have installed a malicious version, within ${deepest.depth} hops`
+                    : `packages depend on ${pkg}, within ${deepest.depth} hops`}
                 </p>
                 <ul className="mt-4 space-y-1 font-mono text-[11px] text-chalk-faint">
                   {rings.map((r) => (

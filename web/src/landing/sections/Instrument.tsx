@@ -126,6 +126,12 @@ export function Proof({ facts }: { facts: LiveFacts }) {
         massaging.
       </p>
 
+      {!facts.ready && (
+        <p className="mt-10 font-mono text-[length:var(--step-label)] text-ember">
+          the graph is still loading on this instance — these fill in as HydraDB answers
+        </p>
+      )}
+
       <dl className="mt-14 grid grid-cols-2 gap-x-10 gap-y-10 lg:grid-cols-4">
         {cells.map((c, i) => (
           <div key={c.label} data-reveal data-reveal-delay={String(i + 3)}>

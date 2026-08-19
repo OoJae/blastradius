@@ -88,6 +88,23 @@ function rng(seed: number) {
   }
 }
 
+/** Whether this browser can actually give us a WebGL context.
+ *
+ *  Checked before constructing anything, because THREE.WebGLRenderer throws
+ *  when it cannot get one -- on a locked-down corporate machine, a VM with no
+ *  GPU, or a browser with 3D disabled -- and an uncaught throw inside a React
+ *  effect unmounts the tree and leaves the page blank. The landing page has to
+ *  survive that: the type carries the argument, the field only illustrates it.
+ */
+export function webglAvailable(): boolean {
+  try {
+    const canvas = document.createElement('canvas')
+    return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'))
+  } catch {
+    return false
+  }
+}
+
 export function createField(counts: FieldCounts, opts: { reducedMotion: boolean }): Field {
   const scene = new THREE.Scene()
   const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200)

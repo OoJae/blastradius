@@ -44,6 +44,9 @@ bursts.
 ## A functional product
 
 **Live: https://api-production-ea37c.up.railway.app**
+— the landing page, which replays the six minutes.
+**The working instrument is at [/app/](https://api-production-ea37c.up.railway.app/app/)**,
+one click from the hero.
 
 The hosted instance runs a reduced slice — 19,161 packages rather than 52,161 —
 because its object store has to fit a 5 GB volume. The incident core is
@@ -71,7 +74,7 @@ Quickstart (local). Requires Docker, [`just`](https://github.com/casey/just),
 ```bash
 just up            # start HydraDB + MinIO and wait for readiness
 just ingest-demo   # load the checked-in fixture graph (30 nodes, known answers)
-just test          # 181 unit tests, no database required
+just test          # 186 unit tests, no database required
 just test-live     # check HydraDB's answers against the fixture's known answers
 just parse-check   # execute every .cypher file: the only way to parse-check here
 
@@ -151,7 +154,8 @@ An advisory lands naming 42 compromised packages. You have minutes.
    malicious versions: **19:20:39 → 19:26:19 UTC**. That is 19 seconds later at
    the close than the advisory text says, so an install in that gap is exposed
    under the data and clean under the prose.
-3. **Was I hit?** Drop your lockfile. Every resolved artifact is checked against
+3. **Was I hit?** Drop your lockfile, or type a GitHub `owner/repo` and the
+   browser fetches its `package-lock.json` straight from raw.githubusercontent. Every resolved artifact is checked against
    the advisory, and for anything matching, HydraDB evaluates the window as an
    integer predicate on the `AFFECTS` edge — the graph answers "were you
    installing while it was live", not the application.
@@ -252,10 +256,13 @@ outright:
 cypher_edge_rows rejected by admission control: actual 250001 exceeds limit 250000
 ```
 
-`/api/stats` shows that refusal verbatim next to the loader's manifest number,
-rather than quietly substituting one for the other. Anchored traversals over
-the same edges run in milliseconds; it is counting *everything* that is
-impossible, not traversing.
+The refusal is recorded verbatim in
+[docs/VERIFICATION.md](docs/VERIFICATION.md) rather than papered over with the
+loader's manifest number. `/api/stats` reports only the four label counts that
+are cheap enough to take at boot, and marks any it could not take as
+`refused` with the server's own words. Anchored traversals over the same edges
+run in milliseconds; it is counting *everything* that is impossible, not
+traversing.
 
 ### What we would lose without it
 
@@ -352,11 +359,18 @@ asserts it is refused.
   (used as a Bolt client), [numpy](https://numpy.org/),
   [rapidfuzz](https://github.com/rapidfuzz/RapidFuzz),
   [xxhash](https://github.com/ifduyue/python-xxhash).
-- Web: [React](https://react.dev/),
-  [d3-force](https://github.com/d3/d3-force),
-  [react-force-graph-2d](https://github.com/vasturiano/react-force-graph);
-  built with [Vite](https://vitejs.dev/),
+- Web: [React](https://react.dev/) (MIT),
+  [three.js](https://threejs.org/) (MIT) for the landing page's blast field,
+  [Lenis](https://github.com/darkroomengineering/lenis) (MIT) for smooth
+  scrolling; built with [Vite](https://vitejs.dev/),
   [Tailwind CSS](https://tailwindcss.com/), and TypeScript.
+
+**Fonts** — all self-hosted in `web/public/fonts/` under the
+[SIL Open Font License 1.1](web/public/fonts/OFL.txt):
+
+- [Instrument Serif](https://github.com/Instrument/instrument-serif) and
+  Instrument Sans — Instrument
+- [IBM Plex Mono](https://github.com/IBM/plex) — IBM
 
 **Tooling**
 

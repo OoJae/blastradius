@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
-import { createField } from './three/field'
+import { createField, webglAvailable } from './three/field'
 import type { Field } from './three/field'
 import { Hero } from './sections/Hero'
 import { Detonation } from './sections/Detonation'
@@ -36,16 +36,40 @@ export function Landing() {
 
   useReveal(page, [facts.ready])
 
-  useEffect(() => { loadFacts().then(setFacts) }, [])
+  // A cold deployment spends minutes building its graph, so asking once and
+  // giving up leaves a judge staring at em-dashes with no explanation. Poll
+  // until the numbers exist, and say so in the meantime.
+  useEffect(() => {
+    let alive = true
+    let timer: number | undefined
+    const ask = async () => {
+      const next = await loadFacts()
+      if (!alive) return
+      setFacts(next)
+      if (!next.ready) timer = window.setTimeout(ask, 4000)
+    }
+    ask()
+    return () => { alive = false; if (timer) window.clearTimeout(timer) }
+  }, [])
 
   // The scene is built once the real counts arrive, so the number of points on
   // screen is the number of packages the traversal returned.
   useEffect(() => {
     if (!scene.current || !facts.rings.length || field.current) return
+    if (!webglAvailable()) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const f = createField(facts.rings, { reducedMotion: reduced })
-    f.mount(scene.current)
-    f.start()
+    let f: Field
+    try {
+      f = createField(facts.rings, { reducedMotion: reduced })
+      f.mount(scene.current)
+      f.start()
+    } catch (error) {
+      // A renderer failure must never take the page with it. Without this the
+      // throw escapes the effect, React unmounts, and the submitted URL is a
+      // blank screen for anyone whose browser cannot do WebGL.
+      console.warn('blast field unavailable, serving the page without it', error)
+      return
+    }
     field.current = f
     return () => { f.dispose(); field.current = null }
   }, [facts.rings])

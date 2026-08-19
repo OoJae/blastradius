@@ -73,8 +73,9 @@ test:
 test-live:
     uv run pytest -m live
 
+# Load the committed demo slice into HydraDB (~25 minutes the first time).
 ingest:
-    @echo "not implemented until Phase 1"
+    uv run python -m ingest.load_slice --dir "$(cat data/slice/CURRENT 2>/dev/null || echo data/slice/demo-20260810)"
 
 # Evaluate against the real incident and render docs/EVAL_REPORT.md.
 eval:

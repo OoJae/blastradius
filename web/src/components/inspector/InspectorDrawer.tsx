@@ -25,15 +25,21 @@ export function InspectorDrawer({ stats }: { stats: Stats | null }) {
     <>
       {open && <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setOpen(false)} />}
       <aside
-        className={`fixed right-0 top-0 z-50 flex h-full w-[540px] max-w-full flex-col border-l border-ink-600 bg-ink-800 transition-transform duration-200 ${
+        aria-hidden={!open}
+        {...(!open ? { inert: '' as unknown as boolean } : {})}
+        className={`fixed right-0 top-0 z-50 flex h-full w-[540px] max-w-[100vw] flex-col overflow-hidden border-l border-ink-600 bg-ink-800 transition-transform duration-200 ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <header className="border-b border-ink-600 px-4 py-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-medium">HydraDB inspector</h2>
-            <button onClick={() => setOpen(false)} className="text-chalk-faint hover:text-chalk">
-              esc
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close the inspector"
+              className="shrink-0 rounded px-2 py-1 text-chalk-faint hover:text-chalk"
+            >
+              close
             </button>
           </div>
           <nav className="mt-3 flex gap-1 text-xs">
