@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { EntryVerdict } from '../../lib/api'
+import type { EntryVerdict, Remediation } from '../../lib/api'
 import { compact, isoUTC } from '../../lib/format'
 import { WindowBar } from './WindowBar'
 
@@ -30,6 +30,43 @@ function Signals({ signals }: { signals: Record<string, boolean> }) {
         />
       ))}
     </span>
+  )
+}
+
+function WhatToDoNow({ remediation }: { remediation: Remediation }) {
+  const [copied, setCopied] = useState(false)
+  const copy = async () => {
+    if (!remediation.command) return
+    await navigator.clipboard.writeText(remediation.command)
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1500)
+  }
+  return (
+    <div className="mt-2 rounded border border-verdict-exposed/30 bg-ink-900 p-2.5">
+      <p className="text-[10px] font-medium uppercase tracking-wide text-chalk-faint">
+        what to do now
+      </p>
+      {remediation.command ? (
+        <>
+          <button
+            onClick={copy}
+            title="copy"
+            className="mt-1.5 block w-full truncate rounded bg-ink-800 px-2 py-1.5 text-left font-mono text-[11px] text-chalk hover:text-ember"
+          >
+            {copied ? 'copied ✓' : `$ ${remediation.command}`}
+          </button>
+          <p className="mt-1 text-[10px] text-chalk-faint">
+            {remediation.first_clean_version} is {remediation.source}
+            {remediation.published_at ? ` — published ${isoUTC(remediation.published_at)}` : ''}
+          </p>
+        </>
+      ) : (
+        <p className="mt-1.5 text-[11px] text-chalk-dim">{remediation.note}</p>
+      )}
+      <p className="mt-1.5 text-[11px] text-verdict-exposed">
+        then {remediation.rotate_credentials}
+      </p>
+    </div>
   )
 }
 
@@ -68,6 +105,8 @@ function Row({ entry, installedAt }: { entry: EntryVerdict; installedAt: number 
           />
         </div>
       )}
+
+      {entry.remediation && <WhatToDoNow remediation={entry.remediation} />}
     </li>
   )
 }

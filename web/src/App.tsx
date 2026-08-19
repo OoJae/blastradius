@@ -7,6 +7,7 @@ import { SearchBox } from './components/hero/SearchBox'
 import { RingDiagram } from './components/radius/RingDiagram'
 import { NotComputed } from './components/state/NotComputed'
 import { LockfilePanel } from './components/lockfile/LockfilePanel'
+import { ForecastPanel } from './components/forecast/ForecastPanel'
 import { Skeleton } from './components/state/Skeleton'
 import type { Failure } from './lib/api'
 
@@ -25,7 +26,7 @@ function Shell() {
   const [radius, setRadius] = useState<Radius | null>(null)
   const [failure, setFailure] = useState<Failure | null>(null)
   const [busy, setBusy] = useState(false)
-  const [tab, setTab] = useState<'radius' | 'lockfile'>('radius')
+  const [tab, setTab] = useState<'radius' | 'lockfile' | 'nextwave'>('radius')
 
   // Wait for the service to finish reading the graph before asking it anything.
   useEffect(() => {
@@ -89,7 +90,7 @@ function Shell() {
           <div className="flex items-baseline gap-6">
             <span className="font-mono text-sm tracking-wide text-ember">BLASTRADIUS</span>
             <nav className="flex gap-1 text-xs">
-              {(['radius', 'lockfile'] as const).map((t) => (
+              {(['radius', 'lockfile', 'nextwave'] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
@@ -97,7 +98,7 @@ function Shell() {
                     tab === t ? 'bg-ink-700 text-chalk' : 'text-chalk-dim hover:text-chalk'
                   }`}
                 >
-                  {t === 'radius' ? 'blast radius' : 'my lockfile'}
+                  {t === 'radius' ? 'blast radius' : t === 'lockfile' ? 'my lockfile' : 'next wave'}
                 </button>
               ))}
             </nav>
@@ -158,6 +159,19 @@ function Shell() {
             </p>
             <div className="mt-8">
               <LockfilePanel stats={stats} />
+            </div>
+          </section>
+        )}
+
+        {tab === 'nextwave' && (
+          <section className="mt-12">
+            <h2 className="text-2xl font-semibold">Where can the attacker publish next?</h2>
+            <p className="mt-2 max-w-2xl text-sm text-chalk-dim">
+              The worm spread on stolen maintainer credentials, not dependencies. One traversal —
+              package to maintainer to package — maps everything those credentials still reach.
+            </p>
+            <div className="mt-8">
+              <ForecastPanel />
             </div>
           </section>
         )}

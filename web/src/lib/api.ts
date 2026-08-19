@@ -109,6 +109,7 @@ export const api = {
   maintainers: (pkg: string) => call<MaintainerOverlap>(`/api/maintainer-overlap/${pkg}`),
   typosquats: (pkg: string) => call<Typosquats>(`/api/typosquats/${pkg}`),
   incident: () => call<Incident>('/api/incident'),
+  forecast: () => call<Forecast>('/api/forecast'),
   lockfile: (body: string, installedAt?: number) =>
     call<LockfileVerdict>(
       `/api/lockfile${installedAt ? `?installed_at=${installedAt}` : ''}`,
@@ -196,7 +197,17 @@ export type EntryVerdict = {
   window: 'before' | 'inside' | 'after' | null
   in_window_per_graph: boolean | null
   advisory: Record<string, any> | null
+  remediation: Remediation | null
   signals: Record<string, boolean>
+}
+
+export type Remediation = {
+  first_clean_version: string | null
+  published_at?: number
+  command?: string
+  note?: string
+  rotate_credentials: string
+  source?: string
 }
 
 export type LockfileVerdict = {
@@ -209,4 +220,33 @@ export type LockfileVerdict = {
   counts: Record<string, number>
   coverage: Record<string, any>
   entries: EntryVerdict[]
+}
+
+export type ForecastCandidate = {
+  name: string
+  is_popular: boolean
+  radius_total: number | null
+  radius_depth: number
+}
+
+export type Forecast = {
+  warming?: boolean
+  advisory?: string
+  seeds?: {
+    packages: number
+    first_artifact: { name: string; version: string; published_at: number; published_at_iso: string }
+  }
+  maintainers?: { username: string; packages_owned: number }[]
+  hindsight?: { known_then: number; fell_later: number; flagged: number; missed: string[]; note: string }
+  candidates?: ForecastCandidate[]
+  reach?: {
+    packages: number
+    union_radius: number
+    net_new: number
+    depth: number
+    refused: string[]
+    complete: boolean
+  }
+  boundary?: { available: boolean; victims?: number; flagged?: number; note?: string }
+  computed_at?: number
 }

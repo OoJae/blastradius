@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react'
 
 const SAMPLES = [
-  { file: 'lock-inside-window.json', label: 'installed during the window' },
-  { file: 'lock-before-window.json', label: 'installed before' },
-  { file: 'lock-after-fix.json', label: 'installed after the fix' },
+  { file: 'lock-real-exposed.json', label: 'resolved 1.169.5 during the window' },
+  { file: 'lock-real-at-risk.json', label: 'on the fixed release' },
+  { file: 'lock-real-clean.json', label: 'an unrelated stack' },
 ]
 
 export function DropZone({

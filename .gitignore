@@ -45,3 +45,4 @@ dist/
 # OS / editor
 .DS_Store
 *.swp
+.playwright-mcp/

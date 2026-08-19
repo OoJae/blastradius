@@ -1,0 +1,12 @@
+{
+  "name": "payments-frontend",
+  "version": "3.2.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": { "name": "payments-frontend", "version": "3.2.0" },
+    "node_modules/@tanstack/react-router": { "version": "1.169.5" },
+    "node_modules/@tanstack/history": { "version": "1.166.0" },
+    "node_modules/react": { "version": "18.3.1" }
+  }
+}
