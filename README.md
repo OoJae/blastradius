@@ -54,7 +54,14 @@ Both numbers are real traversals over their own graph.
 Search a compromised package and the blast radius paints in stages — depth 1 at
 about 170 ms, then 2, then 3 — so the screen is alive while the deeper traversal
 runs. Drop in a `package-lock.json` and every resolved artifact gets a verdict,
-including whether it was installed *while the malicious version was live*. An
+including whether it was installed *while the malicious version was live* — and
+every EXPOSED entry carries its next step: the earliest clean release after the
+window, read from the graph, never guessed. The **next wave** tab answers the
+question that follows: the worm published with stolen maintainer credentials, so
+where can those credentials still publish? Seeded with only the *first*
+compromised artifact, the maintainer pivot flags **41 of the 41** packages that
+fell in the following minutes — and 6 candidates remain, `@tanstack/react-query`
+among them with a radius of 8,971, larger than the incident itself. An
 inspector drawer shows the exact Cypher behind every number, its milliseconds,
 and whether it was live or cached.
 
@@ -64,7 +71,7 @@ Quickstart (local). Requires Docker, [`just`](https://github.com/casey/just),
 ```bash
 just up            # start HydraDB + MinIO and wait for readiness
 just ingest-demo   # load the checked-in fixture graph (30 nodes, known answers)
-just test          # 170 unit tests, no database required
+just test          # 181 unit tests, no database required
 just test-live     # check HydraDB's answers against the fixture's known answers
 just parse-check   # execute every .cypher file: the only way to parse-check here
 
@@ -194,6 +201,7 @@ here is exactly which is which.
 | Maintainer overlap | two single-hop `MAINTAINS` statements | 61 ms |
 | Typosquats | `SIMILAR_NAME` single hop | 6 ms |
 | Lockfile advisory hits | `AFFECTS` on the resolved version, and the live-window comparison as an integer predicate on the edge | 7 ms per matching entry |
+| Remediation target | `VERSION_OF` anchored on the package, filtered to clean releases after the window | ~660 ms per exposed entry (1,192 versions filtered) |
 
 Every one of these is cached after the first call, and **`?fresh=1` forces a
 re-run** — the response reports `cached` per step, so a cached number and a
@@ -220,6 +228,15 @@ available. Both statements are still in the repo
 executed by `just parse-check` on every run, and **`/api/suggest?live=1` runs
 the real prefix query** so the cache can be diffed against the graph rather
 than trusted. A live test does exactly that.
+
+The **next-wave forecast** is also computed once at boot and served from
+memory: 42 anchored `MAINTAINS` hops out, 3 back, then one
+`PKG_DEPENDED_BY*1..3` radius per reachable package — 51 statements whose
+traces are replayed, ages attached, into every `/api/forecast` response. Its
+checkable claim is measured rather than asserted: seeded with only the first
+artifact, the pivot flags 41/41 of the packages that fell afterwards, and the
+same payload states what the pivot *cannot* do — 0 of the 128 broader-campaign
+victims are reachable this way, because phishing is not an edge in this graph.
 
 ### Not from HydraDB at all
 

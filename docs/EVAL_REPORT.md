@@ -81,6 +81,25 @@ One code per victim, first match wins, so the counts reconcile against the roste
 | `no_path_in_slice` | 119 | yes — in the graph, no path reaches it |
 | **total** | **172** | reconciles against the roster |
 
+### 3.5 The inverse claim: within-incident hindsight
+
+The zero above measures whether the graph can predict *who gets phished next*.
+It cannot, and §3.1 explains why. The maintainer edges carry a different,
+stronger claim, and it is measured rather than asserted (`/api/forecast`,
+pinned by `tests/test_forecast_pivot.py`):
+
+| Question | Answer | Status |
+|---|---|---|
+| Rewind to the first artifact (19:20:39Z), nothing else known. How many of the 41 packages that fell in the following minutes were one maintainer hop away? | **41 / 41, none missed** | measured |
+| How many packages can the stolen credentials still publish to? | 6 — all popular; `@tanstack/react-query` alone has a depth-3 radius of 8,971, larger than the incident's own exposure | measured |
+| Additional packages reachable beyond the incident's own exposure | 5,979 at depth 3 | measured |
+| Broader-campaign victims flagged by the same pivot | **0** of 128 at roster level (119 scorable in-slice, per §3.2) — consistent with the zero above | measured |
+
+The distinction the product keeps: the pivot maps the attacker's *current
+token reach* — the thing an incident responder must revoke and watch — and
+this incident confirms that map would have been exact. It does not predict the
+campaign's next phishing victim, and the payload says so in the same breath.
+
 ## 4. Anti-cheating guard
 
 Every discovery query ran through a guard under the `discovery` policy, which refuses any query mentioning the advisory, the `compromised` flag, or a victim name as a literal. 214 queries were executed and are recorded verbatim in `data/eval/queries.jsonl`.
