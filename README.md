@@ -12,10 +12,10 @@ demonstrated against the real Mini Shai-Hulud / TanStack compromise of
 **May 11, 2026** — 84 malicious artifacts across 42 packages, published in a
 six-minute window (19:20–19:26 UTC, CVE-2026-45321 / GHSA-g7cv-rxg3-hmpx).
 
-> **Status: Phase 0 complete (verification).** This README is filled in as
-> features land. Sections below are placeholders until the work they describe
-> exists. Measured facts so far — including the constraints that shaped the
-> schema — are in [docs/VERIFICATION.md](docs/VERIFICATION.md).
+> Every number in this README was measured, not estimated. The constraints that
+> shaped the schema, the throughput figures, and the things that turned out
+> differently from what we assumed are all in
+> [docs/VERIFICATION.md](docs/VERIFICATION.md).
 
 ---
 
@@ -70,7 +70,53 @@ committed extract and load it — see *Real ingestion and retrieval workflows*.
 
 ## Real ingestion and retrieval workflows
 
-_TODO (Phase 1): pipeline diagram, node/edge counts, loader design._
+```
+deps.dev on BigQuery ──┐
+  NPMRequirements      │   21.6 GB scanned, one query
+  PackageVersions      ├─→ 46M npm dependency edges ─→ slice compiler ─→ HydraDB
+OSV + OpenSSF ─────────┤     4.26M real packages        (CSR, 2 passes)   (batched
+  172 campaign records │                                                   UNWIND)
+npm registry ──────────┘
+  maintainers, publish times
+```
+
+**Extraction.** `NPMRequirements` rather than `DependencyGraphEdges`: it is
+npm-only, carries the declared semver ranges, and costs **21.6 GB** against
+1,006 GB for the graph-edges table. It also avoids a trap — in
+`DependencyGraphEdges`, `Name` is the *root* of a resolved tree and `From→To`
+is any edge inside it, so grouping on `Name→To.Name` yields a pre-computed
+transitive closure mislabelled as dependency edges. Depth 1 would already have
+equalled the full blast radius.
+
+**Two filters that matter.** deps.dev encodes bundled dependencies as
+`parent>version>child`; those are **62% of the roster** and are not npm
+packages — the registry 404s on them. And zero-dependency packages produce no
+manifest rows at all, so the package roster comes from `PackageVersions`, never
+from the edge list, or every leaf would vanish and its edges would silently
+write nothing.
+
+**Loading.** Batched `UNWIND` over Bolt, ≤1024 rows per batch (the measured
+server cap; 1,025 is refused). Nodes before edges, because an edge batch whose
+endpoint is missing matches nothing and writes zero rows *without erroring*.
+`PKG_DEPENDED_BY` is produced by re-reading the forward file with endpoints
+swapped, so the two projections cannot drift apart.
+
+| | Local slice | Hosted slice |
+|---|---:|---:|
+| Packages | 52,161 | 19,161 |
+| Dependency edges (written both ways) | 1,314,935 | 409,751 |
+| Versions / maintainers | 16,802 / 2,707 | 16,802 / 2,707 |
+| Advisory artifacts | 84 | 84 |
+
+The hosted instance runs the smaller slice because its object store has to fit
+a 5 GB volume. The incident core is identical in both; the popularity spine is
+what shrinks.
+
+**Verification, not assertion.** `ingest/verify_counts.py` checks every edge
+endpoint exists *before* loading, compares every count against the source
+files, and then compares HydraDB's reverse closures against the same closures
+computed in pure Python — **24/24 probes exact**, including a package that
+reaches itself through a dependency cycle.
 
 ## A clear use case
 
@@ -95,7 +141,34 @@ An advisory lands naming 42 compromised packages. You have minutes.
 
 ## A thoughtful technical implementation
 
-_TODO (Phase 2): schema diagram and the constraint-to-design table._
+```
+(:Version)-[:VERSION_OF]->(:Package)
+(:Package)-[:PKG_DEPENDS_ON  {via_versions}]->(:Package)
+(:Package)-[:PKG_DEPENDED_BY {via_versions}]->(:Package)   ← materialised reverse
+(:Maintainer)-[:MAINTAINS]->(:Package)
+(:Advisory)-[:AFFECTS {live_from, live_until}]->(:Version) ← the temporal edge
+(:Package)-[:SIMILAR_NAME {distance}]->(:Package)
+```
+
+Every one of these shapes exists because a measured constraint forced it. This
+is the whole design, and none of it was guessed:
+
+| Constraint (measured) | What it forced |
+|---|---|
+| A variable-length `MATCH` must anchor on a fixed **source** id; reversing the arrow is rejected identically | `PKG_DEPENDED_BY`, a materialised reverse projection. A blast radius is destination-anchored by nature and would otherwise be inexpressible |
+| Property values are int/float/bool/string only | Semver ranges resolved to concrete versions at ingest; the live window stored as two epoch ints on the edge, which is what makes the temporal question a graph predicate |
+| An `UNWIND` batch caps at 1024 rows, and reports overflow as a *transient* error | Batches of ≤1024; a naive retry loop would spin forever |
+| Batched `SET` values must all read from the row map — no literals | Constants written into every row rather than inlined |
+| Depth bounds cannot be parameters; path-procedure lists cannot be either | A whitelist for depths and a single escaping helper for seed lists — the entire injection surface, closed in one module |
+| No functions, no `IN`, no `count(DISTINCT …)` | Typosquat distances materialised at ingest; distinct counts taken client-side |
+| No network-reachable `EXPLAIN` | `just parse-check` **executes** every query file at every whitelist variant against a sentinel id |
+| An unanchored `count(*)` over 1.3M edges is refused by admission control | The count is reported as refused, verbatim, rather than substituted |
+
+Two further findings that only executing could reveal: Cypher comments are
+`//` and not `--`, and a **path procedure cannot have a leading comment at
+all**, because dispatch requires the trimmed statement to begin with `CALL`.
+The query files keep their explanatory comments and `render()` strips them
+before dispatch.
 
 ## How HydraDB is used, and what we would lose without it
 
@@ -178,11 +251,46 @@ blast radius uses.
 
 ## Why this is only possible with a graph
 
-_TODO (Phase 3): see docs/WHY_A_GRAPH.md._
+The short version: a blast radius is a transitive, directional, unbounded-depth
+closure, and the live-window check is a predicate on a *relationship* rather
+than on either endpoint. SQL can express the first by reimplementing a reverse
+index per query; vector search cannot express it at all, because dependency is
+not similarity and a plausible wrong answer is worse than none.
+
+The full argument, with the measured costs and the exact statements, is in
+**[docs/WHY_A_GRAPH.md](docs/WHY_A_GRAPH.md)**.
 
 ## Results
 
-_TODO (Phase 2): eval report against the real incident's advisory ground truth._
+Full report, generated from the run rather than typed:
+**[docs/EVAL_REPORT.md](docs/EVAL_REPORT.md)**.
+
+**Exposure enumeration is exact.** HydraDB and an independent Python oracle
+agree on every package at every depth — zero missing, zero extra:
+
+| Depth | Packages exposed | Median per seed |
+|---|---:|---:|
+| 1 | 1,321 | 3 ms |
+| 2 | 5,828 | 24 ms |
+| 3 | **8,555** | 112 ms |
+
+**Campaign victim recall is 0 of 119, and that is the interesting result.**
+Across 12.2M dependency edges, **no package in any victim organisation depends
+on any `@tanstack` package**. The same scan does see 137 `@tanstack` packages
+being depended on and 2,722 packages depending on them, so the zero is a
+property of the data rather than a broken query.
+
+The worm spread by stealing CI credentials: a developer installed a compromised
+package, their tokens leaked, and the attacker published to packages they owned
+— packages that never declared a dependency on TanStack. **No dependency
+traversal can follow that, and the report says so rather than finding a metric
+that flatters the tool.** Every one of the 172 campaign records gets exactly one
+stated reason, and the counts reconcile.
+
+The evaluation cannot cheat: a guard refuses any discovery query that mentions
+the advisory, the `compromised` flag, or a victim name, checked *before* the
+driver is touched. The obvious shortcut is planted in the source and a test
+asserts it is refused.
 
 ## Attribution
 
