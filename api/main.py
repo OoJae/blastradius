@@ -44,6 +44,33 @@ SLICE_DIR = Path(__file__).resolve().parent.parent / "data" / "slice"
 # from one whose load was interrupted after the nodes.
 PROBE_PACKAGE = "@tanstack/react-router"
 
+# The fixture graph's hub. Its dependents are the fixture's known answers, so
+# rows here mean the fixture edges landed -- a graph someone loaded on purpose
+# with `just ingest-demo`, not the debris of an interrupted slice load.
+FIXTURE_PROBE = "flux-core"
+
+
+def load_decision(packages: int, probe_rows: int, fixture_rows: int) -> str:
+    """What a boot should do, given what the probes found.
+
+    Pure so the contract is pinned by an offline test: the previous version of
+    this logic treated a deliberately-loaded fixture graph as an interrupted
+    slice load and silently rebuilt 52k packages on top of it, which is exactly
+    the kind of decision that deserves a table:
+
+      no packages at all          -> load
+      real-slice probe has edges  -> serve
+      fixture probe has edges     -> serve-fixture (never rebuild over it)
+      nodes but no edges anywhere -> load (an interrupted load; MERGE resumes)
+    """
+    if not packages:
+        return "load"
+    if probe_rows:
+        return "serve"
+    if fixture_rows:
+        return "serve-fixture"
+    return "load"
+
 
 async def load_if_empty(client: HydraClient) -> bool:
     """Build the graph on first boot, if this deployment has an empty one.
@@ -65,7 +92,8 @@ async def load_if_empty(client: HydraClient) -> bool:
     # looks populated and answers every blast radius with zero. Probe an
     # anchored traversal as well -- if a package has no dependents at all, the
     # edges never landed and the load has to run again. MERGE makes that safe.
-    edges_present = False
+    probe_rows = 0
+    fixture_rows = 0
     if packages:
         probe = await client.run_spec(
             "q1_radius_nodes",
@@ -73,16 +101,32 @@ async def load_if_empty(client: HydraClient) -> bool:
             interpolate={"depth": 1},
             seed_id=hash_key(pkg_key(PROBE_PACKAGE)),
         )
-        edges_present = bool(probe)
-        if not edges_present:
-            print(
-                f"{packages:,} packages but no dependents for {PROBE_PACKAGE} "
-                "-- a previous load was interrupted; loading again",
-                flush=True,
+        probe_rows = len(probe)
+        if not probe_rows:
+            fixture = await client.run_spec(
+                "q1_radius_nodes",
+                trace=trace,
+                interpolate={"depth": 1},
+                seed_id=hash_key(pkg_key(FIXTURE_PROBE)),
             )
+            fixture_rows = len(fixture)
 
-    if packages and edges_present:
+    decision = load_decision(packages, probe_rows, fixture_rows)
+    if decision == "serve":
         return False
+    if decision == "serve-fixture":
+        print(
+            "fixture graph detected -- serving it as loaded "
+            "(run `just ingest` to load the real slice instead)",
+            flush=True,
+        )
+        return False
+    if packages:
+        print(
+            f"{packages:,} packages but no dependents for {PROBE_PACKAGE} "
+            "-- a previous load was interrupted; loading again",
+            flush=True,
+        )
 
     # Which slice this deployment builds. The hosted instance runs a smaller
     # one than local development: its object store has to fit a 5 GB volume,
@@ -187,6 +231,46 @@ def digest() -> GraphDigest:
     return state["digest"]
 
 
+def starting_response() -> JSONResponse | None:
+    """The answer for the window before the digest exists.
+
+    The server accepts connections while the background prepare() task builds
+    the graph and its digest -- that is the whole point of prepare() being a
+    background task -- so every analytical endpoint has to have an answer for
+    "not yet". This is that answer, in the same not_computed envelope the
+    interface already renders as a retryable card, rather than the bare 500 a
+    KeyError on state["digest"] used to produce.
+    """
+    if "digest" in state:
+        return None
+    if state.get("startup_error"):
+        hint = f"startup failed: {state['startup_error']}"
+        retryable = False
+    elif state.get("loading"):
+        hint = (
+            f"loading the {state['loading']} slice -- a fresh deployment "
+            "builds its graph once, in about 25 minutes"
+        )
+        retryable = True
+    else:
+        hint = "building the digest from HydraDB; this takes seconds on a loaded graph"
+        retryable = True
+    return JSONResponse(
+        status_code=503,
+        content={
+            "status": "not_computed",
+            "result": None,
+            "not_computed": {
+                "kind": "unavailable",
+                "message": "the service is still starting",
+                "hint": hint,
+                "retryable": retryable,
+            },
+            "hydra": {"cypher": "", "ms": 0, "queries": 0, "live": 0, "cached": 0, "steps": []},
+        },
+    )
+
+
 @app.get("/api/health")
 async def health() -> dict[str, Any]:
     """Always answers, so a platform healthcheck passes while the graph builds."""
@@ -263,7 +347,10 @@ async def suggest(
     q: str = Query(""),
     limit: int = Query(10, ge=1, le=50),
     live: bool = Query(False),
-) -> dict[str, Any]:
+) -> Any:
+    starting = starting_response()
+    if starting is not None:
+        return starting
     trace = Trace()
     if live:
         rows = await state["client"].run_spec("q11_prefix_search", trace=trace, prefix=q)
@@ -284,6 +371,9 @@ async def blast_radius(
             status_code=422,
             content={"status": "error", "message": f"depth must be one of {list(ALLOWED_DEPTHS)}"},
         )
+    starting = starting_response()
+    if starting is not None:
+        return starting
     trace = Trace()
     found = await state["client"].run_spec(
         "q6_package_lookup", trace=trace, package_id=hash_key(pkg_key(pkg))
@@ -398,6 +488,14 @@ async def check_lockfile(
     installed_at: int | None = Query(None),
     depth: int = Query(DEFAULT_DEPTH),
 ) -> Any:
+    if depth not in ALLOWED_DEPTHS:
+        return JSONResponse(
+            status_code=422,
+            content={"status": "error", "message": f"depth must be one of {list(ALLOWED_DEPTHS)}"},
+        )
+    starting = starting_response()
+    if starting is not None:
+        return starting
     trace = Trace()
     try:
         parsed = lockfile_mod.parse_bytes(await request.body())
@@ -525,6 +623,9 @@ async def forecast() -> dict[str, Any]:
     candidate; served from memory with every step replayed into the trace, ages
     attached, so the inspector shows exactly what produced it and when.
     """
+    starting = starting_response()
+    if starting is not None:
+        return starting
     trace = Trace()
     d = digest()
     if not d.artifacts:
@@ -544,6 +645,9 @@ async def forecast() -> dict[str, Any]:
 @app.get("/api/incident")
 async def incident(live: bool = Query(False)) -> dict[str, Any]:
     """The incident this graph holds, and the multi-source traversal over it."""
+    starting = starting_response()
+    if starting is not None:
+        return starting
     trace = Trace()
     d = digest()
     if not d.artifacts:
