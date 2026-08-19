@@ -272,3 +272,56 @@ def rollup(verdicts: Sequence[EntryVerdict]) -> dict[str, Any]:
         "why": why,
         "counts": counts,
     }
+
+
+def remediation(
+    name: str,
+    live_until: int | None,
+    clean_rows: Sequence[Mapping[str, Any]] | None,
+) -> dict[str, Any]:
+    """The step after EXPOSED, from what the graph holds.
+
+    Every advisory a defender has ever read ends with "upgrade to X and rotate
+    your credentials"; a verdict that stops at the fact is half an answer. The
+    upgrade target is a graph answer -- the earliest release of this package
+    that is not compromised and postdates the live window -- so it carries the
+    same authority as the verdict, and the same honesty rule: when the graph
+    records no such release, say exactly that rather than guessing one.
+
+    Credential rotation is unconditional. The payload steals tokens, so having
+    installed a named artifact means every credential on that machine is
+    suspect regardless of which version fixed the package.
+    """
+    rotate = (
+        "rotate every credential on machines that installed this artifact -- "
+        "the payload exfiltrates npm tokens, cloud keys and CI secrets"
+    )
+    if clean_rows is None:
+        return {
+            "first_clean_version": None,
+            "note": "the upgrade target could not be computed",
+            "rotate_credentials": rotate,
+        }
+    candidates = [
+        row
+        for row in clean_rows
+        if isinstance(row.get("published_at"), int)
+        and (live_until is None or row["published_at"] > live_until)
+    ]
+    if not candidates:
+        return {
+            "first_clean_version": None,
+            "note": (
+                "no clean release after the live window is recorded in this "
+                "graph -- remove the package or pin a version predating the window"
+            ),
+            "rotate_credentials": rotate,
+        }
+    first = min(candidates, key=lambda row: row["published_at"])
+    return {
+        "first_clean_version": str(first["version"]),
+        "published_at": first["published_at"],
+        "command": f"npm install {name}@{first['version']} --ignore-scripts",
+        "rotate_credentials": rotate,
+        "source": "the earliest non-compromised release after the window, per HydraDB",
+    }

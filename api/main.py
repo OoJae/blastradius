@@ -24,6 +24,7 @@ from starlette.concurrency import run_in_threadpool
 
 from api import lockfile as lockfile_mod
 from api import timeline
+from api import forecast as forecast_mod
 from api.closure import ClosureCache
 from api.digest import INCIDENT_ADVISORY, GraphDigest
 from api.hydra import HydraClient, NotComputed
@@ -129,6 +130,18 @@ async def prepare(client: HydraClient) -> None:
 
         if digest.incident_packages:
             await state["closures"].warm(digest.incident_packages, DEFAULT_DEPTH)
+            print("building the next-wave forecast...", flush=True)
+            state["forecast"] = await forecast_mod.build(
+                client, digest, state["closures"], DEFAULT_DEPTH
+            )
+            fc = state["forecast"]
+            if fc is not None:
+                print(
+                    f"forecast ready: {fc.payload['reach']['packages']} candidates, "
+                    f"hindsight {fc.payload['hindsight']['flagged']}"
+                    f"/{fc.payload['hindsight']['fell_later']}",
+                    flush=True,
+                )
     except Exception as exc:  # noqa: BLE001 - surfaced through /api/health
         state["startup_error"] = str(exc).splitlines()[0][:300]
         print(f"startup failed: {state['startup_error']}", flush=True)
@@ -407,6 +420,7 @@ async def check_lockfile(
     # everything else is answered from records already in memory.
     verdicts = []
     in_window: dict[tuple[str, str], bool] = {}
+    remediations: dict[str, dict[str, Any]] = {}
     for entry in parsed.entries:
         hit = None
         if d.artifact(entry.name, entry.version) is not None:
@@ -430,6 +444,24 @@ async def check_lockfile(
                     installed_at=installed_at,
                 )
                 in_window[(entry.name, entry.version)] = bool(confirmed)
+
+            # An EXPOSED verdict without a next step is half an answer. The
+            # upgrade target is itself a graph answer -- the earliest clean
+            # release after the window -- computed once per package. A refusal
+            # degrades the remediation, never the verdict.
+            if hit is not None and entry.name not in remediations:
+                try:
+                    clean = await client.run_spec(
+                        "q12_clean_versions",
+                        trace=trace,
+                        package_id=hash_key(pkg_key(entry.name)),
+                        after=hit.get("live_until") or 0,
+                    )
+                except NotComputed:
+                    clean = None
+                remediations[entry.name] = lockfile_mod.remediation(
+                    entry.name, hit.get("live_until"), clean
+                )
         verdicts.append(
             lockfile_mod.decide_entry(
                 entry,
@@ -475,6 +507,7 @@ async def check_lockfile(
                     # when no install time was supplied to compare against.
                     "in_window_per_graph": in_window.get((v.name, v.version)),
                     "advisory": v.advisory,
+                    "remediation": remediations.get(v.name) if v.verdict == "EXPOSED" else None,
                     "signals": v.signals,
                 }
                 for v in verdicts
@@ -482,6 +515,30 @@ async def check_lockfile(
         },
         trace,
     )
+
+
+@app.get("/api/forecast")
+async def forecast() -> dict[str, Any]:
+    """Where the stolen credentials can still publish, and the proof it matters.
+
+    Computed once at boot from the maintainer pivot plus one radius per
+    candidate; served from memory with every step replayed into the trace, ages
+    attached, so the inspector shows exactly what produced it and when.
+    """
+    trace = Trace()
+    d = digest()
+    if not d.artifacts:
+        return {
+            "status": "unavailable",
+            "result": None,
+            "message": "this graph contains no advisory",
+        }
+    cached = state.get("forecast")
+    if cached is None:
+        return ok({"warming": True}, trace)
+    for run in cached.steps:
+        trace.replay(run)
+    return ok(cached.payload, trace)
 
 
 @app.get("/api/incident")

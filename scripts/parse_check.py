@@ -86,6 +86,8 @@ def variants(name: str) -> list[tuple[str, dict, dict]]:
         return [("-", {}, {"version_id": SENTINEL_VER})]
     if name == "q11_prefix_search":
         return [("-", {}, {"prefix": SENTINEL})]
+    if name == "q12_clean_versions":
+        return [("-", {}, {"package_id": SENTINEL_PKG, "after": 0})]
     return [("-", {}, {})]
 
 
