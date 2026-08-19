@@ -80,8 +80,13 @@ just web-build     # build the interface into web/dist
 just dev           # serve API + interface on http://127.0.0.1:8000
 ```
 
-To run the real incident rather than the fixtures, build a slice from the
-committed extract and load it — see *Real ingestion and retrieval workflows*.
+On boot the service probes what the graph holds: a fixture graph loaded by
+`ingest-demo` is served as-is, and only a genuinely empty graph triggers a
+build of the committed demo slice (52k packages, ~25 minutes, once — progress
+is reported at `/api/health`).
+
+To run the real incident rather than the fixtures, load the committed slice
+with `just ingest` — see *Real ingestion and retrieval workflows*.
 
 ## Real ingestion and retrieval workflows
 
@@ -296,7 +301,7 @@ agree on every package at every depth — zero missing, zero extra:
 | Depth | Packages exposed | Median per seed |
 |---|---:|---:|
 | 1 | 1,321 | 3 ms |
-| 2 | 5,828 | 24 ms |
+| 2 | 5,828 | 28 ms |
 | 3 | **8,555** | 112 ms |
 
 **Campaign victim recall is 0 of 119, and that is the interesting result.**
