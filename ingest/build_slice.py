@@ -59,6 +59,12 @@ class SliceBudget:
             # is the expensive part: those packages are the most depended upon,
             # so each one drags in a large share of the induced subgraph.
             return cls(tier="demo", halo_max=30_000, spine_n=12_000, forward_max=10_000)
+        if tier == "hosted":
+            # Sized to fit a 5 GB object-store volume. The store settles at
+            # 1.7 GB for the demo tier but peaks well past 5 GB during
+            # compaction, so the hosted slice keeps the whole incident core and
+            # trims the popularity spine, which is what drives edge count.
+            return cls(tier="hosted", halo_max=12_000, spine_n=3_000, forward_max=4_000)
         if tier == "T3":
             return cls(tier="T3", halo_max=120_000, spine_n=60_000, forward_max=20_000)
         if tier == "T1":
@@ -377,7 +383,7 @@ def main() -> int:
     import argparse
 
     parser = argparse.ArgumentParser(description="Build a loadable slice")
-    parser.add_argument("--tier", default="T2", choices=["T1", "T2", "T3", "demo"])
+    parser.add_argument("--tier", default="T2", choices=["T1", "T2", "T3", "demo", "hosted"])
     args = parser.parse_args()
 
     budget = SliceBudget.for_tier(args.tier)

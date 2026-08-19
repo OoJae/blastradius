@@ -11,6 +11,7 @@ runs the real query so the two can be compared.
 from __future__ import annotations
 
 import asyncio
+import os
 import time
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -82,12 +83,18 @@ async def load_if_empty(client: HydraClient) -> bool:
     if packages and edges_present:
         return False
 
+    # Which slice this deployment builds. The hosted instance runs a smaller
+    # one than local development: its object store has to fit a 5 GB volume,
+    # and the store peaks well above its settled size during compaction.
+    wanted = os.environ.get("BLASTRADIUS_SLICE")
     candidates = sorted(p for p in SLICE_DIR.glob("*") if p.is_dir())
+    if wanted:
+        candidates = [p for p in candidates if p.name == wanted] or candidates
     if not candidates:
         print("graph is empty and no slice is bundled; serving an empty graph", flush=True)
         return False
 
-    slice_dir = candidates[-1]
+    slice_dir = candidates[0]
     print(f"graph is empty -- loading {slice_dir.name} (this takes ~25 minutes)", flush=True)
     state["loading"] = slice_dir.name
     try:
