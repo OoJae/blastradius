@@ -1,0 +1,136 @@
+/* The BlastRadius token layer.
+ *
+ * One source of truth for both the landing page and the instrument, so the
+ * brand and the product cannot drift apart. Colour is inherited from what the
+ * tool already used -- this is not a new palette, it is the existing one named
+ * and given rules.
+ *
+ * The rule that keeps it honest: --ember marks only what is compromised or
+ * live. It is never decoration. Everything else is void, ink, ash and chalk.
+ */
+
+/* ---- type ------------------------------------------------------------- */
+/* Three faces, three voices. An advisory is a document; a lockfile is a
+ * machine record. The serif is the human writing about the incident, the mono
+ * is the machine reporting it, and the sans carries everything in between. */
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/instrument-serif-400-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/instrument-sans-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-500.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+}
+
+/* Metric-matched fallbacks. Without these the swap from system fonts to the
+ * real faces shifts the layout, which is the one thing a hero cannot do. */
+@font-face {
+  font-family: 'Serif Fallback';
+  src: local('Times New Roman'), local('Times');
+  size-adjust: 92%;
+  ascent-override: 92%;
+  descent-override: 24%;
+}
+@font-face {
+  font-family: 'Sans Fallback';
+  src: local('Helvetica Neue'), local('Arial');
+  size-adjust: 101%;
+  ascent-override: 95%;
+  descent-override: 24%;
+}
+
+:root {
+  /* ---- colour --------------------------------------------------------- */
+  --void: #08090A;        /* fullscreen ground, deeper than the tool's panels */
+  --ink: #121417;         /* panels */
+  --ink-raised: #1A1D21;
+  --ash: #24282E;         /* rules, tick marks, borders */
+  --chalk: #E8EAED;
+  --chalk-dim: #9BA1A9;
+  --chalk-faint: #5F666E;
+  --ember: #FF6B35;       /* the only accent: compromised, or live */
+  --ember-glow: #FF8F5E;
+  --ember-dim: #B54A24;
+
+  /* Semantic verdicts, carried over from the tool unchanged. */
+  --verdict-exposed: #FF4D4D;
+  --verdict-unknown: #8B93A1;
+  --verdict-atrisk: #F0A202;
+  --verdict-clean: #3DD68C;
+
+  /* ---- families ------------------------------------------------------- */
+  --font-display: 'Instrument Serif', 'Serif Fallback', Georgia, serif;
+  --font-body: 'Instrument Sans', 'Sans Fallback', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- fluid scale ---------------------------------------------------- */
+  /* Line height tightens as size grows; tracking opens as size shrinks. */
+  --step-hero: clamp(2.75rem, 8.5vw, 9rem);
+  --step-section: clamp(2rem, 4.5vw, 4.25rem);
+  --step-lead: clamp(1.25rem, 2vw, 1.75rem);
+  --step-body: clamp(1rem, 1.05vw, 1.125rem);
+  --step-small: 0.8125rem;
+  --step-label: 0.6875rem;
+
+  --lh-display: 0.95;
+  --lh-body: 1.6;
+  --track-display: -0.03em;
+  --track-label: 0.12em;
+
+  /* ---- motion --------------------------------------------------------- */
+  /* One expressive-out curve leads everything; the in-out is only for state
+   * toggles. Durations are banded so nothing is invented per component. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 0.24s;
+  --dur-reveal: 0.8s;
+  --dur-scene: 1.2s;
+  --stagger: 0.07s;
+
+  /* ---- space ---------------------------------------------------------- */
+  --gutter: clamp(1.25rem, 4vw, 5rem);
+  --rail: clamp(2.75rem, 5vw, 5.5rem);  /* the tick rail's width */
+  --measure: 34rem;                      /* body copy max line length */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-micro: 0.01s;
+    --dur-reveal: 0.01s;
+    --dur-scene: 0.01s;
+    --stagger: 0s;
+  }
+}

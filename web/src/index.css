@@ -1,11 +1,28 @@
+@import './styles/tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html { background: #0B0C0E; color-scheme: dark; }
-  body { @apply bg-ink-900 text-chalk antialiased; }
-  ::selection { background: #FF6B35; color: #0B0C0E; }
+  html {
+    background: var(--void);
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-ink-900 text-chalk;
+    font-family: var(--font-body);
+  }
+  ::selection { background: var(--ember); color: var(--void); }
+
+  /* Keyboard focus has to be visible everywhere, including over the 3D scene,
+   * so it is defined once here rather than per component. */
+  :focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
 }
 
 @layer utilities {

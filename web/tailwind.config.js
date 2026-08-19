@@ -1,22 +1,44 @@
 /** @type {import('tailwindcss').Config} */
+// Colours resolve through the custom properties in src/styles/tokens.css, so
+// the landing page and the instrument cannot drift apart: change a token and
+// both move together. The literal hexes live in exactly one file now.
 export default {
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  content: ['./index.html', './app/index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
         // One accent, used only for the thing under attack and for live data.
-        ember: { DEFAULT: '#FF6B35', dim: '#B54A24', glow: '#FF8F5E' },
-        ink: { 900: '#0B0C0E', 800: '#121417', 700: '#1A1D21', 600: '#24282E' },
-        chalk: { DEFAULT: '#E8EAED', dim: '#9BA1A9', faint: '#5F666E' },
+        ember: {
+          DEFAULT: 'var(--ember)',
+          dim: 'var(--ember-dim)',
+          glow: 'var(--ember-glow)',
+        },
+        ink: {
+          900: 'var(--void)',
+          800: 'var(--ink)',
+          700: 'var(--ink-raised)',
+          600: 'var(--ash)',
+        },
+        chalk: {
+          DEFAULT: 'var(--chalk)',
+          dim: 'var(--chalk-dim)',
+          faint: 'var(--chalk-faint)',
+        },
         verdict: {
-          exposed: '#FF4D4D',
-          unknown: '#8B93A1',
-          atrisk: '#F0A202',
-          clean: '#3DD68C',
+          exposed: 'var(--verdict-exposed)',
+          unknown: 'var(--verdict-unknown)',
+          atrisk: 'var(--verdict-atrisk)',
+          clean: 'var(--verdict-clean)',
         },
       },
       fontFamily: {
-        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        display: ['var(--font-display)'],
+        sans: ['var(--font-body)'],
+        mono: ['var(--font-mono)'],
+      },
+      transitionTimingFunction: {
+        out: 'var(--ease-out)',
+        inout: 'var(--ease-inout)',
       },
     },
   },

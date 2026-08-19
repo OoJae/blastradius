@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" role="img" aria-label="BlastRadius">
+  <!-- The mark is the product's own geometry. Ring radii are the square roots
+       of the real depth counts (1,034 / 1,951 / 2,918), exactly as the tool's
+       RingDiagram draws them, and the arc centres drift upward because a blast
+       radius through a dependency graph is not symmetric. -->
+  <g stroke="#FF6B35" stroke-linecap="round" fill="none">
+    <path d="M15.68 7.13A13.69 13.69 0 0 1 15.68 32.87" stroke-width="2.6" opacity="1"/>
+    <path d="M21.52 3.61A18.81 18.81 0 0 1 21.52 34.79" stroke-width="2.2" opacity="0.62"/>
+    <path d="M27.26 1.84A23.00 23.00 0 0 1 27.26 34.36" stroke-width="1.8" opacity="0.3"/>
+  </g>
+  <circle cx="11" cy="20" r="3.4" fill="#FF6B35"/>
+</svg>
