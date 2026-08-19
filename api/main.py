@@ -566,3 +566,15 @@ async def incident(live: bool = Query(False)) -> dict[str, Any]:
         }
 
     return ok(payload, trace)
+
+
+# Static mounts come last: they claim "/", so anything registered after them
+# would be shadowed. The guard keeps a fresh clone working before anyone has
+# run a UI build.
+DIST = Path(__file__).resolve().parent.parent / "web" / "dist"
+SAMPLES = Path(__file__).resolve().parent.parent / "data" / "fixtures" / "lockfiles"
+
+if SAMPLES.is_dir():
+    app.mount("/samples", StaticFiles(directory=str(SAMPLES)), name="samples")
+if DIST.is_dir():
+    app.mount("/", StaticFiles(directory=str(DIST), html=True), name="web")

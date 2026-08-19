@@ -81,6 +81,17 @@ eval:
     uv run python -m eval.run --dir "$(cat data/slice/CURRENT 2>/dev/null || echo data/slice/demo-20260810)"
 
 # Run the API against whatever graph is currently loaded.
+web-install:
+    cd web && npm ci
+
+# Build the UI into web/dist, which `just dev` then serves on the same origin.
+web-build:
+    cd web && npm run build
+
+# UI dev server on :5173, proxying /api to the API on :8000.
+web-dev:
+    cd web && npm run dev
+
 dev:
     uv run uvicorn api.main:app --reload --port 8000
 
