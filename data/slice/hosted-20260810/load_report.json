@@ -1,0 +1,52 @@
+{
+  "AFFECTS": {
+    "rate": 2309,
+    "rows": 84,
+    "seconds": 0.0
+  },
+  "Advisory": {
+    "rate": 100,
+    "rows": 1,
+    "seconds": 0.0
+  },
+  "MAINTAINS": {
+    "rate": 4854,
+    "rows": 9846,
+    "seconds": 2.0
+  },
+  "Maintainer": {
+    "rate": 16314,
+    "rows": 2707,
+    "seconds": 0.2
+  },
+  "PKG_DEPENDED_BY": {
+    "rate": 3925,
+    "rows": 409751,
+    "seconds": 104.4
+  },
+  "PKG_DEPENDS_ON": {
+    "rate": 2623,
+    "rows": 409751,
+    "seconds": 156.2
+  },
+  "Package": {
+    "rate": 6376,
+    "rows": 19161,
+    "seconds": 3.0
+  },
+  "SIMILAR_NAME": {
+    "rate": 4238,
+    "rows": 1798,
+    "seconds": 0.4
+  },
+  "VERSION_OF": {
+    "rate": 5291,
+    "rows": 16802,
+    "seconds": 3.2
+  },
+  "Version": {
+    "rate": 12432,
+    "rows": 16802,
+    "seconds": 1.4
+  }
+}
