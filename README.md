@@ -319,11 +319,42 @@ asserts it is refused.
 
 ## Attribution
 
+**Database**
+
 - **[HydraDB](https://github.com/hydra-db/hydradb)** (AGPL-3.0) — used as an
   external database service over Bolt and HTTP. No HydraDB source is vendored
   into this repository.
-- Further dataset and library attribution is added as each source lands
-  (deps.dev, OSV.dev, OpenSSF malicious-packages, npm registry).
+
+**Datasets**
+
+- **[deps.dev](https://deps.dev/)** / Google Open Source Insights (**CC-BY
+  4.0**) — the npm dependency graph. The derived edge lists shipped in
+  `data/slice/` are built from this data; this notice is the required
+  attribution for them.
+- **[OSV.dev](https://osv.dev/)** — advisory records for the incident.
+  Aggregated advisory data; its GitHub Advisory Database source is CC-BY 4.0.
+- **[OpenSSF malicious-packages](https://github.com/ossf/malicious-packages)**
+  (Apache-2.0) — the campaign roster of known malicious packages
+  (`data/incident/campaign.json` derives from it).
+- **[npm registry](https://registry.npmjs.org/)** — publish timestamps,
+  version histories, and maintainer records, per npm's public registry terms.
+
+**Libraries**
+
+- Python: [FastAPI](https://fastapi.tiangolo.com/),
+  [uvicorn](https://www.uvicorn.org/), [httpx](https://www.python-httpx.org/),
+  the [neo4j Python driver](https://github.com/neo4j/neo4j-python-driver)
+  (used as a Bolt client), [numpy](https://numpy.org/),
+  [rapidfuzz](https://github.com/rapidfuzz/RapidFuzz),
+  [xxhash](https://github.com/ifduyue/python-xxhash).
+- Web: [React](https://react.dev/),
+  [d3-force](https://github.com/d3/d3-force),
+  [react-force-graph-2d](https://github.com/vasturiano/react-force-graph);
+  built with [Vite](https://vitejs.dev/),
+  [Tailwind CSS](https://tailwindcss.com/), and TypeScript.
+
+**Tooling**
+
 - Built with [Claude Code](https://claude.com/claude-code).
 
 ## License
