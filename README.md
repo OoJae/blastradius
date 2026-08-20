@@ -379,9 +379,6 @@ asserts it is refused.
   Instrument Sans — Instrument
 - [IBM Plex Mono](https://github.com/IBM/plex) — IBM
 
-**Tooling**
-
-- Built with [Claude Code](https://claude.com/claude-code).
 
 ## License
 
