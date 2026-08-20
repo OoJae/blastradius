@@ -208,9 +208,16 @@ here is exactly which is which.
 | Blast radius | `PKG_DEPENDED_BY*1..n` from a fixed seed | 172 ms at depth 1, 1,666 ms at depth 3 (5,782 packages) |
 | Multi-source incident | one `algo.MSpaths` call seeded with all 42 compromised packages | 8.4 s, server-side, replacing 42 round trips |
 | Maintainer overlap | two single-hop `MAINTAINS` statements | 61 ms |
-| Typosquats | `SIMILAR_NAME` single hop | 6 ms |
 | Lockfile advisory hits | `AFFECTS` on the resolved version, and the live-window comparison as an integer predicate on the edge | 7 ms per matching entry |
 | Remediation target | `VERSION_OF` anchored on the package, filtered to clean releases after the window | ~660 ms per exposed entry (1,192 versions filtered) |
+
+Not in that table, and deliberately: **typosquat neighbours are API-only**
+(`GET /api/typosquats/{pkg}`, `SIMILAR_NAME` single hop). The edges are built at
+ingest and the endpoint is exercised by `just parse-check`, but no control in
+the interface calls it, so it is not something a judge can click. It also
+returns nothing for this incident — every compromised package is under
+`@tanstack`, and same-scope neighbours are suppressed as owner-published rather
+than squatted, which `docs/EVAL_REPORT.md` §3.3 measures at zero.
 
 Every one of these is cached after the first call, and **`?fresh=1` forces a
 re-run** — the response reports `cached` per step, so a cached number and a
